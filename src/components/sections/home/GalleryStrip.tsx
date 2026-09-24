@@ -1,5 +1,5 @@
 import { Reveal } from '@/components/motion/Reveal'
-import { GalleryWall } from '@/components/sections/home/GalleryWall'
+import { GaleriStudio } from '@/components/sections/home/GaleriStudio'
 import { ButtonLink } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { SectionHeader } from '@/components/ui/SectionHeader'
@@ -13,19 +13,19 @@ type GalleryStripProps = {
 }
 
 /**
- * The home gallery: a wall of CRT monitors (see `GalleryWall`) lying on the
- * cream desk, so it stands apart from the dark join section right after it.
+ * The home gallery: a desktop and a dot-matrix printer on the cream desk (see
+ * `GaleriStudio`), so it stands apart from the dark join section after it.
  */
 export function GalleryStrip({ index, items }: GalleryStripProps) {
   return (
-    <SectionShell accent="lime" tone="paper" labelledBy="galeri-title">
+    <SectionShell accent="magenta" tone="paper" labelledBy="galeri-title">
       <Reveal>
         <SectionHeader
           index={index}
           eyebrow="galeri"
-          title="Siaran ulang dari ruang kelas"
+          title="Dari layar ke kertas"
           headingId="galeri-title"
-          description="Kelas Senin dan Selasa, workshop, kompetisi, dan sesi-sesi malam sebelum deadline — diputar ulang di setiap monitor. Pilih satu untuk ditonton di layar utama."
+          description="Kelas Senin dan Selasa, workshop, kompetisi, dan sesi-sesi malam sebelum deadline. Seret fotonya ke printer untuk mencetaknya ke meja."
           actions={
             items.length > 0 ? (
               <ButtonLink href="/galeri" variant="outline" size="sm">
@@ -38,7 +38,7 @@ export function GalleryStrip({ index, items }: GalleryStripProps) {
 
       <Reveal className="mt-10 sm:mt-12">
         {items.length > 0 ? (
-          <GalleryWall items={items} />
+          <GaleriStudio items={items.filter((item) => item.type === 'image')} />
         ) : (
           <EmptyState
             command="ls ~/galeri/*.jpg"

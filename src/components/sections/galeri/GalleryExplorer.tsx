@@ -3,14 +3,12 @@
 import { useRef } from 'react'
 
 import { Lightbox } from '@/components/sections/galeri/Lightbox'
-import { Badge } from '@/components/ui/Badge'
+import { PrintSheet } from '@/components/sections/galeri/PrintSheet'
 import { Button } from '@/components/ui/Button'
-import { DitherImage } from '@/components/ui/DitherImage'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { CommandBar, Flag } from '@/components/ui/Flag'
 import { clearLocationHash, replaceLocationHash, useLocationHash } from '@/lib/hooks/useLocationHash'
 import { useQueryParams } from '@/lib/hooks/useQueryParams'
-import { formatTanggalPendek } from '@/lib/format'
 import type { GalleryItem, KategoriGaleri } from '@/lib/types'
 
 type GalleryExplorerProps = {
@@ -25,10 +23,30 @@ type TipeFlag = keyof typeof TIPE
 
 const isTipe = (value: string | null): value is TipeFlag => value === 'foto' || value === 'video'
 
-const FRAME_SIZES = '(min-width: 1440px) 340px, (min-width: 1280px) 24vw, (min-width: 1024px) 31vw, 46vw'
+const FRAME_SIZES = '(min-width: 1440px) 300px, (min-width: 1280px) 22vw, (min-width: 1024px) 29vw, 46vw'
+
+const PIN_COLORS = ['#ff3d8b', '#2fd5e0', '#8fe34f', '#ffb020', '#9b7bff'] as const
 
 /**
- * The whole archive as a contact sheet, with the lightbox it opens.
+ * How a print hangs, from its id: a small tilt, and either a push pin (in one
+ * of the accents) or a strip of tape. Deterministic, so the wall looks the
+ * same on every visit and server and client agree.
+ */
+function pinOf(id: string): { tilt: number; kind: 'pin' | 'tape'; color: string; tape: number } {
+  let hash = 0
+  for (const char of id) hash = (hash * 31 + char.charCodeAt(0)) >>> 0
+  return {
+    tilt: ((hash % 9) - 4) * 0.75,
+    kind: hash % 3 === 0 ? 'tape' : 'pin',
+    color: PIN_COLORS[hash % PIN_COLORS.length] ?? PIN_COLORS[0],
+    tape: ((hash >>> 4) % 7) - 3,
+  }
+}
+
+/**
+ * The whole archive as a wall of prints — the sheets the home page's printer
+ * turns out, pinned or taped up at a slight angle — with the lightbox it
+ * opens, where the photo shows in its real colours.
  *
  * Each frame is a plain link to its own fragment, `/galeri#g-03`, and the
  * open item is whatever the fragment names. So the home page's film strip can
@@ -115,10 +133,11 @@ export function GalleryExplorer({ items, categories }: GalleryExplorerProps) {
       </p>
 
       {visible.length > 0 ? (
-        <ul className="mt-3 columns-2 gap-3 sm:gap-4 lg:columns-3 xl:columns-4">
-          {visible.map((item) => (
-            <li key={item.id} id={item.id} className="mb-3 scroll-mt-24 break-inside-avoid sm:mb-4">
-              <figure className="border-2 border-line bg-surface">
+        <ul className="mt-8 columns-2 gap-4 sm:gap-8 lg:columns-3 xl:columns-4">
+          {visible.map((item) => {
+            const pin = pinOf(item.id)
+            return (
+              <li key={item.id} id={item.id} className="mb-8 scroll-mt-24 break-inside-avoid pt-3 sm:mb-10">
                 <a
                   href={`#${item.id}`}
                   onClick={(event) => {
@@ -126,35 +145,34 @@ export function GalleryExplorer({ items, categories }: GalleryExplorerProps) {
                     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
                     pushedEntry.current = true
                   }}
-                  className="group/frame relative block overflow-hidden border-b-2 border-line"
+                  style={{ '--tilt': `${pin.tilt}deg` } as React.CSSProperties}
+                  className="group/print relative block rotate-(--tilt) transition-[rotate,translate,box-shadow] duration-300 ease-[var(--ease-mech)] hover:-translate-y-1 hover:rotate-0 focus-visible:-translate-y-1 focus-visible:rotate-0 motion-reduce:transition-none"
                 >
-                  <DitherImage
-                    src={item.src}
-                    alt={item.alt}
-                    width={item.width}
-                    height={item.height}
+                  {pin.kind === 'pin' ? (
+                    <span
+                      aria-hidden
+                      className="absolute -top-2.5 left-1/2 z-10 h-5 w-5 -translate-x-1/2 rounded-full border-2 border-[#1b1d24]/70 shadow-[2px_3px_0_0_rgb(0_0_0/0.25)] transition-transform duration-300 group-hover/print:-rotate-12"
+                      style={{ background: pin.color }}
+                    />
+                  ) : (
+                    <span
+                      aria-hidden
+                      className="absolute -top-3 left-1/2 z-10 h-6 w-20 -translate-x-1/2 bg-[#e9e1c8]/85 shadow-[0_1px_0_rgb(0_0_0/0.08)]"
+                      style={{ rotate: `${pin.tape}deg` }}
+                    />
+                  )}
+                  <PrintSheet
+                    item={item}
                     sizes={FRAME_SIZES}
-                    treatment="soft"
-                    bordered={false}
-                    imageClassName="motion-safe:transition-transform motion-safe:duration-500 motion-safe:ease-[var(--ease-mech)] motion-safe:group-hover/frame:scale-[1.04]"
+                    natural
+                    reveal
+                    className="shadow-[3px_5px_0_0_rgb(0_0_0/0.16)] transition-shadow duration-300 group-hover/print:shadow-[6px_12px_0_0_rgb(0_0_0/0.2)]"
                   />
-                  {item.type === 'video' ? (
-                    <Badge variant="solid" size="sm" className="absolute top-2 left-2">
-                      <span aria-hidden>▶</span> video
-                    </Badge>
-                  ) : null}
                   <span className="sr-only">{item.type === 'video' ? ' — putar video' : ' — buka foto'}</span>
                 </a>
-
-                <figcaption className="px-3 py-2.5">
-                  <p className="text-[12px] leading-5 text-fg">{item.caption}</p>
-                  <p className="mt-1.5 text-[10px] leading-4 text-dim">
-                    <time dateTime={item.tanggal}>{formatTanggalPendek(item.tanggal)}</time> · {item.kategori}
-                  </p>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
+              </li>
+            )
+          })}
         </ul>
       ) : (
         <EmptyState

@@ -10,7 +10,7 @@ export default function Image() {
     file: '~/berita/',
     command: 'git log --oneline berita/',
     eyebrow: 'berita',
-    title: 'Kabar dari sekretariat',
+    title: 'Kabar dari KSP',
     subtitle: 'Pengumuman, liputan kegiatan, catatan prestasi, dan tutorial C.',
   })
 }

@@ -15,6 +15,9 @@ type AboutSectionProps = {
   pengurus: readonly Member[]
 }
 
+/** The first two words of a name: enough to recognise someone on a small card. */
+const shortName = (nama: string): string => nama.split(/\s+/).slice(0, 2).join(' ')
+
 /** Who KSP is, straight under the hero: the first thing a newcomer reads after the wordmark. */
 export function AboutSection({ index, pengurus }: AboutSectionProps) {
   return (
@@ -95,7 +98,7 @@ export function AboutSection({ index, pengurus }: AboutSectionProps) {
                   <span className="min-w-0">
                     <span className="block text-[10px] tracking-[0.1em] text-accent-fg uppercase">{person.jabatan}</span>
                     <span className="mt-0.5 block text-[13px] leading-5 font-bold text-fg group-hover/row:text-accent-fg">
-                      {person.nama}
+                      {shortName(person.nama)}
                     </span>
                   </span>
                 </Link>

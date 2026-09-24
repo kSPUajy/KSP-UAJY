@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { LogoMark } from '@/components/layout/Logo'
+import { CREATOR } from '@/lib/creator'
 import { siteConfig } from '@/site.config'
 
 const SOCIAL_LABELS: Record<string, string> = {
@@ -119,7 +120,10 @@ export function Footer() {
           <p>
             {'// ©'} {year} {siteConfig.name} &middot; {siteConfig.campus.short}
           </p>
-          <p className="text-accent-fg">return 0;</p>
+          {/* Five quick clicks open an easter egg (see CreatorEggs). */}
+          <p data-egg="return" className="cursor-default text-accent-fg select-none" title={`// built by angkatan ${CREATOR.angkatan}`}>
+            return 0;
+          </p>
         </div>
       </div>
     </footer>

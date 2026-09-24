@@ -26,13 +26,13 @@ export default async function GaleriPage() {
   return (
     <>
       <PageHeader
-        accent="lime"
+        accent="magenta"
         command="ls -lt ~/galeri"
         eyebrow="galeri"
-        title="Dari ruang kelas dan sekitarnya"
+        title="Papan cetak"
         description={
           items.length > 0
-            ? 'Kelas Senin dan Selasa, workshop, kompetisi, dan sesi-sesi malam sebelum deadline — diunggah divisi media setelah setiap acara. Pilih satu untuk melihatnya utuh, dalam warna aslinya.'
+            ? 'Semua hasil cetak dari printer di beranda, ditempel di satu dinding: kelas Senin dan Selasa, workshop, kompetisi, dan sesi-sesi malam sebelum deadline. Pilih satu untuk melihatnya utuh, dalam warna aslinya.'
             : undefined
         }
         facts={
@@ -46,12 +46,12 @@ export default async function GaleriPage() {
         }
       />
 
-      <SectionShell accent="lime" tone="alt" divider={false}>
+      <SectionShell accent="magenta" tone="paper" divider={false}>
         {items.length > 0 ? (
           <GalleryExplorer items={items} categories={categories} />
         ) : (
           <EmptyState
-            accent="lime"
+            accent="magenta"
             command="ls ~/galeri/*.jpg"
             output="ls: tidak ada berkas yang cocok"
             title="Roll pertama belum dicuci"

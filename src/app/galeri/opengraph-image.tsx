@@ -6,7 +6,7 @@ export const contentType = OG_CONTENT_TYPE
 
 export default function Image() {
   return renderOgCard({
-    accent: 'lime',
+    accent: 'magenta',
     file: '~/galeri/',
     command: 'ls -lt ~/galeri',
     eyebrow: 'galeri',

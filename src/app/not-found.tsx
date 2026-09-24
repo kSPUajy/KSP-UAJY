@@ -13,6 +13,8 @@ const BACKTRACE = [
   ['#0', '0x0000dead', 'resolve_route (path=NULL)', 'router.c:404'],
   ['#1', '0x0000beef', 'render_page ()', 'app.c:87'],
   ['#2', '0x00c0ffee', 'main ()', 'main.c:12'],
+  ['#3', '0x000007e8', '__built_by (angkatan=2024)', 'creator.c:2024'],
+  ['#4', '0x0000c0de', '__unknown ("[5/5] B A")', 'konami.c:1986'],
 ] as const
 
 export default function NotFound() {

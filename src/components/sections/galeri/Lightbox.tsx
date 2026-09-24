@@ -116,7 +116,7 @@ export function Lightbox({ item, position, total, onClose, onStep }: LightboxPro
   return (
     <AnimatePresence>
       {open && current ? (
-        <div key="lightbox" data-accent="lime" className="fixed inset-0 z-60 flex items-center justify-center p-2 sm:p-6">
+        <div key="lightbox" data-accent="magenta" className="fixed inset-0 z-60 flex items-center justify-center p-2 sm:p-6">
           <motion.div
             aria-hidden
             className="absolute inset-0 bg-canvas/90"

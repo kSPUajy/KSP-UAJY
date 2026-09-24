@@ -2,10 +2,10 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { Reveal, Stagger, StaggerItem } from '@/components/motion/Reveal'
+import { Reveal } from '@/components/motion/Reveal'
 import { ExperienceTimeline } from '@/components/sections/tentor/ExperienceTimeline'
 import { SkillArray } from '@/components/sections/tentor/SkillArray'
-import { TentorCard } from '@/components/sections/tentor/TentorCard'
+import { TentorCarousel } from '@/components/sections/tentor/TentorCarousel'
 import { TentorQuote } from '@/components/sections/tentor/TentorQuote'
 import { CodeBlock } from '@/components/ui/CodeBlock'
 import { DitherImage } from '@/components/ui/DitherImage'
@@ -47,15 +47,6 @@ export async function generateMetadata({ params }: TentorPageProps): Promise<Met
 
 const SOCIAL_ORDER: ReadonlyArray<keyof Socials> = ['github', 'linkedin', 'instagram']
 
-/** The next few tentors in list order, wrapping — the same neighbours on every build. */
-function neighbours(tentors: readonly Tentor[], slug: string, count: number): Tentor[] {
-  const start = tentors.findIndex((tentor) => tentor.slug === slug)
-  if (start === -1) return tentors.slice(0, count)
-  return Array.from({ length: Math.min(count, tentors.length - 1) }, (_, offset) => {
-    return tentors[(start + offset + 1) % tentors.length]
-  }).filter((tentor): tentor is Tentor => tentor !== undefined)
-}
-
 /** Until an admin writes a bio, say what is known: the person and their modules. */
 function defaultBio(tentor: Tentor): string {
   const modules = tentor.modul.map((modul) => modul.judul).join(', ')
@@ -83,7 +74,7 @@ export default async function TentorProfilePage({ params }: TentorPageProps) {
 
   const file = `${snakeCase(tentor.slug)}.c`
   const snippet = tentor.favoriteSnippet
-  const others = neighbours(tentors, tentor.slug, 3)
+  const others = tentors.filter((other) => other.slug !== tentor.slug)
   const socials = SOCIAL_ORDER.flatMap((network) => {
     const href = tentor.socials[network]
     return href ? [{ network, href }] : []
@@ -244,16 +235,9 @@ export default async function TentorProfilePage({ params }: TentorPageProps) {
           <Reveal>
             <SectionHeader eyebrow="tentor lain" title="Masih ada yang lain" headingId="tentor-lain" />
           </Reveal>
-          <Stagger as="ul" className="mt-10 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-6 lg:grid-cols-3">
-            {others.map((other) => (
-              <StaggerItem as="li" key={other.id}>
-                <TentorCard
-                  tentor={other}
-                  sizes="(min-width: 1440px) 440px, (min-width: 1024px) 30vw, 46vw"
-                />
-              </StaggerItem>
-            ))}
-          </Stagger>
+          <Reveal className="mt-10">
+            <TentorCarousel tentors={others} />
+          </Reveal>
         </SectionShell>
       ) : null}
     </>

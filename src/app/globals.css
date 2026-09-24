@@ -451,6 +451,113 @@
   50%      { opacity: 0; }
 }
 
+/* Easter egg: the account of whoever built the site, in the admin member
+   list. The text is blurred and keeps tearing into RGB-split slices; it
+   settles, sharp, under the pointer. */
+.glitch {
+  position: relative;
+  display: inline-block;
+  filter: blur(2.4px);
+  transition: filter 0.3s;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glitch::before {
+  color: #ff3d8b;
+  transform: translateX(-2px);
+  animation: ksp-glitch-a 2.6s steps(1) infinite;
+}
+
+.glitch::after {
+  color: #2fd5e0;
+  transform: translateX(2px);
+  animation: ksp-glitch-b 2.1s steps(1) infinite;
+}
+
+.glitch-sharp,
+.glitch:hover,
+.glitch:focus-visible,
+*:hover > .glitch {
+  filter: none;
+}
+
+@keyframes ksp-glitch-a {
+  0%   { clip-path: inset(0 0 85% 0); transform: translateX(-3px); }
+  10%  { clip-path: inset(40% 0 35% 0); transform: translateX(3px); }
+  20%  { clip-path: inset(75% 0 5% 0); transform: translateX(-1px); }
+  30%, 80% { clip-path: inset(100% 0 0 0); }
+  85%  { clip-path: inset(20% 0 60% 0); transform: translateX(4px); }
+  90%  { clip-path: inset(60% 0 20% 0); transform: translateX(-4px); }
+  100% { clip-path: inset(100% 0 0 0); }
+}
+
+@keyframes ksp-glitch-b {
+  0%   { clip-path: inset(70% 0 10% 0); transform: translateX(3px); }
+  12%  { clip-path: inset(10% 0 70% 0); transform: translateX(-2px); }
+  24%, 70% { clip-path: inset(100% 0 0 0); }
+  76%  { clip-path: inset(45% 0 40% 0); transform: translateX(-3px); }
+  88%  { clip-path: inset(5% 0 80% 0); transform: translateX(2px); }
+  100% { clip-path: inset(100% 0 0 0); }
+}
+
+/* God mode (Konami code easter egg, see CreatorEggs): for 30 seconds every
+   accent on the site cycles green → gold → red, and a colour wash over the
+   whole page follows it. Unlayered and !important, so it beats every
+   [data-accent] rule. */
+@property --god {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #3ddc4a;
+}
+
+html[data-godmode='on'] {
+  animation: ksp-god 1.8s steps(3) infinite;
+}
+
+html[data-godmode='on'],
+html[data-godmode='on'] * {
+  --accent: var(--god) !important;
+  --accent-fg: var(--god) !important;
+}
+
+@keyframes ksp-god {
+  0%   { --god: #3ddc4a; }
+  33%  { --god: #ffc21a; }
+  66%  { --god: #ff2e3a; }
+  100% { --god: #3ddc4a; }
+}
+
+.god-wash {
+  background: var(--god);
+  mix-blend-mode: color;
+  opacity: 0.55;
+}
+
+/* The unidentified sighting in the tentor section: its feed jitters and
+   tears as if the signal cannot lock on. */
+.ghost-feed {
+  animation: ksp-ghost-feed 0.9s steps(1) infinite;
+}
+
+@keyframes ksp-ghost-feed {
+  0%, 100% { transform: none; filter: none; clip-path: none; }
+  12% { transform: translateX(-6px) skewX(8deg); filter: hue-rotate(90deg) saturate(3); }
+  18% { transform: none; clip-path: inset(30% 0 45% 0); }
+  24% { clip-path: none; }
+  55% { transform: translateX(5px); filter: invert(1); clip-path: inset(0 0 70% 0); }
+  60% { transform: none; filter: none; clip-path: none; }
+  80% { transform: scaleY(1.08) translateY(-4px); filter: contrast(3); }
+  84% { transform: none; filter: none; }
+}
+
 /* Build-log bar and skeletons. Both are functional rather than decorative,
    so reduced motion swaps them for a pulse instead of stopping them dead. */
 @keyframes ksp-build-bar {
@@ -569,6 +676,10 @@ html[data-crt="on"] .crt-flicker-beam {
 
   .marquee-track,
   .carousel-track,
+  .ghost-feed,
+  html[data-godmode='on'],
+  .glitch::before,
+  .glitch::after,
   .tv-static,
   .tv-roll::after,
   .rec-blink,

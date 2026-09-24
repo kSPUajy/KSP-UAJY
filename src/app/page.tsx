@@ -93,7 +93,7 @@ export default async function HomePage() {
             : null
         }
       />
-      <TentorTeaser index={3} tentors={tentors} />
+      <TentorTeaser index={3} tentors={tentors} schedule={schedule} />
       <NewsSection index={4} posts={posts} />
       <GalleryStrip index={5} items={gallery.slice(0, GALLERY_FRAMES)} />
       <JoinCta index={6} info={joinInfo} registration={registration} />

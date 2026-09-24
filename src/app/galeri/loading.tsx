@@ -6,7 +6,7 @@ const HEIGHTS = ['h-40', 'h-56', 'h-44', 'h-64', 'h-36', 'h-52', 'h-48', 'h-60']
 
 export default function GaleriLoading() {
   return (
-    <div data-accent="lime" role="status" aria-label="Memuat galeri">
+    <div data-accent="magenta" role="status" aria-label="Memuat galeri">
       <PageHeaderSkeleton />
       <div className="bg-canvas-alt">
         <div className="mx-auto w-full max-w-[1440px] px-4 py-16 sm:px-6 lg:px-8">

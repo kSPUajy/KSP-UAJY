@@ -6,6 +6,7 @@ import { Nav } from '@/components/layout/Nav'
 import { SkipLink } from '@/components/layout/SkipLink'
 import { THEME_INIT_SCRIPT, ThemeProvider } from '@/components/layout/ThemeProvider'
 import { CRT_INIT_SCRIPT, CrtPowerOn } from '@/components/overlays/CrtPowerOn'
+import { CreatorEggs } from '@/components/overlays/CreatorEggs'
 import { PageOverlays } from '@/components/overlays/Overlays'
 import { siteConfig } from '@/site.config'
 
@@ -133,6 +134,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
+          <CreatorEggs />
           <PageOverlays />
           <CrtPowerOn />
         </ThemeProvider>

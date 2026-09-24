@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { AdminHeading } from '@/components/admin/AdminHeading'
+import { CipherName } from '@/components/admin/anggota/CipherName'
 import { CreateMemberForm, ImportMembersForm, MemberActions } from '@/components/admin/anggota/MemberForms'
 import type { MemberRowData } from '@/components/admin/anggota/MemberForms'
 import { Badge } from '@/components/ui/Badge'
@@ -17,6 +18,17 @@ export const metadata: Metadata = pageMetadata({
 })
 
 const ROLE_ORDER = { admin: 0, tentor: 1, anggota: 2 } as const
+
+/**
+ * The account of whoever built this site. Its row is an unreadable cipher —
+ * name, NPM and year — and stays that way: only the shape of each value is
+ * sent to the browser, never the value, and the row has no edit forms (they
+ * would carry the values). The account is still an admin.
+ */
+const CREATOR_NPM = '240712841'
+/** The name's shape: two words, 5 and 11 letters. */
+const CREATOR_NAME_SHAPE = 'xxxxx xxxxxxxxxxx'
+const shapeOf = (value: string): string => value.replace(/\S/g, 'x')
 
 export default async function AdminAnggotaPage() {
   const profile = await requireProfile('/admin/anggota', ['admin'])
@@ -63,9 +75,11 @@ export default async function AdminAnggotaPage() {
             <li key={member.id} className="border-b-2 border-line">
               <details className="group">
                 <summary className="grid cursor-pointer list-none grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 px-3 py-3.5 transition-colors hover:bg-surface-2 sm:grid-cols-[9rem_minmax(0,1fr)_auto_auto] [&::-webkit-details-marker]:hidden">
-                  <span className="text-[12px] text-muted tabular-nums">{member.npm}</span>
+                  <span className="text-[12px] text-muted tabular-nums">
+                    {member.npm === CREATOR_NPM ? <CipherName shape={shapeOf(member.npm)} alphabet="digits" look="blur" label="NPM disembunyikan" /> : member.npm}
+                  </span>
                   <span className="col-start-1 row-start-2 min-w-0 truncate text-sm font-bold text-fg sm:col-start-auto sm:row-start-auto">
-                    {member.nama}
+                    {member.npm === CREATOR_NPM ? <CipherName shape={CREATOR_NAME_SHAPE} label="nama disembunyikan" /> : member.nama}
                     {member.id === profile.id ? (
                       <span className="ml-2 font-normal text-accent-fg">
                         <span aria-hidden>&lt;| I&apos;am Here!</span>
@@ -75,15 +89,53 @@ export default async function AdminAnggotaPage() {
                   </span>
                   <span className="row-span-2 sm:row-span-1">
                     <Badge size="sm" variant={member.role === 'anggota' ? 'ghost' : 'solid'}>
-                      {member.role}
+                      {member.npm === CREATOR_NPM ? (
+                        // Still an admin; the badge just reads as corrupted.
+                        <>
+                          <span aria-hidden className="glitch glitch-sharp" data-text="???">
+                            ???
+                          </span>
+                          <span className="sr-only">peran tidak diketahui</span>
+                        </>
+                      ) : (
+                        member.role
+                      )}
                     </Badge>
                   </span>
                   <span className="hidden text-[11px] text-dim sm:inline">
-                    {member.mustChangePassword ? 'belum login pertama' : member.angkatan ? `angkatan ${member.angkatan}` : ''}
+                    {member.npm === CREATOR_NPM && !member.mustChangePassword && member.angkatan ? (
+                      <>
+                        angkatan{' '}
+                        <CipherName
+                          shape={shapeOf(String(member.angkatan))}
+                          reveal={String(member.angkatan)}
+                          alphabet="digits"
+                          look="blur"
+                          label={`angkatan ${member.angkatan}`}
+                        />
+                      </>
+                    ) : member.mustChangePassword ? (
+                      'belum login pertama'
+                    ) : member.angkatan ? (
+                      `angkatan ${member.angkatan}`
+                    ) : (
+                      ''
+                    )}
                   </span>
                 </summary>
                 <div className="border-t-2 border-line-soft bg-surface px-3 py-6 sm:px-6">
-                  <MemberActions member={member} isSelf={member.id === profile.id} />
+                  {member.npm === CREATOR_NPM ? (
+                    // No edit forms here: they would carry the real name, NPM
+                    // and year to the browser. Manage this account with
+                    // `npm run akun` instead.
+                    <p className="font-mono text-[12px] leading-6 text-muted">
+                      <span className="text-accent-fg">$</span> cat ~/.akun
+                      <br />
+                      cat: ~/.akun: Permission denied
+                    </p>
+                  ) : (
+                    <MemberActions member={member} isSelf={member.id === profile.id} />
+                  )}
                 </div>
               </details>
             </li>

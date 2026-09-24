@@ -34,7 +34,7 @@ export default async function BeritaPage() {
         accent="amber"
         command="git log --oneline berita/"
         eyebrow="berita"
-        title="Kabar dari sekretariat"
+        title="Kabar dari KSP"
         description={
           posts.length > 0
             ? 'Pengumuman pendaftaran dan jadwal, liputan kegiatan, catatan prestasi, dan tulisan teknis dari pengurus — kesalahan yang paling sering muncul di submission biasanya berakhir di sini.'

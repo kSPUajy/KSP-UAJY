@@ -24,7 +24,7 @@ export const ROUTE_ACCENT: Record<string, AccentName> = {
   '/challenge': 'magenta',
   '/hall-of-fame': 'orange',
   '/berita': 'amber',
-  '/galeri': 'lime',
+  '/galeri': 'magenta',
   '/gabung': 'lime',
 }
 

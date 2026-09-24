@@ -31,7 +31,7 @@ export function NewsSection({ index, posts, logLength = 4 }: NewsSectionProps) {
         <SectionHeader
           index={index}
           eyebrow="berita"
-          title="Kabar dari sekretariat"
+          title="Kabar dari KSP"
           headingId="berita-title"
           description="Pengumuman, liputan kegiatan, catatan prestasi, dan tulisan teknis dari pengurus."
           actions={
