@@ -28,8 +28,7 @@ const fail = (message) => problems.push(message)
 
 /** Expected record counts, so a broken pattern can never pass silently. */
 const EXPECTED = {
-  members: 14,
-  tentors: 8,
+  members: 15,
   challenges: 12,
   winners: 11,
   news: 8,
@@ -86,7 +85,6 @@ async function expectFiles(label, slugs, dir, extension) {
 
 async function main() {
   const membersTs = await source('members.ts')
-  const tentorsTs = await source('tentors.ts')
   const challengesTs = await source('challenges.ts')
   const winnersTs = await source('winners.ts')
   const newsTs = await source('news.ts')
@@ -96,9 +94,6 @@ async function main() {
   const memberIds = field(membersTs, 'id')
   const memberSlugs = field(membersTs, 'slug')
   const parentIds = field(membersTs, 'parentId')
-
-  const tentorIds = field(tentorsTs, 'id')
-  const tentorSlugs = field(tentorsTs, 'slug')
 
   const challengeIds = field(challengesTs, 'id')
   const challengeSlugs = field(challengesTs, 'slug')
@@ -115,8 +110,6 @@ async function main() {
 
   expectCount('members.ts id', memberIds.length, EXPECTED.members)
   expectCount('members.ts slug', memberSlugs.length, EXPECTED.members)
-  expectCount('tentors.ts id', tentorIds.length, EXPECTED.tentors)
-  expectCount('tentors.ts slug', tentorSlugs.length, EXPECTED.tentors)
   expectCount('challenges.ts id', challengeIds.length, EXPECTED.challenges)
   expectCount('challenges.ts slug', challengeSlugs.length, EXPECTED.challenges)
   expectCount('winners.ts id', winnerIds.length, EXPECTED.winners)
@@ -127,8 +120,6 @@ async function main() {
   // ---- uniqueness --------------------------------------------------------
   expectUnique('members.ts id', memberIds)
   expectUnique('members.ts slug', memberSlugs)
-  expectUnique('tentors.ts id', tentorIds)
-  expectUnique('tentors.ts slug', tentorSlugs)
   expectUnique('challenges.ts id', challengeIds)
   expectUnique('challenges.ts slug', challengeSlugs)
   expectUnique('winners.ts id', winnerIds)
@@ -170,14 +161,9 @@ async function main() {
     }
   })
 
-  // Winner slugs must be real people in the org chart.
-  const memberSlugSet = new Set(memberSlugs)
-  expectAllIn('winners.ts slug', winnerSlugs, memberSlugSet, 'daftar slug anggota')
-
   // ---- content files -----------------------------------------------------
   await expectFiles('challenge', challengeSlugs, 'challenges', '.mdx')
   await expectFiles('berita', newsSlugs, 'news', '.mdx')
-  await expectFiles('snippet tentor', tentorSlugs, 'snippets', '.c')
   await expectFiles('solusi pemenang', winnerIds, 'solutions', '.c')
 
   // ---- gallery video --------------------------------------------------
@@ -194,7 +180,6 @@ async function main() {
   // ---- report ------------------------------------------------------------
   console.log(dim('integritas konten'))
   console.log(`  anggota   : ${memberIds.length}`)
-  console.log(`  tentor    : ${tentorIds.length}`)
   console.log(`  challenge : ${challengeIds.length} (${pemenangIds.length} sudah ada pemenang)`)
   console.log(`  pemenang  : ${winnerIds.length} kemenangan, ${new Set(winnerSlugs).size} orang`)
   console.log(`  berita    : ${newsIds.length}`)

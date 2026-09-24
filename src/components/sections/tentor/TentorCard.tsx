@@ -5,13 +5,13 @@ import { DitherImage } from '@/components/ui/DitherImage'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
 import { PORTRAIT } from '@/lib/types'
 import type { Tentor } from '@/lib/types'
-import { snakeCase } from '@/lib/utils'
+import { pad2, snakeCase } from '@/lib/utils'
 
 type TentorCardProps = {
-  tentor: Pick<Tentor, 'nama' | 'slug' | 'foto' | 'angkatan' | 'keahlian'>
+  tentor: Pick<Tentor, 'nama' | 'slug' | 'foto' | 'angkatan' | 'keahlian' | 'modul'>
   /** `sizes` for the portrait — depends on the grid the card sits in. */
   sizes: string
-  /** How many skills to list. The full set lives on the profile page. */
+  /** How many modules (or, without any, skills) to list. The full set lives on the profile page. */
   skills?: number
   as?: 'h2' | 'h3'
 }
@@ -26,6 +26,11 @@ type TentorCardProps = {
  */
 export function TentorCard({ tentor, sizes, skills = 2, as: Heading = 'h3' }: TentorCardProps) {
   const file = `${snakeCase(tentor.slug)}.c`
+  // What they teach says more than a skill list, and every tentor has it.
+  const tags =
+    tentor.modul.length > 0
+      ? tentor.modul.map((modul) => `M${pad2(modul.minggu)} ${modul.judul.toLowerCase()}`)
+      : tentor.keahlian
 
   return (
     <TerminalWindow
@@ -42,6 +47,7 @@ export function TentorCard({ tentor, sizes, skills = 2, as: Heading = 'h3' }: Te
         height={PORTRAIT.height}
         sizes={sizes}
         bordered={false}
+        reveal
         className="aspect-[4/5] border-b-2 border-line"
       />
 
@@ -56,8 +62,8 @@ export function TentorCard({ tentor, sizes, skills = 2, as: Heading = 'h3' }: Te
         </Heading>
         <p className="mt-1 text-[11px] leading-5 text-dim">angkatan {tentor.angkatan}</p>
 
-        <ul aria-label="Keahlian" className="mt-auto flex flex-wrap gap-1.5 pt-4">
-          {tentor.keahlian.slice(0, skills).map((skill) => (
+        <ul aria-label={tentor.modul.length > 0 ? 'Modul' : 'Keahlian'} className="mt-auto flex flex-wrap gap-1.5 pt-4">
+          {tags.slice(0, skills).map((skill) => (
             <li key={skill} className="max-w-full">
               <Tag prefix="">{skill}</Tag>
             </li>

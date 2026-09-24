@@ -1,12 +1,13 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { z } from 'zod'
 
 import { failed, fieldErrors, formValues, requireAdminAction, succeeded } from '@/lib/admin/guard'
 import type { AdminFormState } from '@/lib/admin/guard'
 import { createAccount, deleteAccount, resetPassword, updateAccount } from '@/lib/auth/accounts'
 import { isValidNpm, normaliseNpm } from '@/lib/auth/npm'
+import { TAGS } from '@/lib/supabase/public'
 
 /** A password handed back exactly once, for the admin to pass on. */
 export type IssuedPassword = { npm: string; nama: string; password?: string; error?: string }
@@ -57,6 +58,7 @@ export async function buatAnggota(_previous: AdminFormState, formData: FormData)
       password: parsed.data.password,
     })
     revalidatePath('/admin/anggota')
+    updateTag(TAGS.anggota)
     const issued: IssuedPassword[] = [{ npm: account.npm, nama: account.nama, password: account.password }]
     return succeeded(`Akun ${account.nama} dibuat.`, issued)
   } catch (error) {
@@ -109,6 +111,8 @@ export async function imporAnggota(_previous: AdminFormState, formData: FormData
   }
 
   revalidatePath('/admin/anggota')
+
+  updateTag(TAGS.anggota)
   const made = results.filter((row) => row.password).length
   const message = `${made} dari ${results.length} akun dibuat.`
   return made > 0 ? succeeded(message, results) : { ok: false, message, data: results }
@@ -128,6 +132,7 @@ export async function resetAnggota(_previous: AdminFormState, formData: FormData
   try {
     const result = await resetPassword(row.npm)
     revalidatePath('/admin/anggota')
+    updateTag(TAGS.anggota)
     const issued: IssuedPassword[] = [result]
     return succeeded(`Password ${result.nama} direset.`, issued)
   } catch (error) {
@@ -160,6 +165,7 @@ export async function ubahAnggota(_previous: AdminFormState, formData: FormData)
       role: parsed.data.peran,
     })
     revalidatePath('/admin/anggota')
+    updateTag(TAGS.anggota)
     return succeeded('Tersimpan.')
   } catch (error) {
     return failed(error instanceof Error ? error.message : 'Gagal menyimpan.')
@@ -183,6 +189,7 @@ export async function hapusAnggota(_previous: AdminFormState, formData: FormData
   try {
     await deleteAccount(parsed.data.id)
     revalidatePath('/admin/anggota')
+    updateTag(TAGS.anggota)
     return succeeded(`Akun ${row.nama} dihapus.`)
   } catch (error) {
     return failed(error instanceof Error ? error.message : 'Gagal menghapus.')

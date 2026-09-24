@@ -17,15 +17,16 @@ import { getMemberBySlug, getTentorBySlug, getTentors, getWinnerProfile } from '
 import { pageMetadata } from '@/lib/metadata'
 import { PORTRAIT } from '@/lib/types'
 import type { Socials, Tentor } from '@/lib/types'
-import { snakeCase } from '@/lib/utils'
+import { pad2, snakeCase } from '@/lib/utils'
 
 type TentorPageProps = {
   params: Promise<{ slug: string }>
 }
 
-/** Every tentor is known at build time; any other slug is a 404, not a render. */
-export const dynamicParams = false
-
+/**
+ * Tentors known at build time are prerendered; one added later (a new
+ * account or module assignment) renders on its first visit instead of 404ing.
+ */
 export async function generateStaticParams() {
   const tentors = await getTentors()
   return tentors.map((tentor) => ({ slug: tentor.slug }))
@@ -37,7 +38,9 @@ export async function generateMetadata({ params }: TentorPageProps): Promise<Met
   if (!tentor) return {}
   return pageMetadata({
     title: tentor.nama,
-    description: `${tentor.nama}, tentor angkatan ${tentor.angkatan}. “${tentor.quote}”`,
+    description: tentor.quote
+      ? `${tentor.nama}, tentor KSP. “${tentor.quote}”`
+      : `${tentor.nama}, tentor KSP${tentor.modul.length > 0 ? ` — memegang ${tentor.modul.map((modul) => modul.judul).join(', ')}` : ''}.`,
     path: `/tentor/${tentor.slug}`,
   })
 }
@@ -51,6 +54,12 @@ function neighbours(tentors: readonly Tentor[], slug: string, count: number): Te
   return Array.from({ length: Math.min(count, tentors.length - 1) }, (_, offset) => {
     return tentors[(start + offset + 1) % tentors.length]
   }).filter((tentor): tentor is Tentor => tentor !== undefined)
+}
+
+/** Until an admin writes a bio, say what is known: the person and their modules. */
+function defaultBio(tentor: Tentor): string {
+  const modules = tentor.modul.map((modul) => modul.judul).join(', ')
+  return `${tentor.nama} adalah tentor KSP angkatan ${tentor.angkatan}${modules ? `, penanggung jawab modul ${modules}` : ''}.`
 }
 
 function Label({ id, children }: { id: string; children: string }) {
@@ -73,6 +82,7 @@ export default async function TentorProfilePage({ params }: TentorPageProps) {
   ])
 
   const file = `${snakeCase(tentor.slug)}.c`
+  const snippet = tentor.favoriteSnippet
   const others = neighbours(tentors, tentor.slug, 3)
   const socials = SOCIAL_ORDER.flatMap((network) => {
     const href = tentor.socials[network]
@@ -119,17 +129,21 @@ export default async function TentorProfilePage({ params }: TentorPageProps) {
                 </div>
 
                 <div className="mt-6 border-t-2 border-line-soft pt-5">
-                  <p className="text-[11px] leading-5 text-dim">mata kuliah binaan</p>
-                  <ul className="mt-2 space-y-1 text-sm leading-6 text-fg">
-                    {tentor.mataKuliahBinaan.map((course) => (
-                      <li key={course} className="flex gap-2">
-                        <span aria-hidden className="text-accent-fg">
-                          -
-                        </span>
-                        {course}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="text-[11px] leading-5 text-dim">modul yang dipegang</p>
+                  {tentor.modul.length > 0 ? (
+                    <ul className="mt-2 space-y-1 text-sm leading-6 text-fg">
+                      {tentor.modul.map((modul) => (
+                        <li key={modul.id}>
+                          <Link href={`/modul#minggu-${pad2(modul.minggu)}`} className="flex gap-2 hover:text-accent-fg">
+                            <span className="text-accent-fg tabular-nums">M{pad2(modul.minggu)}</span>
+                            {modul.judul}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-sm leading-6 text-muted">belum ditugaskan ke modul</p>
+                  )}
                 </div>
 
                 {member || winner ? (
@@ -168,15 +182,17 @@ export default async function TentorProfilePage({ params }: TentorPageProps) {
             </div>
 
             <div className="flex min-w-0 flex-col gap-12">
-              <Reveal>
-                <TentorQuote quote={tentor.quote} author={tentor.nama} />
-              </Reveal>
+              {tentor.quote ? (
+                <Reveal>
+                  <TentorQuote quote={tentor.quote} author={tentor.nama} />
+                </Reveal>
+              ) : null}
 
               <Reveal>
                 <section aria-labelledby="tentang">
                   <Label id="tentang">tentang</Label>
                   <p className="mt-4 max-w-prose text-sm leading-7 text-muted sm:text-[15px] sm:leading-8">
-                    {tentor.bio}
+                    {tentor.bio || defaultBio(tentor)}
                   </p>
                 </section>
               </Reveal>
@@ -203,23 +219,25 @@ export default async function TentorProfilePage({ params }: TentorPageProps) {
         </div>
       </section>
 
-      <SectionShell accent="cyan" tone="alt" divider={false} labelledBy="snippet-favorit">
-        <Reveal>
-          <SectionHeader
-            eyebrow="snippet favorit"
-            title={tentor.favoriteSnippet.judul}
-            headingId="snippet-favorit"
-            description={`Potongan kode yang dipilih ${tentor.nama.split(' ')[0] ?? tentor.nama} untuk menjelaskan satu hal sebaik-baiknya.`}
-          />
-        </Reveal>
-        <Reveal className="mt-10 max-w-4xl">
-          <CodeBlock
-            code={tentor.favoriteSnippet.code}
-            filename={`~/tentor/${snakeCase(tentor.slug)}/favorit.c`}
-            caption="Salin, kompilasi dengan gcc -std=c17 -Wall -Wextra, lalu jalankan sendiri."
-          />
-        </Reveal>
-      </SectionShell>
+      {snippet ? (
+        <SectionShell accent="cyan" tone="alt" divider={false} labelledBy="snippet-favorit">
+          <Reveal>
+            <SectionHeader
+              eyebrow="snippet favorit"
+              title={snippet.judul}
+              headingId="snippet-favorit"
+              description={`Potongan kode yang dipilih ${tentor.nama.split(' ')[0] ?? tentor.nama} untuk menjelaskan satu hal sebaik-baiknya.`}
+            />
+          </Reveal>
+          <Reveal className="mt-10 max-w-4xl">
+            <CodeBlock
+              code={snippet.code}
+              filename={`~/tentor/${snakeCase(tentor.slug)}/favorit.c`}
+              caption="Salin, kompilasi dengan gcc -std=c17 -Wall -Wextra, lalu jalankan sendiri."
+            />
+          </Reveal>
+        </SectionShell>
+      ) : null}
 
       {others.length > 0 ? (
         <SectionShell accent="cyan" tone="inverse" labelledBy="tentor-lain">

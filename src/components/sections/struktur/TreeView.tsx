@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
@@ -8,13 +9,14 @@ import { Prompt } from '@/components/ui/Prompt'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 import { countEntries } from '@/lib/org'
-import type { OrgNode } from '@/lib/org'
+import type { OrgBranch, OrgNode } from '@/lib/org'
 import { cn } from '@/lib/utils'
 
 type TreeViewProps = {
   roots: readonly OrgNode[]
   /** The top line, `kelompok-studi-pemrograman`. */
   rootLabel: string
+  branch?: OrgBranch
   onOpen: (slug: string) => void
 }
 
@@ -27,6 +29,7 @@ type RowProps = {
   ancestorsLast: readonly boolean[]
   isLast: boolean
   collapsed: ReadonlySet<string>
+  branch?: OrgBranch
   onToggle: (id: string) => void
   onOpen: (slug: string) => void
 }
@@ -40,9 +43,35 @@ function annotation(node: OrgNode): string {
   return `${who} · ${node.angkatan}`
 }
 
-function TreeRow({ node, ancestorsLast, isLast, collapsed, onToggle, onOpen }: RowProps) {
+/** The branch's people, printed as files in a folder of their own. */
+function BranchRows({ branch, rail }: { branch: OrgBranch; rail: string }) {
+  return (
+    <>
+      {branch.items.map((item, index) => (
+        <li key={item.id} className="flex items-baseline whitespace-pre transition-colors hover:bg-surface-2">
+          <span aria-hidden className="shrink-0 text-dim">
+            {rail + (index === branch.items.length - 1 ? '└── ' : '├── ')}
+          </span>
+          <Link
+            href={`/tentor/${item.slug}`}
+            className="shrink-0 text-fg decoration-accent-fg decoration-2 underline-offset-4 hover:underline"
+          >
+            {item.slug}
+            <span className="sr-only"> — {item.nama}, tentor</span>
+          </Link>
+          <span aria-hidden className="ml-3 min-w-0 truncate text-syn-comment">
+            {`// ${item.modul.join(', ') || 'tentor'}`}
+          </span>
+        </li>
+      ))}
+    </>
+  )
+}
+
+function TreeRow({ node, ancestorsLast, isLast, collapsed, branch, onToggle, onOpen }: RowProps) {
   const reduced = useReducedMotion()
-  const isDirectory = node.children.length > 0
+  const ownBranch = branch && branch.parentId === node.id && branch.items.length > 0 ? branch : undefined
+  const isDirectory = node.children.length > 0 || ownBranch !== undefined
   const expanded = isDirectory && !collapsed.has(node.id)
   const listId = `org-tree-${node.id}`
 
@@ -111,10 +140,17 @@ function TreeRow({ node, ancestorsLast, isLast, collapsed, onToggle, onOpen }: R
                   ancestorsLast={[...ancestorsLast, isLast]}
                   isLast={index === node.children.length - 1}
                   collapsed={collapsed}
+                  branch={branch}
                   onToggle={onToggle}
                   onOpen={onOpen}
                 />
               ))}
+              {ownBranch ? (
+                <BranchRows
+                  branch={ownBranch}
+                  rail={[...ancestorsLast, isLast].map((last) => (last ? '    ' : '│   ')).join('')}
+                />
+              ) : null}
             </motion.ul>
           ) : null}
         </AnimatePresence>
@@ -131,7 +167,7 @@ function TreeRow({ node, ancestorsLast, isLast, collapsed, onToggle, onOpen }: R
  * Height is the one property here animated outside transform and opacity —
  * a fold cannot be expressed any other way. Reduced motion snaps it.
  */
-export function TreeView({ roots, rootLabel, onOpen }: TreeViewProps) {
+export function TreeView({ roots, rootLabel, branch, onOpen }: TreeViewProps) {
   const [collapsed, setCollapsed] = useState<ReadonlySet<string>>(() => new Set())
   const { directories, files } = countEntries(roots)
 
@@ -158,6 +194,7 @@ export function TreeView({ roots, rootLabel, onOpen }: TreeViewProps) {
               ancestorsLast={[]}
               isLast={index === roots.length - 1}
               collapsed={collapsed}
+              branch={branch}
               onToggle={toggle}
               onOpen={onOpen}
             />
@@ -166,7 +203,8 @@ export function TreeView({ roots, rootLabel, onOpen }: TreeViewProps) {
       </div>
 
       <p className="mt-5 text-[11px] leading-6 text-dim">
-        {directories} directories, {files} files
+        {/* The branch turns its parent from a file into a directory of tentors. */}
+        {directories + (branch ? 1 : 0)} directories, {files + (branch ? branch.items.length - 1 : 0)} files
       </p>
     </TerminalWindow>
   )

@@ -24,7 +24,7 @@ export const TOPIK = [
 ] as const
 export type Topik = (typeof TOPIK)[number]
 
-export const DIVISI = ['inti', 'akademik', 'media', 'acara'] as const
+export const DIVISI = ['inti', 'kominfo', 'usda'] as const
 export type Divisi = (typeof DIVISI)[number]
 
 export const KATEGORI_BERITA = ['pengumuman', 'liputan', 'tutorial', 'prestasi'] as const
@@ -77,19 +77,39 @@ export type Snippet = {
   code: string
 }
 
+/** A module a tentor is in charge of. */
+export type TentorModul = {
+  id: string
+  minggu: number
+  judul: string
+}
+
+/**
+ * A tentor as the site shows them. Who counts as a tentor comes from the
+ * accounts (role `tentor`, or assigned to a module); everything past the name
+ * is optional and filled in from the admin panel, so empty strings and lists
+ * are normal and every page hides what is missing.
+ */
 export type Tentor = {
+  /** The account's profile id. */
   id: string
   nama: string
   slug: string
+  /** A photo URL, or a generated pixel portrait until one is uploaded. */
   foto: string
+  /** True when `foto` is a real photo rather than the generated stand-in. */
+  punyaFoto: boolean
   keahlian: string[]
-  mataKuliahBinaan: string[]
+  /** Modules they are assigned to, in course order. */
+  modul: TentorModul[]
   angkatan: number
   quote: string
   bio: string
   pengalaman: Pengalaman[]
   socials: Socials
-  favoriteSnippet: Snippet
+  favoriteSnippet: Snippet | null
+  /** Shown on the public site. Hidden profiles only appear in the admin panel. */
+  tampil: boolean
 }
 
 export type SampleIO = {

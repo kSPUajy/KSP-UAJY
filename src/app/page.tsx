@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { AboutSection } from '@/components/sections/home/AboutSection'
 import { ChallengeSection } from '@/components/sections/home/ChallengeSection'
 import { GalleryStrip } from '@/components/sections/home/GalleryStrip'
 import { Hero } from '@/components/sections/home/Hero'
@@ -16,6 +17,7 @@ import {
   getGalleryItems,
   getJoinInfo,
   getLatestWinner,
+  getMembers,
   getTimeline,
   getNewsPosts,
   getRegistration,
@@ -44,7 +46,7 @@ export const revalidate = 3600
 const GALLERY_FRAMES = 6
 
 export default async function HomePage() {
-  const [stats, driftTokens, tickerTokens, current, tentors, posts, gallery, joinInfo, lastWinner, registration, schedule] =
+  const [stats, driftTokens, tickerTokens, current, tentors, posts, gallery, joinInfo, lastWinner, registration, schedule, pengurus] =
     await Promise.all([
       getStats(),
       getDriftTokens(),
@@ -57,6 +59,7 @@ export default async function HomePage() {
       getLatestWinner(),
       getRegistration(),
       getTimeline(),
+      getMembers(),
     ])
 
   const [currentBody, currentWinner, lastWinnerChallenge] = await Promise.all([
@@ -76,8 +79,10 @@ export default async function HomePage() {
       />
       <Marquee items={tickerTokens} accent="magenta" />
 
+      <AboutSection index={1} pengurus={pengurus.filter((member) => member.divisi === 'inti')} />
+
       <ChallengeSection
-        index={1}
+        index={2}
         current={current}
         teaser={currentBody ? mdxExcerpt(currentBody.deskripsiMdx) : ''}
         currentWinner={currentWinner}
@@ -87,10 +92,10 @@ export default async function HomePage() {
             : null
         }
       />
-      <TentorTeaser index={2} tentors={tentors} />
-      <NewsSection index={3} posts={posts} />
-      <GalleryStrip index={4} items={gallery.slice(0, GALLERY_FRAMES)} />
-      <JoinCta index={5} info={joinInfo} registration={registration} />
+      <TentorTeaser index={3} tentors={tentors} />
+      <NewsSection index={4} posts={posts} />
+      <GalleryStrip index={5} items={gallery.slice(0, GALLERY_FRAMES)} />
+      <JoinCta index={6} info={joinInfo} registration={registration} />
     </>
   )
 }

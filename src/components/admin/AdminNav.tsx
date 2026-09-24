@@ -9,6 +9,7 @@ export const ADMIN_SECTIONS = [
   { href: '/admin', label: 'ringkasan' },
   { href: '/admin/anggota', label: 'anggota' },
   { href: '/admin/modul', label: 'modul' },
+  { href: '/admin/tentor', label: 'tentor' },
   { href: '/admin/berita', label: 'berita' },
   { href: '/admin/challenge', label: 'challenge' },
   { href: '/admin/pendaftaran', label: 'pendaftaran' },

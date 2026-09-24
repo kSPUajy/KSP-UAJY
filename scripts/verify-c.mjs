@@ -3,27 +3,23 @@
  *
  *   node scripts/verify-c.mjs
  *
- * Two things are checked:
+ * Every winning solution in `src/content/solutions/` compiles cleanly under
+ * `-std=c17 -Wall -Wextra -Werror`, and for each of its challenge's sample
+ * I/O pairs produces exactly the output written in `src/lib/data/challenges.ts`.
+ * (Tentor snippets now live in the database, edited from the admin panel.)
  *
- *   1. Every tentor snippet in `src/content/snippets/` compiles cleanly under
- *      `-std=c17 -Wall -Wextra -Werror` and runs to exit code 0.
- *   2. Every winning solution in `src/content/solutions/` compiles the same
- *      way, and for each of its challenge's sample I/O pairs, produces exactly
- *      the output written in `src/lib/data/challenges.ts`.
- *
- * The point of (2) is that the sample I/O on the site cannot quietly drift
+ * The point is that the sample I/O on the site cannot quietly drift
  * away from the code shown next to it — if they disagree, this fails.
  */
 
 import { execFile, execFileSync } from 'node:child_process'
-import { mkdtemp, readFile, readdir, rm } from 'node:fs/promises'
+import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const SNIPPETS = path.join(ROOT, 'src/content/snippets')
 const SOLUTIONS = path.join(ROOT, 'src/content/solutions')
 const CHALLENGES_TS = path.join(ROOT, 'src/lib/data/challenges.ts')
 
@@ -134,29 +130,6 @@ async function main() {
 
   console.log(dim(`compiler: ${cc} ${CFLAGS.join(' ')}`))
   console.log(dim(`workdir : ${work}\n`))
-
-  // ---- 1. Tentor snippets ------------------------------------------------
-  console.log('snippet tentor')
-  const snippetFiles = (await readdir(SNIPPETS)).filter((f) => f.endsWith('.c')).sort()
-
-  for (const file of snippetFiles) {
-    const name = path.basename(file, '.c')
-    const built = await compile(cc, path.join(SNIPPETS, file), exe(`snip-${name}`))
-    if (!built.ok) {
-      failures += 1
-      console.log(`  ${red('GAGAL KOMPILASI')} ${name}\n${built.stderr}`)
-      continue
-    }
-    compiled += 1
-
-    const ran = await run(exe(`snip-${name}`), work)
-    if (!ran.ok) {
-      failures += 1
-      console.log(`  ${red('GAGAL JALAN')} ${name} — ${ran.reason}`)
-      continue
-    }
-    console.log(`  ${green('ok')} ${name}`)
-  }
 
   // ---- 2. Winning solutions against their sample I/O ---------------------
   console.log('\nsolusi pemenang vs sample I/O')

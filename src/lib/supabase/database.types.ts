@@ -333,6 +333,56 @@ export type Database = {
           },
         ]
       }
+      tentor_profiles: {
+        Row: {
+          bio: string
+          foto: string | null
+          keahlian: string[]
+          pengalaman: Json
+          profile_id: string
+          quote: string
+          snippet_code: string | null
+          snippet_judul: string | null
+          socials: Json
+          tampil: boolean
+          updated_at: string
+        }
+        Insert: {
+          bio?: string
+          foto?: string | null
+          keahlian?: string[]
+          pengalaman?: Json
+          profile_id: string
+          quote?: string
+          snippet_code?: string | null
+          snippet_judul?: string | null
+          socials?: Json
+          tampil?: boolean
+          updated_at?: string
+        }
+        Update: {
+          bio?: string
+          foto?: string | null
+          keahlian?: string[]
+          pengalaman?: Json
+          profile_id?: string
+          quote?: string
+          snippet_code?: string | null
+          snippet_judul?: string | null
+          socials?: Json
+          tampil?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tentor_profiles_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       winners: {
         Row: {
           angkatan: number

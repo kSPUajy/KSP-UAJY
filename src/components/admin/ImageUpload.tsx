@@ -9,7 +9,7 @@ import { mulaiUploadGambar } from '@/app/admin/shared-actions'
  * Uploads a JPG/PNG/WebP straight to the public `media` bucket and hands the
  * public URL back, to fill a link field in the form around it.
  */
-export function ImageUpload({ folder, onUploaded }: { folder: 'berita' | 'pemenang'; onUploaded: (url: string) => void }) {
+export function ImageUpload({ folder, onUploaded }: { folder: 'berita' | 'pemenang' | 'tentor'; onUploaded: (url: string) => void }) {
   const id = useId()
   const [status, setStatus] = useState('')
 

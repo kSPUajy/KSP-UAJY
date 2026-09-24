@@ -416,6 +416,21 @@
   animation-play-state: paused;
 }
 
+/* Tentor carousel: the marquee loop, slower, with the edges fading out so
+   cards slide in from nowhere instead of being cut by a hard line. */
+.carousel {
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.carousel-track {
+  animation: ksp-marquee var(--carousel-duration, 60s) linear infinite;
+}
+
+.carousel:hover .carousel-track,
+.carousel:focus-within .carousel-track {
+  animation-play-state: paused;
+}
+
 /* Build-log bar and skeletons. Both are functional rather than decorative,
    so reduced motion swaps them for a pulse instead of stopping them dead. */
 @keyframes ksp-build-bar {
@@ -533,6 +548,7 @@ html[data-crt="on"] .crt-flicker-beam {
   html { scroll-behavior: auto; }
 
   .marquee-track,
+  .carousel-track,
   .drift-field > span,
   .crt-flicker,
   .crt-flicker-beam,
@@ -544,6 +560,10 @@ html[data-crt="on"] .crt-flicker-beam {
   .press-pop {
     transition: none;
   }
+
+  /* No loop: the carousel becomes a plain swipeable row, one copy only. */
+  .carousel { overflow-x: auto; mask-image: none; }
+  .carousel [data-clone] { display: none; }
 
   .press-in:hover,
   .press-in:active,

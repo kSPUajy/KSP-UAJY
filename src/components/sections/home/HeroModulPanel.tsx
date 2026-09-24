@@ -49,9 +49,9 @@ export function HeroModulPanel({ entries }: HeroModulPanelProps) {
 
   return (
     <TerminalWindow title="~/modul/jadwal.log" tone="code" bodyClassName="p-0">
-      <div className="flex items-baseline justify-between gap-3 border-b-2 border-line-soft px-4 py-3">
-        <h2 className="font-display text-[10px] tracking-[0.16em] text-accent-fg uppercase">{'// jadwal kelas'}</h2>
-        <p className="text-[11px] text-dim tabular-nums">{summary}</p>
+      <div className="flex items-baseline justify-between gap-3 border-b-2 border-line-soft px-5 py-3.5">
+        <h2 className="font-display text-[11px] tracking-[0.16em] text-accent-fg uppercase">{'// jadwal kelas'}</h2>
+        <p className="text-xs text-dim tabular-nums">{summary}</p>
       </div>
 
       <ol aria-label="Timeline modul" className="py-1.5">
@@ -66,8 +66,8 @@ export function HeroModulPanel({ entries }: HeroModulPanelProps) {
                 href={sesi ? `/modul#${entry.id}` : `/modul#minggu-${pad2(entry.minggu)}`}
                 aria-current={isCurrent ? 'step' : undefined}
                 className={cn(
-                  'group grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-baseline gap-x-2.5 px-4 text-[12px] leading-5 transition-colors',
-                  isCurrent ? 'my-1 border-y-2 border-accent bg-surface-2 py-2.5' : 'py-1 hover:bg-surface-2',
+                  'group grid grid-cols-[auto_auto_minmax(0,1fr)_auto] items-baseline gap-x-3 px-5 text-[13px] leading-6 transition-colors xl:text-sm',
+                  isCurrent ? 'my-1 border-y-2 border-accent bg-surface-2 py-3' : 'py-1.5 hover:bg-surface-2',
                 )}
               >
                 <span aria-hidden className={isCurrent ? 'text-accent-fg' : 'text-dim'}>
@@ -87,7 +87,7 @@ export function HeroModulPanel({ entries }: HeroModulPanelProps) {
                     {entry.judul}
                   </span>
                   {isCurrent ? (
-                    <span className="mt-1 block text-[11px] text-muted lg:truncate">
+                    <span className="mt-1 block text-xs text-muted lg:truncate">
                       {sesi ? `pj: ${entry.pj || '—'} · tanpa tugas` : `tentor pj: ${entry.tentorPj.join(', ')}`}
                     </span>
                   ) : null}
@@ -95,7 +95,7 @@ export function HeroModulPanel({ entries }: HeroModulPanelProps) {
                     {`${sesi ? ' — sesi tanpa modul' : ''} — ${STATUS_TEXT[entry.status]}${locked ? `, dibuka ${modulRelease(entry)}` : ''}`}
                   </span>
                 </span>
-                <span aria-hidden className="text-[11px] text-dim tabular-nums">
+                <span aria-hidden className="text-xs text-dim tabular-nums">
                   {isCurrent ? 'minggu ini' : shortDate(entry.rilis)}
                 </span>
               </Link>
@@ -104,8 +104,8 @@ export function HeroModulPanel({ entries }: HeroModulPanelProps) {
         })}
       </ol>
 
-      <div className="border-t-2 border-line-soft px-4 py-3">
-        <Link href="/modul" className="text-[11px] text-accent-fg hover:underline">
+      <div className="border-t-2 border-line-soft px-5 py-3.5">
+        <Link href="/modul" className="text-xs text-accent-fg hover:underline">
           buka timeline lengkap <span aria-hidden>-&gt;</span>
         </Link>
       </div>

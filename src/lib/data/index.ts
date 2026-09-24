@@ -1,14 +1,13 @@
 import 'server-only'
 
-import { readTentorSnippet } from '@/lib/data/content'
 import { aboutInfo } from '@/lib/data/tentang'
 import { joinInfo } from '@/lib/data/gabung'
 import { galleryItems } from '@/lib/data/gallery'
 import { members } from '@/lib/data/members'
 import { driftTokens, tickerTokens } from '@/lib/data/motifs'
-import { statsSource } from '@/lib/data/stats'
-import { tentorSources } from '@/lib/data/tentors'
-import { addDays, deadlineToMs } from '@/lib/format'
+import { addDays, deadlineToMs, slugify } from '@/lib/format'
+import { pixelPortrait } from '@/lib/pixel-portrait'
+import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { TAGS, publicDb } from '@/lib/supabase/public'
 import {
   CHALLENGE_META_COLUMNS,
@@ -40,7 +39,10 @@ import type {
   RegistrationStatus,
   SesiWithStatus,
   SiteStats,
+  Pengalaman,
+  Socials,
   Tentor,
+  TentorModul,
   TimelineEntry,
   Winner,
   WinnerProfile,
@@ -76,23 +78,106 @@ export async function getMemberTree(): Promise<MemberNode[]> {
 
 // ----------------------------------------------------------------- tentor ---
 
-async function hydrateTentor(source: (typeof tentorSources)[number]): Promise<Tentor> {
-  return {
-    ...source,
-    favoriteSnippet: {
-      judul: source.favoriteSnippet.judul,
-      code: await readTentorSnippet(source.slug),
-    },
-  }
+type TentorQuery = {
+  /** Include profiles an admin has hidden (the admin panel wants them). */
+  semua?: boolean
 }
 
-export async function getTentors(): Promise<Tentor[]> {
-  return Promise.all(tentorSources.map(hydrateTentor))
+const asString = (value: unknown): string => (typeof value === 'string' ? value : '')
+
+function toPengalaman(value: unknown): Pengalaman[] {
+  if (!Array.isArray(value)) return []
+  return value.flatMap((item) => {
+    const row = (item ?? {}) as Record<string, unknown>
+    const judul = asString(row.judul)
+    return judul ? [{ tahun: asString(row.tahun), judul, deskripsi: asString(row.deskripsi) }] : []
+  })
+}
+
+function toSocials(value: unknown): Socials {
+  const row = (value ?? {}) as Record<string, unknown>
+  const socials: Socials = {}
+  for (const network of ['github', 'linkedin', 'instagram'] as const) {
+    const href = asString(row[network])
+    if (href.startsWith('https://')) socials[network] = href
+  }
+  return socials
+}
+
+/**
+ * Every tentor, straight from the accounts: anyone with the `tentor` role or
+ * assigned to a module. Their public extras (photo, bio, …) come from
+ * `tentor_profiles` when an admin has filled them in.
+ *
+ * Profiles are not public, so this reads with the secret key — and returns
+ * only what the site shows. Cached under `tentor`, `anggota` and `modul`, so
+ * editing a profile, an account or a module assignment refreshes it.
+ *
+ * Ordered by the first module each tentor holds, so the carousel reads in
+ * course order; anyone without a module yet comes last.
+ */
+export async function getTentors({ semua = false }: TentorQuery = {}): Promise<Tentor[]> {
+  const db = createSupabaseAdmin(TAGS.tentor, TAGS.anggota, TAGS.modul)
+  const [accounts, assignments, extras, modules] = await Promise.all([
+    db.from('profiles').select('id, nama, angkatan, role').neq('role', 'anggota'),
+    db.from('module_tentors').select('module_id, profile_id'),
+    db.from('tentor_profiles').select('*'),
+    getModules(),
+  ])
+  for (const result of [accounts, assignments, extras]) {
+    if (result.error) throw new Error(`Gagal membaca tentor: ${result.error.message}`)
+  }
+
+  const moduleById = new Map(modules.map((modul) => [modul.id, modul]))
+  const modulesOf = new Map<string, TentorModul[]>()
+  for (const row of assignments.data ?? []) {
+    const modul = moduleById.get(row.module_id)
+    if (!modul) continue
+    const list = modulesOf.get(row.profile_id) ?? []
+    list.push({ id: modul.id, minggu: modul.minggu, judul: modul.judul })
+    modulesOf.set(row.profile_id, list)
+  }
+  const extraOf = new Map((extras.data ?? []).map((row) => [row.profile_id, row]))
+
+  const usedSlugs = new Set<string>()
+  const tentors = (accounts.data ?? [])
+    .filter((account) => account.role === 'tentor' || modulesOf.has(account.id))
+    .sort((a, b) => a.nama.localeCompare(b.nama, 'id'))
+    .map((account): Tentor => {
+      const extra = extraOf.get(account.id)
+      // Two people with the same name still get distinct URLs.
+      const base = slugify(account.nama) || account.id.slice(0, 8)
+      let slug = base
+      for (let n = 2; usedSlugs.has(slug); n += 1) slug = `${base}-${n}`
+      usedSlugs.add(slug)
+
+      const snippetCode = extra?.snippet_code?.trim() ?? ''
+      return {
+        id: account.id,
+        nama: account.nama,
+        slug,
+        foto: extra?.foto || pixelPortrait(account.nama),
+        punyaFoto: Boolean(extra?.foto),
+        keahlian: extra?.keahlian ?? [],
+        modul: (modulesOf.get(account.id) ?? []).sort((a, b) => a.minggu - b.minggu),
+        angkatan: account.angkatan ?? 0,
+        quote: extra?.quote ?? '',
+        bio: extra?.bio ?? '',
+        pengalaman: toPengalaman(extra?.pengalaman),
+        socials: toSocials(extra?.socials),
+        favoriteSnippet: snippetCode ? { judul: extra?.snippet_judul?.trim() || 'Snippet favorit', code: snippetCode } : null,
+        tampil: extra?.tampil ?? true,
+      }
+    })
+    .filter((tentor) => semua || tentor.tampil)
+
+  const firstWeek = (tentor: Tentor): number => tentor.modul[0]?.minggu ?? Number.POSITIVE_INFINITY
+  return tentors.sort((a, b) => firstWeek(a) - firstWeek(b) || a.nama.localeCompare(b.nama, 'id'))
 }
 
 export async function getTentorBySlug(slug: string): Promise<Tentor | null> {
-  const source = tentorSources.find((tentor) => tentor.slug === slug)
-  return source ? hydrateTentor(source) : null
+  const tentors = await getTentors()
+  return tentors.find((tentor) => tentor.slug === slug) ?? null
 }
 
 // -------------------------------------------------------------- challenge ---
@@ -272,13 +357,33 @@ export async function getGalleryItems(): Promise<GalleryItem[]> {
 
 // ------------------------------------------------------------------ stats ---
 
+/**
+ * Live figures from the database, so the strip always agrees with the admin
+ * panel: members are `anggota` accounts, tentors are everyone assigned to at
+ * least one module (pengurus harian who also teach included), and
+ * submissions count both guided tasks and challenge entries.
+ *
+ * Counts need the secret key (profiles are not public), but only numbers
+ * leave this function. Cached under `anggota`/`modul`/`challenge`, and at
+ * most an hour stale for new guided submissions.
+ */
 export async function getStats(): Promise<SiteStats> {
-  const challenges = await getChallenges()
+  const db = createSupabaseAdmin(TAGS.anggota, TAGS.modul, TAGS.challenge)
+  const [challenges, members, tentors, tugas] = await Promise.all([
+    getChallenges(),
+    db.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'anggota'),
+    db.from('module_tentors').select('profile_id'),
+    db.from('submissions').select('id', { count: 'exact', head: true }),
+  ])
+  for (const result of [members, tentors, tugas]) {
+    if (result.error) throw new Error(`Gagal membaca statistik: ${result.error.message}`)
+  }
+
   return {
-    anggota: statsSource.anggotaAktif,
-    tentorAktif: tentorSources.length,
+    anggota: members.count ?? 0,
+    tentorAktif: new Set((tentors.data ?? []).map((row) => row.profile_id)).size,
     challengeTerbit: challenges.length,
-    totalSubmission: challenges.reduce((total, challenge) => total + challenge.totalPeserta, 0),
+    totalSubmission: (tugas.count ?? 0) + challenges.reduce((total, challenge) => total + challenge.totalPeserta, 0),
   }
 }
 

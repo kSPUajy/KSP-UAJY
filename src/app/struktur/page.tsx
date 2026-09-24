@@ -9,11 +9,13 @@ import { getMemberTree, getMembers, getTentors, getWinnerProfiles } from '@/lib/
 import { slugify } from '@/lib/format'
 import { pageMetadata } from '@/lib/metadata'
 import { buildOrgTree } from '@/lib/org'
+import type { OrgBranch } from '@/lib/org'
+import { pad2 } from '@/lib/utils'
 import { siteConfig } from '@/site.config'
 
 export const metadata: Metadata = pageMetadata({
   title: 'Struktur',
-  description: `Struktur organisasi ${siteConfig.name} ${siteConfig.campus.short}: pengurus inti dan divisi akademik, media, serta acara.`,
+  description: `Struktur organisasi ${siteConfig.name} ${siteConfig.campus.short}: pengurus harian serta divisi kominfo dan USDA.`,
   path: '/struktur',
 })
 
@@ -31,6 +33,23 @@ export default async function StrukturPage() {
   })
   const [root] = roots
 
+  // The tentors hang off whoever coordinates them.
+  const coordinator = members.find((member) => /^koordinator tentor$/i.test(member.jabatan))
+  const branch: OrgBranch | undefined =
+    coordinator && tentors.length > 0
+      ? {
+          parentId: coordinator.id,
+          label: 'tentor',
+          items: tentors.map((tentor) => ({
+            id: tentor.id,
+            nama: tentor.nama,
+            slug: tentor.slug,
+            foto: tentor.foto,
+            modul: tentor.modul.map((modul) => `M${pad2(modul.minggu)}`),
+          })),
+        }
+      : undefined
+
   const years = members.map((member) => member.angkatan)
   // Every report of the root outside its own division heads a division.
   const divisions = root ? root.children.filter((child) => child.divisi !== root.divisi) : []
@@ -44,15 +63,22 @@ export default async function StrukturPage() {
         title="Siapa mengurus apa"
         description={
           members.length > 0
-            ? `${members.length} orang yang menjaga kelas, challenge, dan dokumentasi tetap jalan tiap minggu. Pilih siapa pun untuk membuka detailnya — atau ganti tampilan ke tree kalau lebih suka membaca daftar.`
+            ? `${members.length} pengurus — pengurus harian, kominfo, dan USDA — yang menjaga kelas, publikasi, dan kegiatan tetap jalan tiap minggu. Pilih siapa pun untuk membuka detailnya — atau ganti tampilan ke tree kalau lebih suka membaca daftar.`
             : undefined
         }
         facts={
           members.length > 0
             ? [
                 { label: 'pengurus', value: members.length },
-                { label: 'divisi', value: divisions.length },
-                { label: 'angkatan', value: `${Math.min(...years)}..${Math.max(...years)}` },
+                ...(tentors.length > 0 ? [{ label: 'tentor', value: tentors.length }] : []),
+                ...(divisions.length > 0 ? [{ label: 'divisi', value: divisions.length }] : []),
+                {
+                  label: 'angkatan',
+                  value:
+                    Math.min(...years) === Math.max(...years)
+                      ? Math.min(...years)
+                      : `${Math.min(...years)}..${Math.max(...years)}`,
+                },
               ]
             : undefined
         }
@@ -60,7 +86,7 @@ export default async function StrukturPage() {
 
       <SectionShell accent="violet" tone="tint" divider={false}>
         {root ? (
-          <StrukturExplorer roots={roots} rootLabel={slugify(siteConfig.name)} />
+          <StrukturExplorer roots={roots} rootLabel={slugify(siteConfig.name)} branch={branch} />
         ) : (
           <EmptyState
             accent="violet"

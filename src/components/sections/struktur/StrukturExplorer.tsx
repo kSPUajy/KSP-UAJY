@@ -14,11 +14,13 @@ import {
   useLocationHash,
 } from '@/lib/hooks/useLocationHash'
 import { indexOrg } from '@/lib/org'
-import type { OrgEntry, OrgNode } from '@/lib/org'
+import type { OrgBranch, OrgEntry, OrgNode } from '@/lib/org'
 
 type StrukturExplorerProps = {
   roots: OrgNode[]
   rootLabel: string
+  /** The tentors under the Koordinator Tentor, if there are any. */
+  branch?: OrgBranch
 }
 
 const DETAIL_HEADING = 'anggota-detail'
@@ -36,7 +38,7 @@ const DETAIL_HEADING = 'anggota-detail'
  * people. Closing pops the entry it pushed — or, if the page was opened on a
  * fragment in the first place, clears it without leaving the page.
  */
-export function StrukturExplorer({ roots, rootLabel }: StrukturExplorerProps) {
+export function StrukturExplorer({ roots, rootLabel, branch }: StrukturExplorerProps) {
   const fragment = useLocationHash()
   const index = useMemo(() => indexOrg(roots), [roots])
   const entry = index.get(fragment) ?? null
@@ -80,13 +82,13 @@ export function StrukturExplorer({ roots, rootLabel }: StrukturExplorerProps) {
             id: 'tree',
             prefix: '--view=',
             label: 'tree',
-            content: <TreeView roots={roots} rootLabel={rootLabel} onOpen={open} />,
+            content: <TreeView roots={roots} rootLabel={rootLabel} branch={branch} onOpen={open} />,
           },
           {
             id: 'struct',
             prefix: '--view=',
             label: 'struct',
-            content: <OrgChart root={root} onOpen={open} />,
+            content: <OrgChart root={root} branch={branch} onOpen={open} />,
           },
         ]}
       />

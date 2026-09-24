@@ -9,7 +9,7 @@ import { createSupabaseAdmin } from '@/lib/supabase/admin'
 
 const IMAGE_MAX = 3 * 1024 * 1024
 const IMAGE_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' } as const
-const FOLDERS = ['berita', 'pemenang'] as const
+const FOLDERS = ['berita', 'pemenang', 'tentor'] as const
 
 /**
  * Renders MDX exactly as the public pages will — same pipeline, same

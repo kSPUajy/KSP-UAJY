@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { Reveal, Stagger, StaggerItem } from '@/components/motion/Reveal'
-import { CourseIndex } from '@/components/sections/tentor/CourseIndex'
+import { ModulIndex } from '@/components/sections/tentor/ModulIndex'
 import { TentorCard } from '@/components/sections/tentor/TentorCard'
 import { ButtonLink } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
@@ -14,7 +14,7 @@ import { siteConfig } from '@/site.config'
 
 export const metadata: Metadata = pageMetadata({
   title: 'Tentor',
-  description: `Tentor ${siteConfig.name} ${siteConfig.campus.short}: mahasiswa yang memegang kelas C, mendampingi peserta, dan menulis soal challenge mingguan.`,
+  description: `Tentor ${siteConfig.name} ${siteConfig.campus.short}: mahasiswa yang memegang modul C tiap minggu, mendampingi peserta, dan menilai tugas guided.`,
   path: '/tentor',
 })
 
@@ -23,7 +23,7 @@ const CARD_SIZES = '(min-width: 1440px) 330px, (min-width: 1024px) 23vw, (min-wi
 export default async function TentorPage() {
   const tentors = await getTentors()
   const years = tentors.map((tentor) => tentor.angkatan)
-  const courses = new Set(tentors.flatMap((tentor) => tentor.mataKuliahBinaan))
+  const modules = new Set(tentors.flatMap((tentor) => tentor.modul.map((modul) => modul.id)))
 
   return (
     <>
@@ -34,15 +34,18 @@ export default async function TentorPage() {
         title="Belajar dari kakak tingkat"
         description={
           tentors.length > 0
-            ? `${tentors.length} tentor aktif, angkatan ${Math.min(...years)} sampai ${Math.max(...years)}. Semuanya pernah duduk di kursi yang sama — sekarang mereka yang memegang kelas, mendampingi peserta, dan menulis soal challenge.`
+            ? `${tentors.length} tentor aktif. Semuanya pernah duduk di kursi yang sama — sekarang mereka yang memegang kelas tiap minggu, mendampingi peserta, dan menilai tugas guided.`
             : undefined
         }
         facts={
           tentors.length > 0
             ? [
                 { label: 'tentor', value: tentors.length },
-                { label: 'mata_kuliah', value: courses.size },
-                { label: 'angkatan', value: `${Math.min(...years)}..${Math.max(...years)}` },
+                { label: 'modul', value: modules.size },
+                {
+                  label: 'angkatan',
+                  value: Math.min(...years) === Math.max(...years) ? Math.min(...years) : `${Math.min(...years)}..${Math.max(...years)}`,
+                },
               ]
             : undefined
         }
@@ -74,17 +77,17 @@ export default async function TentorPage() {
       </SectionShell>
 
       {tentors.length > 0 ? (
-        <SectionShell accent="cyan" tone="inverse" labelledBy="per-mata-kuliah">
+        <SectionShell accent="cyan" tone="inverse" labelledBy="per-modul">
           <Reveal>
             <SectionHeader
-              eyebrow="per mata kuliah"
-              title="Nyangkut di satu mata kuliah?"
-              headingId="per-mata-kuliah"
-              description="Setiap tentor memegang mata kuliah binaan. Cari mata kuliahmu, lalu buka profil tentornya."
+              eyebrow="per modul"
+              title="Nyangkut di satu modul?"
+              headingId="per-modul"
+              description="Setiap modul dipegang tentor penanggung jawab. Cari modulnya, lalu buka profil tentornya."
             />
           </Reveal>
           <Reveal className="mt-10">
-            <CourseIndex tentors={tentors} />
+            <ModulIndex tentors={tentors} />
           </Reveal>
         </SectionShell>
       ) : null}

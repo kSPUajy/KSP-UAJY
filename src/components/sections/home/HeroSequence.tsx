@@ -114,7 +114,7 @@ export function HeroSequence({
 
   return (
     <motion.div initial="hidden" animate={enterLabel(mode)} className="flex flex-1 flex-col">
-      <div className="relative grid flex-1 grid-cols-1 items-center gap-10 px-4 py-8 sm:px-8 sm:py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-12 lg:py-12 lg:pr-12 lg:pl-8 xl:grid-cols-[minmax(0,1fr)_minmax(0,27rem)]">
+      <div className="relative grid flex-1 grid-cols-1 items-center gap-10 px-4 py-8 sm:px-8 sm:py-10 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-16 lg:py-12 lg:pr-10 lg:pl-8 xl:gap-32">
         {backdrop}
 
         <div className="relative flex min-w-0 flex-col justify-center">
@@ -167,7 +167,7 @@ export function HeroSequence({
         </div>
 
         {aside ? (
-          <motion.div data-seq custom={timeline.aside} variants={beat} className="relative min-w-0">
+          <motion.div data-seq custom={timeline.aside} variants={beat} className="relative w-full min-w-0 lg:max-w-[42rem]">
             {aside}
           </motion.div>
         ) : null}

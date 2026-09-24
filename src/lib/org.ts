@@ -70,6 +70,28 @@ export function buildOrgTree(roots: readonly MemberNode[], links: OrgLinks): Org
   return roots.map((root) => visit(root, null, roots))
 }
 
+/** One tentor as the chart lists them: a line, not a card. */
+export type OrgBranchItem = {
+  id: string
+  nama: string
+  slug: string
+  foto: string
+  /** `M03` labels of the modules they hold. */
+  modul: string[]
+}
+
+/**
+ * People who hang off one member without being pengurus themselves — the
+ * tentors under the Koordinator Tentor. Drawn as their own column beside the
+ * pengurus harian, joined to that member by a single line.
+ */
+export type OrgBranch = {
+  /** The member the branch hangs off. */
+  parentId: string
+  label: string
+  items: OrgBranchItem[]
+}
+
 export type OrgEntry = {
   node: OrgNode
   parent: OrgNode | null
@@ -112,6 +134,8 @@ export type OrgChartItem = {
 export type OrgChartGroup = {
   key: string
   label: string
+  /** False when the card itself already says it (a column of one, named by its role). */
+  showLabel?: boolean
   items: OrgChartItem[]
 }
 
@@ -129,11 +153,23 @@ export function chartGroups(root: OrgNode): OrgChartGroup[] {
   const staff = root.children.filter((child) => child.divisi === root.divisi)
   const heads = root.children.filter((child) => child.divisi !== root.divisi)
 
+  // No divisions and nobody under the staff: a flat team. Each person gets a
+  // column of their own, so they sit in one row under the root instead of a
+  // single tall stack.
+  if (heads.length === 0 && staff.every((member) => member.children.length === 0)) {
+    return staff.map((member) => ({
+      key: member.id,
+      label: member.jabatan.toLowerCase(),
+      showLabel: false,
+      items: [{ node: member, depth: 0 }],
+    }))
+  }
+
   const groups: OrgChartGroup[] = []
   if (staff.length > 0) {
     groups.push({
       key: `staf-${root.divisi}`,
-      label: `pengurus ${root.divisi}`,
+      label: root.divisi === 'inti' ? 'pengurus harian' : `pengurus ${root.divisi}`,
       items: staff.flatMap((member) => flatten(member, 0)),
     })
   }

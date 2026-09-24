@@ -22,6 +22,6 @@ export default async function Image({ params }: { params: Promise<{ slug: string
     command: `cat ${file}`,
     eyebrow: tentor ? `tentor · angkatan ${tentor.angkatan}` : 'tentor',
     title: tentor?.nama ?? 'Tentor',
-    subtitle: tentor ? tentor.keahlian.slice(0, 3).join(' · ') : undefined,
+    subtitle: tentor?.modul.length ? tentor.modul.map((modul) => modul.judul).join(' · ') : undefined,
   })
 }

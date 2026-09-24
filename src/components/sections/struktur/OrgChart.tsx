@@ -6,11 +6,14 @@ import { motion, useInView } from 'motion/react'
 import { INSTANT, REVEAL_VIEWPORT, mech } from '@/components/motion/variants'
 import { StructCard } from '@/components/sections/struktur/StructCard'
 import { useMotionMode } from '@/lib/hooks/useReducedMotion'
+import { OrgBranchColumn } from '@/components/sections/struktur/OrgBranchColumn'
 import { chartGroups } from '@/lib/org'
-import type { OrgNode } from '@/lib/org'
+import type { OrgBranch, OrgNode } from '@/lib/org'
 
 type OrgChartProps = {
   root: OrgNode
+  /** Drawn as a column right after the pengurus harian, wired to its parent. */
+  branch?: OrgBranch
   onOpen: (slug: string) => void
 }
 
@@ -23,6 +26,7 @@ type Connector = {
 
 type Box = {
   left: number
+  right: number
   top: number
   bottom: number
   cx: number
@@ -55,6 +59,7 @@ function measure(container: HTMLElement): Connector[] {
     const rect = element.getBoundingClientRect()
     return {
       left: round(rect.left - origin.left),
+      right: round(rect.right - origin.left),
       top: round(rect.top - origin.top),
       bottom: round(rect.bottom - origin.top),
       cx: round((rect.left + rect.right) / 2 - origin.left),
@@ -137,6 +142,22 @@ function measure(container: HTMLElement): Connector[] {
     })
   }
 
+  // A side branch: one straight line from its parent's card across to the
+  // column, level with the parent. Only when the column sits beside it —
+  // stacked on a phone, the column's own label names the parent instead.
+  const branch = container.querySelector<HTMLElement>('[data-org-branch]')
+  const branchParent = cards.get(branch?.dataset.parentId ?? '')
+  if (branch && branchParent) {
+    const target = box(branch)
+    if (target.left > branchParent.right) {
+      connectors.push({
+        id: 'branch',
+        d: `M${branchParent.right} ${branchParent.cy}H${target.left}`,
+        order: 3,
+      })
+    }
+  }
+
   return connectors
 }
 
@@ -152,13 +173,18 @@ function measure(container: HTMLElement): Connector[] {
  * after the cards have been measured on the client, so they are pure
  * decoration layered over a chart that already makes sense without them.
  */
-export function OrgChart({ root, onOpen }: OrgChartProps) {
+export function OrgChart({ root, branch, onOpen }: OrgChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const inView = useInView(containerRef, REVEAL_VIEWPORT)
   const mode = useMotionMode()
   const [connectors, setConnectors] = useState<Connector[]>([])
 
   const groups = chartGroups(root)
+  // The branch column goes right after the group holding its parent.
+  const branchAfter = branch
+    ? groups.findIndex((group) => group.items.some(({ node }) => node.id === branch.parentId))
+    : -1
+  const columns = groups.length + (branchAfter >= 0 ? 1 : 0)
 
   useEffect(() => {
     const container = containerRef.current
@@ -211,9 +237,9 @@ export function OrgChart({ root, onOpen }: OrgChartProps) {
           in a card's title bar — pushing the cards off a phone screen. */}
       <div
         className="relative mt-12 grid grid-cols-1 gap-y-12 lg:mt-16 lg:grid-cols-[repeat(var(--org-columns),minmax(0,1fr))] lg:gap-x-6"
-        style={{ '--org-columns': groups.length } as React.CSSProperties}
+        style={{ '--org-columns': columns } as React.CSSProperties}
       >
-        {groups.map((group) => (
+        {groups.map((group, groupIndex) => [
           <div
             key={group.key}
             data-org-group
@@ -221,9 +247,11 @@ export function OrgChart({ root, onOpen }: OrgChartProps) {
             aria-label={group.label}
             className="relative max-w-xl pl-6 lg:max-w-none"
           >
-            <p aria-hidden className="mb-4 font-display text-[10px] tracking-[0.16em] text-accent-fg uppercase">
-              {`// ${group.label}`}
-            </p>
+            {group.showLabel === false ? null : (
+              <p aria-hidden className="mb-4 font-display text-[10px] tracking-[0.16em] text-accent-fg uppercase">
+                {`// ${group.label}`}
+              </p>
+            )}
 
             <ul className="flex flex-col gap-6">
               {group.items.map(({ node, depth }) => (
@@ -240,8 +268,15 @@ export function OrgChart({ root, onOpen }: OrgChartProps) {
                 </li>
               ))}
             </ul>
-          </div>
-        ))}
+          </div>,
+          branch && groupIndex === branchAfter ? (
+            <OrgBranchColumn
+              key="branch"
+              branch={branch}
+              parentName={group.items.find(({ node }) => node.id === branch.parentId)?.node.nama ?? ''}
+            />
+          ) : null,
+        ])}
       </div>
     </div>
   )
