@@ -18,6 +18,7 @@ import {
   toModul,
   toNewsMeta,
   toNewsPost,
+  toSesi,
   toWinner,
   wallClock,
 } from '@/lib/supabase/rows'
@@ -37,8 +38,10 @@ import type {
   NewsPostMeta,
   Registration,
   RegistrationStatus,
+  SesiWithStatus,
   SiteStats,
   Tentor,
+  TimelineEntry,
   Winner,
   WinnerProfile,
 } from '@/lib/types'
@@ -330,9 +333,13 @@ export async function getAboutInfo(): Promise<AboutInfo> {
 const startOfDayMs = (iso: string): number => deadlineToMs(`${iso}T00:00`)
 
 /**
- * The semester's modules in week order, each with where it stands right now.
- * A module runs from its release until the next one is released; the last
- * one runs for a week. Pages that show this regenerate hourly.
+ * The semester's modules in order, each with where it stands right now.
+ *
+ * A module runs for one week from its release — Monday and Tuesday classes,
+ * guided task due that Sunday — or until the next one opens, if that comes
+ * sooner. The schedule has long breaks (midterms, holidays, sessions that are
+ * not modules), and between modules nothing is "this week's". Pages that show
+ * this regenerate hourly.
  */
 export async function getModules(now = Date.now()): Promise<ModulWithStatus[]> {
   const { data, error } = await publicDb(TAGS.modul).from('modules').select('*').order('minggu', { ascending: true })
@@ -340,11 +347,39 @@ export async function getModules(now = Date.now()): Promise<ModulWithStatus[]> {
   const byWeek = data.map(toModul)
   return byWeek.map((modul, index) => {
     const next = byWeek[index + 1]
-    const end = next ? next.rilis : addDays(modul.rilis, 7)
+    // One week, cut short by the next module or by the module's own deadline.
+    const cutoffs = [addDays(modul.rilis, 7), next?.rilis, modul.tenggat ? addDays(modul.tenggat.slice(0, 10), 1) : undefined]
+    const end = cutoffs.filter((day): day is string => Boolean(day)).sort()[0] ?? addDays(modul.rilis, 7)
     const status: ModulStatus =
       now < startOfDayMs(modul.rilis) ? 'terkunci' : now < startOfDayMs(end) ? 'berjalan' : 'selesai'
     return { ...modul, tentorPj: [...modul.tentorPj], status, sampai: addDays(end, -1) }
   })
+}
+
+/** Sessions that are not modules (Games, Review Materi), each running one week from its start. */
+export async function getSesi(now = Date.now()): Promise<SesiWithStatus[]> {
+  const { data, error } = await publicDb(TAGS.modul).from('sesi').select('*').order('rilis', { ascending: true })
+  if (error) throw new Error(`Gagal membaca sesi: ${error.message}`)
+  return data.map(toSesi).map((sesi) => {
+    const end = addDays(sesi.rilis, 7)
+    const status: ModulStatus =
+      now < startOfDayMs(sesi.rilis) ? 'terkunci' : now < startOfDayMs(end) ? 'berjalan' : 'selesai'
+    return { ...sesi, status, sampai: addDays(end, -1) }
+  })
+}
+
+/**
+ * The whole schedule in date order: modules and the sessions between them.
+ * This is what the public timeline shows; tasks and grading use
+ * `getModules`, which has modules only.
+ */
+export async function getTimeline(now = Date.now()): Promise<TimelineEntry[]> {
+  const [modules, sesi] = await Promise.all([getModules(now), getSesi(now)])
+  const entries: TimelineEntry[] = [
+    ...modules.map((modul) => ({ jenis: 'modul' as const, ...modul })),
+    ...sesi.map((item) => ({ jenis: 'sesi' as const, ...item })),
+  ]
+  return entries.sort((a, b) => a.rilis.localeCompare(b.rilis) || (a.jenis === 'modul' ? -1 : 1))
 }
 
 // ----------------------------------------------------------------- motifs ---

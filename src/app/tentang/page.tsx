@@ -16,7 +16,7 @@ import { siteConfig } from '@/site.config'
 
 export const metadata: Metadata = pageMetadata({
   title: 'Tentang',
-  description: `Tentang ${siteConfig.name} ${siteConfig.campus.short}: komunitas belajar bahasa C dengan tentor sebaya, challenge mingguan, dan kelas rutin tiap Jumat sore.`,
+  description: `Tentang ${siteConfig.name} ${siteConfig.campus.short}: komunitas belajar bahasa C dengan tentor sebaya, challenge mingguan, dan kelas rutin tiap Senin dan Selasa.`,
   path: '/tentang',
 })
 
@@ -49,7 +49,7 @@ export default async function TentangPage() {
         facts={[
           { label: 'kampus', value: siteConfig.campus.short },
           { label: 'bahasa', value: 'C' },
-          { label: 'kelas', value: 'jumat_sore' },
+          { label: 'kelas', value: 'senin+selasa' },
         ]}
       />
 
@@ -160,6 +160,7 @@ export default async function TentangPage() {
                 { key: 'lokasi', value: about.sekretariat.lokasi },
                 { key: 'kelas', value: about.sekretariat.jadwalKelas },
                 { key: 'email', value: siteConfig.email },
+                { key: 'whatsapp', value: `${siteConfig.contact.phone} (${siteConfig.contact.name})` },
               ]}
             />
           </Reveal>

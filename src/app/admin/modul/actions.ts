@@ -122,3 +122,38 @@ export async function mulaiUploadModul(
   if (error || !data) return { ok: false, error: 'Tidak bisa menyiapkan upload.' }
   return { ok: true, path: data.path, token: data.token, publicUrl: storage.getPublicUrl(path).data.publicUrl }
 }
+
+const sesi = z.object({
+  id: z.string().optional(),
+  judul: z.string().min(1, 'Judul wajib diisi.').max(120),
+  rilis: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Isi tanggal mulai.'),
+  pj: z.string().max(80).default(''),
+  ringkasan: z.string().max(600).default(''),
+})
+
+/** A session on the timeline that is not a module: no file, no task, nothing to grade. */
+export async function simpanSesi(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
+  const auth = await requireAdminAction()
+  if (!auth.ok) return auth.state
+  const parsed = sesi.safeParse(formValues(formData))
+  if (!parsed.success) return failed('Periksa isian yang ditandai.', fieldErrors(parsed.error))
+
+  const { id, ...fields } = parsed.data
+  const { error } = id
+    ? await auth.db.from('sesi').update(fields).eq('id', id)
+    : await auth.db.from('sesi').insert({ id: `sesi-${randomUUID().slice(0, 8)}`, ...fields })
+  if (error) return failed(`Gagal menyimpan: ${error.message}`)
+
+  refresh()
+  return succeeded(id ? 'Sesi tersimpan.' : 'Sesi ditambahkan ke timeline.')
+}
+
+export async function hapusSesi(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
+  const auth = await requireAdminAction()
+  if (!auth.ok) return auth.state
+  const id = String(formData.get('id') ?? '')
+  const { error } = await auth.db.from('sesi').delete().eq('id', id)
+  if (error) return failed(`Gagal menghapus: ${error.message}`)
+  refresh()
+  return succeeded('Sesi dihapus dari timeline.')
+}

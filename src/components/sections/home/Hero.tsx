@@ -6,7 +6,7 @@ import { HeroSequence } from '@/components/sections/home/HeroSequence'
 import { heroTimeline } from '@/components/sections/home/hero-timeline'
 import { ButtonLink } from '@/components/ui/Button'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
-import type { ModulWithStatus, SiteStats } from '@/lib/types'
+import type { SiteStats, TimelineEntry } from '@/lib/types'
 import { siteConfig } from '@/site.config'
 
 type HeroProps = {
@@ -14,8 +14,8 @@ type HeroProps = {
   driftTokens: readonly string[]
   /** Outside a registration round the hero leads with the challenge instead. */
   registrationOpen: boolean
-  /** The semester's modules, for the panel beside the wordmark. */
-  modules: readonly ModulWithStatus[]
+  /** The schedule — modules and sessions — for the panel beside the wordmark. */
+  schedule: readonly TimelineEntry[]
 }
 
 /**
@@ -25,7 +25,7 @@ type HeroProps = {
  * `svh`, not `dvh`: the small viewport height never changes as a phone's URL
  * bar slides away, so the hero never resizes under someone's thumb.
  */
-export function Hero({ stats, driftTokens, registrationOpen, modules }: HeroProps) {
+export function Hero({ stats, driftTokens, registrationOpen, schedule }: HeroProps) {
   const timeline = heroTimeline(siteConfig.heroCommand)
 
   return (
@@ -54,7 +54,7 @@ export function Hero({ stats, driftTokens, registrationOpen, modules }: HeroProp
             name={siteConfig.name}
             tagline={siteConfig.tagline}
             backdrop={<DriftField tokens={driftTokens} />}
-            aside={modules.length > 0 ? <HeroModulPanel modules={modules} /> : undefined}
+            aside={schedule.length > 0 ? <HeroModulPanel entries={schedule} /> : undefined}
             actions={
               registrationOpen ? (
                 <>

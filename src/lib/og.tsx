@@ -47,6 +47,11 @@ const ACCENT_HEX: Record<AccentName, string> = {
 
 const FONT_DIR = path.join(process.cwd(), 'src', 'assets', 'fonts')
 
+/** The wordmark, inlined as a data URL: Satori renders images from data, not paths. */
+const logo = readFile(path.join(process.cwd(), 'src', 'assets', 'img', 'ksp-logo.png')).then(
+  (bytes) => `data:image/png;base64,${bytes.toString('base64')}`,
+)
+
 const fonts = Promise.all([
   readFile(path.join(FONT_DIR, 'Silkscreen-Regular.ttf')),
   readFile(path.join(FONT_DIR, 'JetBrainsMono-Regular.ttf')),
@@ -83,21 +88,6 @@ function titleSize(title: string): number {
   if (title.length <= 48) return 58
   if (title.length <= 72) return 50
   return 42
-}
-
-/** The placeholder pixel C, on the same 16-unit grid as `PixelMark`. TODO(brand): swap for the real logo. */
-function Mark({ color }: { color: string }) {
-  return (
-    <svg width="32" height="32" viewBox="0 0 16 16" fill={color}>
-      <rect x="4" y="0" width="8" height="2" />
-      <rect x="2" y="2" width="4" height="2" />
-      <rect x="10" y="2" width="4" height="2" />
-      <rect x="0" y="4" width="4" height="8" />
-      <rect x="2" y="12" width="4" height="2" />
-      <rect x="10" y="12" width="4" height="2" />
-      <rect x="4" y="14" width="8" height="2" />
-    </svg>
-  )
 }
 
 export async function renderOgCard({ accent, file, command, eyebrow, title, subtitle }: OgCard): Promise<ImageResponse> {
@@ -187,23 +177,8 @@ export async function renderOgCard({ accent, file, command, eyebrow, title, subt
             ) : null}
 
             <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto', paddingTop: 24, fontSize: 22 }}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: 52,
-                  height: 52,
-                  marginRight: 18,
-                  border: `3px solid ${INK.fg}`,
-                  backgroundColor: color,
-                }}
-              >
-                <Mark color={INK.accentInk} />
-              </div>
-              <span style={{ fontFamily: 'Silkscreen', fontSize: 26, letterSpacing: 4, marginRight: 18 }}>
-                {siteConfig.wordmark}
-              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element -- Satori renders plain <img> only */}
+              <img src={await logo} width={98} height={40} alt="" style={{ marginRight: 20 }} />
               <span style={{ color: INK.muted }}>
                 {siteConfig.name} · {siteConfig.campus.short}
               </span>

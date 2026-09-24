@@ -7,7 +7,7 @@ export const modulPath = (modul: ModulWithStatus): string =>
   `~/modul/minggu-${pad2(modul.minggu)}/${slugify(modul.judul)}.pdf`
 
 /** `21 Sep – 27 Sep 2026`, dropping the first year when both ends share it. */
-export function modulRange(modul: ModulWithStatus): string {
+export function modulRange(modul: { rilis: string; sampai: string }): string {
   const from = formatTanggalPendek(modul.rilis)
   const to = formatTanggalPendek(modul.sampai)
   const year = modul.rilis.slice(0, 4)
@@ -15,5 +15,5 @@ export function modulRange(modul: ModulWithStatus): string {
 }
 
 /** `Senin, 28 Sep 2026` */
-export const modulRelease = (modul: ModulWithStatus): string =>
+export const modulRelease = (modul: { rilis: string }): string =>
   `${namaHari(modul.rilis)}, ${formatTanggalPendek(modul.rilis)}`

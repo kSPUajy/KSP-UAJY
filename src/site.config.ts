@@ -45,22 +45,30 @@ export const siteConfig = {
   url: 'https://ksp-uajy.vercel.app',
   locale: 'id-ID',
 
-  // TODO(brand): placeholder mark — drop the real logo in and update this block.
+  /** The wordmark as a public file, for structured data and anything outside React. */
   logo: {
-    src: '/logo/ksp-mark.svg',
-    width: 64,
-    height: 64,
+    src: '/logo/ksp-logo.png',
+    width: 800,
+    height: 327,
     alt: 'Logo Kelompok Studi Pemrograman UAJY',
   },
 
   // TODO(brand): placeholder — ganti dengan URL Google Form pendaftaran asli.
   joinFormUrl: 'https://forms.gle/ksp-uajy-pendaftaran',
-  email: 'ksp@students.uajy.ac.id',
+  email: 'kspuajy2627@gmail.com',
+
+  /** The secretariat's contact person, reachable on WhatsApp. */
+  contact: {
+    name: 'Audrey',
+    /** Local format, as people read it out. */
+    phone: '0877-3639-0570',
+    /** International, digits only, for wa.me links. */
+    whatsapp: '6287736390570',
+  },
 
   socials: {
-    instagram: 'https://instagram.com/ksp.uajy',
-    github: 'https://github.com/ksp-uajy',
-    youtube: 'https://youtube.com/@ksp-uajy',
+    instagram: 'https://www.instagram.com/kspuajy',
+    github: 'https://github.com/kSPUajy',
   },
 
   /** Editor tab strip. `/gabung` is deliberately absent — it renders as the CTA. */
@@ -90,6 +98,7 @@ export const siteConfig = {
   logo: { src: string; width: number; height: number; alt: string }
   joinFormUrl: string
   email: string
+  contact: { name: string; phone: string; whatsapp: string }
   socials: Record<string, string>
   nav: readonly NavItem[]
   cta: { label: string; href: string; accent: AccentName }

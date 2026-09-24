@@ -9,7 +9,7 @@ import type { AboutInfo } from '@/lib/types'
  */
 export const aboutInfo: AboutInfo = {
   pembuka: [
-    'Kelompok Studi Pemrograman adalah komunitas belajar bahasa C di Program Studi Informatika UAJY. Kami bukan unit kegiatan dengan seleksi masuk, dan bukan kelas tambahan dengan nilai. Kami sekelompok mahasiswa yang bertemu tiap Jumat sore untuk membaca, menulis, dan merusak program C bersama-sama.',
+    'Kelompok Studi Pemrograman adalah komunitas belajar bahasa C di Program Studi Informatika UAJY. Kami bukan unit kegiatan dengan seleksi masuk, dan bukan kelas tambahan dengan nilai. Kami sekelompok mahasiswa yang bertemu tiap Senin dan Selasa malam untuk membaca, menulis, dan merusak program C bersama-sama.',
     'Kelasnya dipegang tentor sebaya — kakak tingkat yang dua atau tiga semester lalu duduk di kursi yang sama. Soalnya ditulis sendiri, pembahasannya terbuka, dan setiap kesalahan yang pernah membuat program kami crash dijadikan materi untuk angkatan berikutnya.',
   ],
   prinsip: [
@@ -86,6 +86,6 @@ export const aboutInfo: AboutInfo = {
   ],
   sekretariat: {
     lokasi: 'Gedung Bonaventura, UAJY',
-    jadwalKelas: 'Jumat sore, 90 menit, ruang FTI 3.2',
+    jadwalKelas: 'Senin & Selasa, 19.00–21.00 WIB, Lab Komputasi',
   },
 }

@@ -11,6 +11,6 @@ export default function Image() {
     command: 'cat ~/tentang/README.md',
     eyebrow: 'tentang',
     title: 'Kelompok studi, bukan kelas tambahan',
-    subtitle: 'Komunitas belajar bahasa C dengan tentor sebaya, challenge mingguan, dan kelas tiap Jumat sore.',
+    subtitle: 'Komunitas belajar bahasa C dengan tentor sebaya, challenge mingguan, dan kelas tiap Senin dan Selasa.',
   })
 }

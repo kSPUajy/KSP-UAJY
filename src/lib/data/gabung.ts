@@ -19,7 +19,7 @@ export const joinInfo: JoinInfo = {
     {
       id: 'kelas-rutin',
       judul: 'kelas rutin',
-      deskripsi: 'Setiap Jumat sore, 90 menit, di ruang FTI 3.2.',
+      deskripsi: 'Setiap Senin dan Selasa, 19.00–21.00 WIB, di Lab Komputasi.',
     },
     {
       id: 'pendampingan',
@@ -68,7 +68,7 @@ export const joinInfo: JoinInfo = {
       id: 'kelas-pertama',
       judul: 'Datang ke kelas pertama',
       deskripsi:
-        'Bawa laptop kalau punya. Kalau tidak, laboratorium FTI menyediakan komputer, dan tentormu sudah tahu namamu.',
+        'Bawa laptop kalau punya. Kalau tidak, Lab Komputasi menyediakan komputer, dan tentormu sudah tahu namamu.',
       kapan: 'sepekan setelah sesi perkenalan',
     },
   ],
@@ -95,13 +95,13 @@ export const joinInfo: JoinInfo = {
       id: 'laptop',
       pertanyaan: 'Perlu laptop sendiri?',
       jawaban:
-        'Tidak wajib. Kelas berjalan di laboratorium yang komputernya sudah terpasang gcc. Kalau kamu membawa laptop, tentor akan membantu memasang kompilernya di pertemuan pertama.',
+        'Tidak wajib. Kelas berjalan di Lab Komputasi, yang komputernya sudah terpasang gcc. Kalau kamu membawa laptop, tentor akan membantu memasang kompilernya di pertemuan pertama.',
     },
     {
       id: 'waktu',
       pertanyaan: 'Berapa jam seminggu yang perlu saya sediakan?',
       jawaban:
-        'Kelasnya 90 menit tiap Jumat sore. Challenge mingguan sifatnya sukarela — sebagian anggota mengerjakan setiap minggu, sebagian hanya kalau topiknya menarik.',
+        'Kelasnya Senin dan Selasa, 19.00–21.00 WIB — dua pertemuan untuk satu materi, di minggu-minggu yang ada modulnya. Challenge mingguan sifatnya sukarela — sebagian anggota mengerjakan setiap minggu, sebagian hanya kalau topiknya menarik.',
     },
     {
       id: 'bolos',

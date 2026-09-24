@@ -66,7 +66,6 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} · ${siteConfig.campus.short}`,
     description: siteConfig.description,
   },
-  icons: { icon: siteConfig.logo.src },
   robots: { index: true, follow: true },
 }
 

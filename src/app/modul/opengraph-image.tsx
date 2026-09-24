@@ -1,4 +1,4 @@
-import { getModules } from '@/lib/data'
+import { getTimeline } from '@/lib/data'
 import { OG_CONTENT_TYPE, OG_SIZE, renderOgCard } from '@/lib/og'
 import { pad2 } from '@/lib/utils'
 
@@ -10,13 +10,12 @@ export const contentType = OG_CONTENT_TYPE
 export const revalidate = 3600
 
 export default async function Image() {
-  const modules = await getModules()
-  const current = modules.find((modul) => modul.status === 'berjalan')
+  const current = (await getTimeline()).find((entry) => entry.status === 'berjalan')
   return renderOgCard({
     accent: 'cyan',
     file: '~/modul/',
     command: 'ls ~/modul',
-    eyebrow: current ? `modul · minggu ${pad2(current.minggu)}` : 'modul',
+    eyebrow: current ? (current.jenis === 'modul' ? `modul · ${pad2(current.minggu)}` : 'jadwal · sesi') : 'modul',
     title: current ? `Minggu ini: ${current.judul}` : 'Modul mingguan',
     subtitle: current?.ringkasan ?? 'Satu modul setiap minggu, dari flowchart sampai array of record.',
   })

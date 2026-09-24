@@ -66,7 +66,12 @@ export default async function AdminAnggotaPage() {
                   <span className="text-[12px] text-muted tabular-nums">{member.npm}</span>
                   <span className="col-start-1 row-start-2 min-w-0 truncate text-sm font-bold text-fg sm:col-start-auto sm:row-start-auto">
                     {member.nama}
-                    {member.id === profile.id ? <span className="ml-2 font-normal text-dim">(kamu)</span> : null}
+                    {member.id === profile.id ? (
+                      <span className="ml-2 font-normal text-accent-fg">
+                        <span aria-hidden>&lt;| I&apos;am Here!</span>
+                        <span className="sr-only">(akunmu)</span>
+                      </span>
+                    ) : null}
                   </span>
                   <span className="row-span-2 sm:row-span-1">
                     <Badge size="sm" variant={member.role === 'anggota' ? 'ghost' : 'solid'}>

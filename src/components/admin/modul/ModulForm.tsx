@@ -6,7 +6,7 @@ import { useActionState, useId, useState } from 'react'
 import { hapusModul, mulaiUploadModul, simpanModul } from '@/app/admin/modul/actions'
 import { AdminForm, FormMessage, SubmitButton, TextArea, TextInput } from '@/components/admin/form'
 
-export type TentorOption = { id: string; nama: string; npm: string }
+export type TentorOption = { id: string; nama: string; npm: string; role: 'anggota' | 'tentor' | 'admin' }
 
 export type ModulFormValues = {
   id?: string
@@ -78,7 +78,7 @@ function GraderPicker({ tentors, assigned, autoMatched }: { tentors: readonly Te
       <input type="hidden" name="tentor_assign" value="1" />
       {tentors.length === 0 ? (
         <p className="text-[12px] leading-6 text-muted">
-          Belum ada akun berperan tentor. Buat di <span className="text-fg">anggota</span> dengan peran tentor, lalu kembali ke sini.
+          Belum ada akun berperan tentor atau admin. Buat di <span className="text-fg">anggota</span>, lalu kembali ke sini.
         </p>
       ) : (
         <>
@@ -90,13 +90,14 @@ function GraderPicker({ tentors, assigned, autoMatched }: { tentors: readonly Te
               >
                 <input type="checkbox" name="tentor_ids" value={tentor.id} defaultChecked={assigned.includes(tentor.id)} className="accent-(--accent)" />
                 {tentor.nama}
+                {tentor.role === 'admin' ? <span className="text-[10px] text-dim">admin</span> : null}
               </label>
             ))}
           </div>
           <p className="text-[11px] leading-5 text-dim">
             {autoMatched
               ? 'Dicentang otomatis dari nama tentor PJ — periksa, lalu simpan untuk memberlakukannya.'
-              : 'Tentor yang dicentang bisa melihat dan menilai tugas guided modul ini.'}
+              : 'Tentor yang dicentang bisa melihat dan menilai tugas guided modul ini. Admin bisa menilai semua modul; mencentang admin menandainya sebagai PJ modul ini.'}
           </p>
         </>
       )}

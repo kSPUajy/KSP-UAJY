@@ -133,6 +133,15 @@ export default async function GabungPage() {
                   className="break-all text-accent-fg underline decoration-2 underline-offset-4 hover:text-fg"
                 >
                   {siteConfig.email}
+                </a>{' '}
+                atau WhatsApp{' '}
+                <a
+                  href={`https://wa.me/${siteConfig.contact.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent-fg underline decoration-2 underline-offset-4 hover:text-fg"
+                >
+                  {siteConfig.contact.name} ({siteConfig.contact.phone})
                 </a>
                 .
               </p>

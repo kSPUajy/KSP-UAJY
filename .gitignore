@@ -17,3 +17,6 @@ supabase/.temp
 # Local AI-assistant instructions (not part of the site)
 CLAUDE.md
 AGENTS.md
+
+# One-time passwords exported for handing out (never commit)
+.akun/

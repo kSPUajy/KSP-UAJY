@@ -21,7 +21,11 @@ export type ContentTag = (typeof TAGS)[keyof typeof TAGS]
 
 function env(name: 'NEXT_PUBLIC_SUPABASE_URL' | 'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY'): string {
   const value = process.env[name]
-  if (!value) throw new Error(`${name} belum diisi di .env.local — lihat .env.example.`)
+  if (!value) {
+    throw new Error(
+      `${name} belum diisi. Di laptop: isi .env.local (lihat .env.example). Di Vercel: Project Settings → Environment Variables, lalu redeploy.`,
+    )
+  }
   return value
 }
 
@@ -29,9 +33,10 @@ function env(name: 'NEXT_PUBLIC_SUPABASE_URL' | 'NEXT_PUBLIC_SUPABASE_PUBLISHABL
  * A read-only client for public content, as the anonymous visitor.
  *
  * It never touches cookies, so pages built on it stay static. Every request
- * it makes goes through `fetch` with `force-cache` and the given tags: the
+ * it makes goes through `fetch` with the given tags and an hour's revalidation: the
  * result is stored in Next's data cache until an admin change invalidates
- * the tag, or until the page's own `revalidate` window passes.
+ * the tag, and for an hour at most — so an edit made outside the panel
+ * (the Supabase table editor, a script) still shows up within the hour.
  *
  * Row-level security still applies — this is the publishable key, so it
  * sees exactly what an anonymous visitor may see (published news only).
@@ -40,7 +45,7 @@ export function publicDb(...tags: ContentTag[]) {
   return createClient<Database>(env('NEXT_PUBLIC_SUPABASE_URL'), env('NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY'), {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     global: {
-      fetch: (input, init) => fetch(input, { ...init, cache: 'force-cache', next: { tags } }),
+      fetch: (input, init) => fetch(input, { ...init, next: { tags, revalidate: 3600 } }),
     },
   })
 }

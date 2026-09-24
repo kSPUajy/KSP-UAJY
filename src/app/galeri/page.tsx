@@ -12,7 +12,7 @@ import { siteConfig } from '@/site.config'
 
 export const metadata: Metadata = pageMetadata({
   title: 'Galeri',
-  description: `Dokumentasi kegiatan ${siteConfig.name} ${siteConfig.campus.short}: kelas Jumat sore, workshop, kompetisi, dan gathering.`,
+  description: `Dokumentasi kegiatan ${siteConfig.name} ${siteConfig.campus.short}: kelas Senin dan Selasa, workshop, kompetisi, dan gathering.`,
   path: '/galeri',
 })
 
@@ -32,7 +32,7 @@ export default async function GaleriPage() {
         title="Dari ruang kelas dan sekitarnya"
         description={
           items.length > 0
-            ? 'Kelas Jumat sore, workshop, kompetisi, dan sesi-sesi malam sebelum deadline — diunggah divisi media setelah setiap acara. Pilih satu untuk melihatnya utuh, dalam warna aslinya.'
+            ? 'Kelas Senin dan Selasa, workshop, kompetisi, dan sesi-sesi malam sebelum deadline — diunggah divisi media setelah setiap acara. Pilih satu untuk melihatnya utuh, dalam warna aslinya.'
             : undefined
         }
         facts={

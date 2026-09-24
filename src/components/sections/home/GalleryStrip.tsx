@@ -103,7 +103,7 @@ export function GalleryStrip({ index, items }: GalleryStripProps) {
           eyebrow="galeri"
           title="Dari ruang kelas dan sekitarnya"
           headingId="galeri-title"
-          description="Kelas Jumat sore, workshop, kompetisi, dan sesi-sesi malam sebelum deadline."
+          description="Kelas Senin dan Selasa, workshop, kompetisi, dan sesi-sesi malam sebelum deadline."
           actions={
             items.length > 0 ? (
               <ButtonLink href="/galeri" variant="outline" size="sm">

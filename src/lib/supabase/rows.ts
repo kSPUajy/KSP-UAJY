@@ -7,6 +7,7 @@ import type {
   Difficulty,
   KategoriBerita,
   Modul,
+  Sesi,
   NewsPost,
   NewsPostMeta,
   SampleIO,
@@ -28,6 +29,7 @@ export type ModuleRow = Tables['modules']['Row']
 export type NewsRow = Tables['news_posts']['Row']
 export type ChallengeRow = Tables['challenges']['Row']
 export type WinnerRow = Tables['winners']['Row']
+export type SesiRow = Tables['sesi']['Row']
 
 /**
  * A `timestamp without time zone` comes back as `2026-07-12T23:59:00`. The
@@ -140,3 +142,11 @@ export function toWinner(row: WinnerRow): Winner {
     totalMenang: row.total_menang,
   }
 }
+
+export const toSesi = (row: SesiRow): Sesi => ({
+  id: row.id,
+  judul: row.judul,
+  rilis: row.rilis,
+  pj: row.pj,
+  ringkasan: row.ringkasan,
+})

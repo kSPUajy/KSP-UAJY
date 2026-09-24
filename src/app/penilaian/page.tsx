@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { AdminHeading } from '@/components/admin/AdminHeading'
+import { Badge } from '@/components/ui/Badge'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { MeterBar } from '@/components/ui/MeterBar'
 import { requireProfile } from '@/lib/auth/session'
@@ -60,7 +61,14 @@ export default async function PenilaianPage() {
                       {pending > 0 ? `${pending} menunggu nilai` : modul.masuk > 0 ? 'semua dinilai' : 'belum ada tugas'}
                     </span>
                   </span>
-                  <span className="mt-3 block text-base font-bold text-fg">{modul.judul}</span>
+                  <span className="mt-3 flex flex-wrap items-center gap-2">
+                    <span className="text-base font-bold text-fg">{modul.judul}</span>
+                    {profile.role === 'admin' && modul.pjKamu ? (
+                      <Badge size="sm" variant="solid">
+                        pj kamu
+                      </Badge>
+                    ) : null}
+                  </span>
                   <span className="mt-1 block text-[11px] text-dim">tenggat {formatTanggalWaktu(modul.deadline)}</span>
                   <span className="mt-4 block">
                     <MeterBar value={modul.dinilai} max={Math.max(members ?? 0, 1)} label={`${modul.dinilai} dari ${members ?? 0} dinilai`} striped />

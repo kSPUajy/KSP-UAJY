@@ -183,7 +183,6 @@ Nilai yang **masih placeholder** dan harus diganti sebelum rilis. Cari dengan `g
 | Apa | Di mana |
 | --- | --- |
 | Tagline | `site.config.ts` → `tagline` |
-| Logo | `site.config.ts` → `logo`, `public/logo/ksp-mark.svg`, `components/layout/Logo.tsx` (`PixelMark`), `app/apple-icon.tsx`, `lib/og.tsx` (`Mark`) |
 | URL formulir pendaftaran | `site.config.ts` → `joinFormUrl` |
 | URL situs | `site.config.ts` → `url` (dipakai untuk canonical, sitemap, dan Open Graph) |
 | Tahun berdiri dan cerita awal | `lib/data/tentang.ts` → entri pertama `sejarah` |
@@ -259,6 +258,20 @@ Tentor menilai tugas guided di **`/penilaian`**.
 4. **Nilai 0–100 dan komentar** langsung muncul di dashboard anggota, beserta nama penilainya. Tugas yang sudah dinilai terkunci. Kalau anggota perlu mengunggah perbaikan, tekan **buka kembali**: nilainya dihapus dan pengumpulan dibuka lagi.
 
 Pembatasan ini ditegakkan database, bukan hanya tampilan. Tabel `module_tentors` dan fungsi `can_grade()` membuat tentor tidak bisa membaca, apalagi menilai, tugas dari modul yang bukan miliknya, sekalipun ia memanggil API langsung.
+
+## Logo
+
+Sumbernya `src/assets/img/cropped-NEW-LOGO (1).png`. Turunannya dibuat dari file itu:
+
+| File | Dipakai untuk |
+| --- | --- |
+| `src/assets/img/ksp-logo.png` | navigasi, footer, kartu Open Graph (dipangkas, lebar 800 px) |
+| `public/logo/ksp-logo.png` | data terstruktur (JSON-LD) |
+| `src/app/favicon.ico`, `src/app/icon.png` | favicon: tulisan **KSP** piksel 3×5 hitam di atas magenta `#ff3d8b`, digambar per ukuran (16/32/48 px) supaya tajam; logo lengkap tidak terbaca di ukuran tab |
+| `src/app/apple-icon.png` | ikon layar utama iOS (logo lengkap di tengah latar gelap) |
+| `public/logo/icon-192.png`, `icon-512.png` | manifest aplikasi |
+
+Kalau logonya berganti, buat ulang semua turunan ini dari file sumber yang baru.
 
 ## SEO dan berbagi tautan
 

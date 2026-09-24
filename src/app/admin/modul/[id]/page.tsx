@@ -26,7 +26,7 @@ export default async function AdminModulEditPage({ params }: { params: Promise<{
   const db = await createSupabaseServer()
   const [{ data }, { data: tentorRows }, { data: assignmentRows }] = await Promise.all([
     db.from('modules').select('*').eq('id', id).maybeSingle(),
-    db.from('profiles').select('id, nama, npm').eq('role', 'tentor').order('nama'),
+    db.from('profiles').select('id, nama, npm, role').in('role', ['tentor', 'admin']).order('nama'),
     db.from('module_tentors').select('profile_id').eq('module_id', id),
   ])
   if (!data) notFound()

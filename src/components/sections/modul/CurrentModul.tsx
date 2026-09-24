@@ -3,7 +3,7 @@ import { ButtonAnchor } from '@/components/ui/Button'
 import { MeterBar } from '@/components/ui/MeterBar'
 import { StructBlock } from '@/components/ui/StructBlock'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
-import type { ModulWithStatus } from '@/lib/types'
+import type { ModulWithStatus, SesiWithStatus } from '@/lib/types'
 import { pad2 } from '@/lib/utils'
 
 type CurrentModulProps = {
@@ -74,6 +74,20 @@ export function CurrentModul({ modul, total }: CurrentModulProps) {
           />
         </div>
       </div>
+    </TerminalWindow>
+  )
+}
+
+/** This week's session when it is not a module (Games, Review Materi): no file, no task. */
+export function CurrentSesi({ sesi }: { sesi: SesiWithStatus }) {
+  return (
+    <TerminalWindow title={`~/jadwal/${sesi.id}`} bodyClassName="p-5 sm:p-8">
+      <p className="font-display text-[10px] tracking-[0.18em] text-accent-fg uppercase">{`// sesi · ${modulRange(sesi)}`}</p>
+      <h3 className="mt-4 text-[clamp(1.5rem,3.4vw,2.25rem)] leading-tight font-bold tracking-tight text-fg">{sesi.judul}</h3>
+      <p className="mt-4 max-w-prose text-sm leading-7 text-muted">{sesi.ringkasan}</p>
+      <p className="mt-6 border-l-2 border-accent-fg pl-4 text-[12px] leading-6 text-muted">
+        pj: <span className="text-fg">{sesi.pj || '—'}</span> · minggu ini tidak ada modul maupun tugas guided.
+      </p>
     </TerminalWindow>
   )
 }

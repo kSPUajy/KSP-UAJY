@@ -16,7 +16,7 @@ import {
   getGalleryItems,
   getJoinInfo,
   getLatestWinner,
-  getModules,
+  getTimeline,
   getNewsPosts,
   getRegistration,
   getStats,
@@ -44,7 +44,7 @@ export const revalidate = 3600
 const GALLERY_FRAMES = 6
 
 export default async function HomePage() {
-  const [stats, driftTokens, tickerTokens, current, tentors, posts, gallery, joinInfo, lastWinner, registration, modules] =
+  const [stats, driftTokens, tickerTokens, current, tentors, posts, gallery, joinInfo, lastWinner, registration, schedule] =
     await Promise.all([
       getStats(),
       getDriftTokens(),
@@ -56,7 +56,7 @@ export default async function HomePage() {
       getJoinInfo(),
       getLatestWinner(),
       getRegistration(),
-      getModules(),
+      getTimeline(),
     ])
 
   const [currentBody, currentWinner, lastWinnerChallenge] = await Promise.all([
@@ -72,7 +72,7 @@ export default async function HomePage() {
         stats={stats}
         driftTokens={driftTokens}
         registrationOpen={registration.status === 'buka'}
-        modules={modules}
+        schedule={schedule}
       />
       <Marquee items={tickerTokens} accent="magenta" />
 

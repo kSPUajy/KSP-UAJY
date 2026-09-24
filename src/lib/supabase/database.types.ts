@@ -233,6 +233,33 @@ export type Database = {
         }
         Relationships: []
       }
+      sesi: {
+        Row: {
+          id: string
+          judul: string
+          pj: string
+          rilis: string
+          ringkasan: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          judul: string
+          pj?: string
+          rilis: string
+          ringkasan?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          judul?: string
+          pj?: string
+          rilis?: string
+          ringkasan?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       submissions: {
         Row: {
           dinilai_at: string | null

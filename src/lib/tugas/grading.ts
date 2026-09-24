@@ -18,6 +18,8 @@ import type { ModulWithStatus } from '@/lib/types'
  */
 
 export type GradableModule = ModulWithStatus & {
+  /** This grader is assigned to it (always true for a tentor; for an admin, only their own). */
+  pjKamu: boolean
   deadline: string
   masuk: number
   dinilai: number
@@ -29,28 +31,31 @@ export async function getGradableModules(profile: SessionProfile): Promise<Grada
   const db = await createSupabaseServer()
   const [modules, assignments, submissions] = await Promise.all([
     getModules(),
-    profile.role === 'admin'
-      ? Promise.resolve(null)
-      : db.from('module_tentors').select('module_id').eq('profile_id', profile.id),
+    db.from('module_tentors').select('module_id').eq('profile_id', profile.id),
     db.from('submissions').select('module_id, nilai, terlambat'),
   ])
 
-  const allowed = assignments ? new Set((assignments.data ?? []).map((row) => row.module_id)) : null
+  const mine = new Set((assignments.data ?? []).map((row) => row.module_id))
+  // Admins grade everything; a tentor only what is assigned.
+  const allowed = profile.role === 'admin' ? null : mine
   const rows = submissions.data ?? []
 
   return modules
     .filter((modul) => modul.status !== 'terkunci' && (allowed === null || allowed.has(modul.id)))
     .map((modul) => {
-      const mine = rows.filter((row) => row.module_id === modul.id)
+      const handedIn = rows.filter((row) => row.module_id === modul.id)
       return {
         ...modul,
+        pjKamu: mine.has(modul.id),
         deadline: effectiveDeadline(modul),
-        masuk: mine.length,
-        dinilai: mine.filter((row) => row.nilai !== null).length,
-        terlambat: mine.filter((row) => row.terlambat).length,
+        masuk: handedIn.length,
+        dinilai: handedIn.filter((row) => row.nilai !== null).length,
+        terlambat: handedIn.filter((row) => row.terlambat).length,
       }
     })
     .reverse()
+    // Own modules first, newest first within each group.
+    .sort((a, b) => Number(b.pjKamu) - Number(a.pjKamu))
 }
 
 export type RosterRow = {

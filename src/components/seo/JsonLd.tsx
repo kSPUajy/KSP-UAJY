@@ -28,6 +28,7 @@ export const organizationLd = {
   url: siteConfig.url,
   logo: `${siteConfig.url}${siteConfig.logo.src}`,
   email: siteConfig.email,
+  telephone: `+${siteConfig.contact.whatsapp}`,
   description: siteConfig.description,
   sameAs: Object.values(siteConfig.socials),
   parentOrganization: {

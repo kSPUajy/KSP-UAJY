@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 
 import { Reveal } from '@/components/motion/Reveal'
-import { CurrentModul } from '@/components/sections/modul/CurrentModul'
+import { CurrentModul, CurrentSesi } from '@/components/sections/modul/CurrentModul'
 import { ModulTimeline } from '@/components/sections/modul/ModulTimeline'
 import { modulRelease } from '@/components/sections/modul/modul-format'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SectionShell } from '@/components/ui/SectionShell'
-import { getModules } from '@/lib/data'
+import { getTimeline } from '@/lib/data'
 import { pageMetadata } from '@/lib/metadata'
 import { pad2 } from '@/lib/utils'
 import { siteConfig } from '@/site.config'
@@ -23,12 +23,16 @@ export const metadata: Metadata = pageMetadata({
 export const revalidate = 3600
 
 export default async function ModulPage() {
-  const modules = await getModules()
+  const entries = await getTimeline()
+  const modules = entries.flatMap((entry) => (entry.jenis === 'modul' ? [entry] : []))
 
-  const current = modules.find((modul) => modul.status === 'berjalan') ?? null
+  // This week's row — a module, or a session such as Games.
+  const current = entries.find((entry) => entry.status === 'berjalan') ?? null
+  const currentModul = current?.jenis === 'modul' ? current : null
   const released = modules.filter((modul) => modul.status !== 'terkunci').length
-  const first = modules[0]
-  const notStarted = released === 0
+  const first = entries[0]
+  const notStarted = entries.every((entry) => entry.status === 'terkunci')
+  const upcoming = entries.find((entry) => entry.status === 'terkunci')
 
   return (
     <>
@@ -39,14 +43,14 @@ export default async function ModulPage() {
         title="Modul mingguan"
         description={
           modules.length > 0
-            ? 'Satu modul setiap minggu, dari flowchart sampai array of record. Modul terbuka setiap Senin, dan halaman ini berpindah sendiri ke minggu yang sedang berjalan.'
+            ? 'Dari flowchart sampai array of record, dua pertemuan untuk tiap modul — Senin dan Selasa. Halaman ini berpindah sendiri ke minggu yang sedang berjalan, termasuk sesi tanpa modul seperti Games dan Review Materi.'
             : undefined
         }
         facts={
           modules.length > 0
             ? [
                 { label: 'modul', value: modules.length },
-                { label: 'minggu_ini', value: current ? pad2(current.minggu) : '—' },
+                { label: 'minggu_ini', value: currentModul ? pad2(currentModul.minggu) : current ? current.judul.toLowerCase() : '—' },
                 { label: 'terbuka', value: `${released}/${modules.length}` },
               ]
             : undefined
@@ -60,18 +64,22 @@ export default async function ModulPage() {
               <SectionHeader eyebrow="minggu ini" title="Yang sedang dipelajari" headingId="minggu-ini" />
             </Reveal>
             <Reveal className="mt-10">
-              {current ? (
-                <CurrentModul modul={current} total={modules.length} />
+              {currentModul ? (
+                <CurrentModul modul={currentModul} total={modules.length} />
+              ) : current?.jenis === 'sesi' ? (
+                <CurrentSesi sesi={current} />
               ) : (
                 <EmptyState
                   accent="cyan"
                   command="cat ~/modul/minggu-ini"
-                  output={notStarted ? 'cat: belum ada modul yang dibuka' : 'EOF'}
-                  title={notStarted ? 'Semester belum dimulai' : 'Semua modul sudah selesai'}
+                  output={notStarted ? 'cat: belum ada modul yang dibuka' : upcoming ? 'jeda' : 'EOF'}
+                  title={notStarted ? 'Semester belum dimulai' : upcoming ? 'Minggu ini tidak ada modul baru' : 'Semua modul sudah selesai'}
                   description={
                     notStarted && first
                       ? `Modul pertama dibuka ${modulRelease(first)}.`
-                      : 'Seluruh modul semester ini sudah dibagikan. Arsipnya tetap bisa dibuka di bawah.'
+                      : upcoming
+                        ? `Modul berikutnya, ${upcoming.judul}, dibuka ${modulRelease(upcoming)}. Modul yang sudah lewat tetap bisa dibuka di bawah.`
+                        : 'Seluruh modul semester ini sudah dibagikan. Arsipnya tetap bisa dibuka di bawah.'
                   }
                 />
               )}
@@ -88,7 +96,7 @@ export default async function ModulPage() {
               />
             </Reveal>
             <Reveal className="mt-10 max-w-4xl">
-              <ModulTimeline modules={modules} />
+              <ModulTimeline entries={entries} />
             </Reveal>
           </SectionShell>
         </>

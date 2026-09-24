@@ -311,6 +311,17 @@ export type Modul = {
   tenggat?: string
 }
 
+/** A session on the schedule that is not a module (Games, Review Materi): no task, no grade. */
+export type Sesi = {
+  id: string
+  judul: string
+  /** ISO date the session starts, WIB. */
+  rilis: string
+  /** Who runs it, as printed on the schedule. */
+  pj: string
+  ringkasan: string
+}
+
 /** `selesai`: an earlier week. `berjalan`: this week's. `terkunci`: not released yet. */
 export type ModulStatus = 'selesai' | 'berjalan' | 'terkunci'
 
@@ -319,3 +330,11 @@ export type ModulWithStatus = Modul & {
   /** Last day of the module's week, `YYYY-MM-DD` — the day before the next release. */
   sampai: string
 }
+
+export type SesiWithStatus = Sesi & {
+  status: ModulStatus
+  sampai: string
+}
+
+/** One row of the public timeline: a module, or a session between modules. */
+export type TimelineEntry = ({ jenis: 'modul' } & ModulWithStatus) | ({ jenis: 'sesi' } & SesiWithStatus)

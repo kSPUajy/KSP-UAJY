@@ -22,7 +22,7 @@ export default async function AdminModulBaruPage() {
   const db = await createSupabaseServer()
   const [modules, { data: tentors }] = await Promise.all([
     getModules(),
-    db.from('profiles').select('id, nama, npm').eq('role', 'tentor').order('nama'),
+    db.from('profiles').select('id, nama, npm, role').in('role', ['tentor', 'admin']).order('nama'),
   ])
   const last = modules[modules.length - 1]
 

@@ -11,6 +11,6 @@ export default function Image() {
     command: 'ls -lt ~/galeri',
     eyebrow: 'galeri',
     title: 'Dari ruang kelas dan sekitarnya',
-    subtitle: 'Kelas Jumat sore, workshop, kompetisi, dan gathering.',
+    subtitle: 'Kelas Senin dan Selasa, workshop, kompetisi, dan gathering.',
   })
 }

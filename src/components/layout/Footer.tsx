@@ -1,12 +1,11 @@
 import Link from 'next/link'
 
-import { PixelMark } from '@/components/layout/Logo'
+import { LogoMark } from '@/components/layout/Logo'
 import { siteConfig } from '@/site.config'
 
 const SOCIAL_LABELS: Record<string, string> = {
   instagram: 'instagram',
   github: 'github',
-  youtube: 'youtube',
 }
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
@@ -28,14 +27,7 @@ export function Footer() {
 
         <div className="grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center border-2 border-line bg-accent text-accent-ink">
-                <PixelMark className="h-5 w-5" />
-              </span>
-              <span className="font-display text-[13px] tracking-[0.14em] text-fg">
-                {siteConfig.wordmark}
-              </span>
-            </div>
+            <LogoMark height={40} />
             <p className="mt-4 max-w-xs text-xs leading-6 text-muted">{siteConfig.name}</p>
             <p className="mt-2 max-w-xs text-xs leading-6 text-fg">{siteConfig.tagline}</p>
             <p className="mt-4 max-w-xs text-[11px] leading-5 text-dim">
@@ -101,6 +93,17 @@ export function Footer() {
                   className="text-xs break-all text-muted transition-colors hover:text-accent-fg"
                 >
                   {siteConfig.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://wa.me/${siteConfig.contact.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-muted transition-colors hover:text-accent-fg"
+                >
+                  wa {siteConfig.contact.phone} ({siteConfig.contact.name})
+                  <span className="sr-only"> — WhatsApp, membuka tab baru</span>
                 </a>
               </li>
               <li className="text-xs leading-6 text-muted">
