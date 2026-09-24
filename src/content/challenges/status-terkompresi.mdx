@@ -1,0 +1,43 @@
+Kartu anggota berbasis RFID di sekretariat hanya punya ruang 32 bit untuk
+menyimpan status seorang anggota. Empat keterangan harus muat di sana sekaligus,
+dan tidak ada ruang untuk satu `struct` yang longgar.
+
+Tugasmu mengelola satu bilangan bulat 32 bit sebagai wadah empat medan.
+
+## Tata letak bit
+
+| Medan      | Bit     | Lebar  | Rentang nilai |
+| ---------- | ------- | ------ | ------------- |
+| `hadir`    | 0–7     | 8 bit  | 0–255         |
+| `nilai`    | 8–15    | 8 bit  | 0–100         |
+| `lunas`    | 16      | 1 bit  | 0–1           |
+| `angkatan` | 17–20   | 4 bit  | 0–15          |
+
+Bit 21 sampai 31 selalu nol. Semua medan bermula bernilai nol.
+
+## Format masukan
+
+Baris pertama berisi bilangan bulat `N`, banyaknya perintah.
+`N` baris berikutnya masing-masing berisi salah satu dari:
+
+- `SET <medan> <nilai>` — tulis nilai ke medan itu. Tidak mencetak apa pun.
+- `GET <medan>` — cetak nilai medan itu sebagai bilangan desimal.
+- `RAW` — cetak seluruh 32 bit sebagai heksadesimal huruf besar, tepat delapan
+  digit, dengan nol di depan bila perlu.
+
+## Format keluaran
+
+Satu baris untuk setiap perintah `GET` dan `RAW`.
+
+## Catatan
+
+Menulis sebuah medan berarti dua langkah: bersihkan dulu bit lama dengan masker
+yang dibalik, baru pasang nilai barunya.
+
+```c
+nilai_baru = (nilai_baru & ~(masker << geser)) | ((baru & masker) << geser);
+```
+
+Gunakan `unsigned int`, bukan `int`. Pergeseran ke kiri pada bilangan bertanda
+yang meluap adalah perilaku tak terdefinisi, dan pergeseran ke kanan pada
+bilangan negatif bergantung pada implementasi.

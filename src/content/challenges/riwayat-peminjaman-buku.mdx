@@ -1,0 +1,30 @@
+Perpustakaan kecil di sekretariat KSP mencatat peminjaman di selembar kertas.
+Buku yang baru dipinjam ditulis paling atas, dan yang dikembalikan diambil dari
+atas juga. Kertas itu, tanpa disadari siapa pun, adalah sebuah stack yang
+diimplementasikan sebagai linked list.
+
+Tugasmu membangun linked list dinamis dan menjalankan urutan perintah.
+
+## Format masukan
+
+Baris pertama berisi bilangan bulat `N`, banyaknya perintah.
+`N` baris berikutnya masing-masing berisi satu perintah:
+
+- `T <judul>` — tambahkan judul ke bagian depan daftar. Tidak mencetak apa pun.
+- `A` — ambil judul paling depan, hapus dari daftar, lalu cetak judulnya.
+- `L` — cetak seluruh daftar dari depan ke belakang, dipisahkan ` -> `.
+
+Untuk `A` dan `L`, kalau daftarnya kosong, cetak `kosong`.
+
+## Format keluaran
+
+Satu baris untuk setiap perintah `A` dan `L`, sesuai urutan perintahnya.
+
+## Catatan
+
+Setiap simpul dialokasikan dengan `malloc` dan harus dibebaskan dengan `free`.
+Saat menghapus simpul depan, simpan dulu pointer ke simpul berikutnya sebelum
+membebaskan yang sekarang — begitu memori dibebaskan, membaca `simpul->next`
+adalah perilaku tak terdefinisi, meski sering kali kelihatan berhasil.
+
+Jangan lupa membebaskan sisa daftar sebelum program berakhir.

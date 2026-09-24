@@ -1,0 +1,565 @@
+@import "tailwindcss";
+
+@source "../../src";
+
+/* ------------------------------------------------------------------ *
+ * Variants — theme is driven by [data-theme] on <html>, never by the
+ * OS media query, so the rocker switch stays authoritative.
+ *
+ * Components should almost never need these: the semantic tokens below
+ * already flip on their own. Reach for `dark:`/`light:` only for a genuine
+ * theme-level exception.
+ * ------------------------------------------------------------------ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+/* ------------------------------------------------------------------ *
+ * Static design tokens
+ * ------------------------------------------------------------------ */
+@theme {
+  /* raw palette */
+  --color-void: #0b0d12;
+  --color-panel: #141926;
+  --color-paper: #f5f1e4;
+  --color-ink: #10121a;
+
+  --color-amber: #ffb020;
+  --color-magenta: #ff3d8b;
+  --color-cyan: #2fd8e0;
+  --color-lime: #67e06a;
+  --color-violet: #a98bff;
+  --color-orange: #ff6b35;
+
+  --font-display: var(--font-silkscreen), ui-monospace, SFMono-Regular, monospace;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+
+  /* Form language, enforced at build time: nothing here is round and
+     nothing here is blurred. Clearing these namespaces makes `rounded-lg`,
+     `shadow-md`, `blur-sm` and `backdrop-blur-*` invalid class names. */
+  --radius-*: initial;
+  --radius-none: 0px;
+  --radius-chip: 2px;
+  --shadow-*: initial;
+  --drop-shadow-*: initial;
+  --blur-*: initial;
+
+  --ease-mech: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Slight overshoot on release — the only "spring" buttons need, and it
+     keeps them as server components instead of pulling in Framer Motion. */
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Semantic tokens are declared `inline` so the emitted utilities resolve
+   var(--x) at use time — that is what lets them follow the theme switch and
+   the per-section palette and accent without a second stylesheet. */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-canvas-alt: var(--canvas-alt);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-dim: var(--dim);
+
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-ink: var(--accent-ink);
+
+  --color-code-bg: var(--code-bg);
+  --color-syn-preproc: var(--syn-preproc);
+  --color-syn-keyword: var(--syn-keyword);
+  --color-syn-type: var(--syn-type);
+  --color-syn-string: var(--syn-string);
+  --color-syn-number: var(--syn-number);
+  --color-syn-func: var(--syn-func);
+  --color-syn-comment: var(--syn-comment);
+  --color-syn-punct: var(--syn-punct);
+  --color-syn-ident: var(--syn-ident);
+}
+
+@layer base {
+  /* ================================================================ *
+   * PALETTES
+   *
+   * `data-palette` is deliberately separate from `data-theme`. The theme
+   * sets the page default; any section can then declare its own palette to
+   * become a full-bleed cream band inside a dark page (or the reverse)
+   * without a single duplicated token.
+   *
+   * `inverse` resolves to whichever palette the page theme is not. Its
+   * selectors are wrapped in `:where()` so they weigh exactly what
+   * `[data-palette="dark"]` does — any heavier and they would outrank the
+   * accent block below on an element that carries both attributes.
+   *
+   * Each palette also sets `color-scheme`, which is what lets the accent
+   * foregrounds below resolve themselves through `light-dark()`.
+   * ================================================================ */
+
+  /* ---------------------------------------------------------------- *
+   * Dark — phosphor terminal. The default.
+   * Worst-case contrast, against --surface-2 (#1B2233), the darkest surface
+   * body text ever lands on: fg 12.5:1 / muted 5.7:1 / dim 5.0:1
+   * ---------------------------------------------------------------- */
+  :root:not([data-palette]),
+  [data-palette="dark"],
+  :where([data-theme="light"]) [data-palette="inverse"] {
+    color-scheme: dark;
+
+    --canvas: #0b0d12;
+    --canvas-alt: #0e1119;
+    --surface: #141926;
+    --surface-2: #1b2233;
+
+    --fg: #e8e4d6;
+    --muted: #9a9c93;
+    --dim: #8d919b;
+
+    --line: #e8e4d6;
+    --line-soft: color-mix(in oklab, #e8e4d6 20%, transparent);
+
+    --accent-ink: #10121a;
+    /* Brand accent, for anything without its own [data-accent]. Literal, not
+       an indirection — see the accent block for why that matters. */
+    --accent: #ff3d8b;
+    --accent-fg: #ff3d8b;
+
+    --code-bg: #0e121c;
+    --syn-preproc: #a98bff;
+    --syn-keyword: #ff3d8b;
+    --syn-type: #2fd8e0;
+    --syn-string: #67e06a;
+    --syn-number: #ff6b35;
+    --syn-func: #ffb020;
+    --syn-comment: #82868f;
+    --syn-punct: #9a9c93;
+    --syn-ident: #e8e4d6;
+
+    --scan-color: #000000;
+    --scan-opacity: 0.04;
+    --grain-opacity: 0.03;
+    --dot-color: color-mix(in oklab, #e8e4d6 10%, transparent);
+  }
+
+  /* ---------------------------------------------------------------- *
+   * Light — dot-matrix printout on cream paper.
+   * Worst-case contrast, against --canvas-alt (#EDE8D8), the darkest surface
+   * body text ever lands on: fg 15.2:1 / muted 7.6:1 / dim 5.2:1
+   *
+   * The bright accents only reach about 2.9:1 on cream, so the accent block
+   * below carries a deepened variant of each for this palette. Every one is
+   * verified at 4.8:1 or better.
+   * ---------------------------------------------------------------- */
+  [data-palette="light"],
+  :where([data-theme="dark"]) [data-palette="inverse"] {
+    color-scheme: light;
+
+    --canvas: #f5f1e4;
+    --canvas-alt: #ede8d8;
+    --surface: #fffdf6;
+    --surface-2: #ede8d8;
+
+    --fg: #10121a;
+    --muted: #4a4738;
+    --dim: #63604f;
+
+    --line: #10121a;
+    --line-soft: color-mix(in oklab, #10121a 20%, transparent);
+
+    --accent-ink: #10121a;
+    --accent: #ff3d8b;
+    --accent-fg: #c4005a;
+
+    --code-bg: #ede8d8;
+    --syn-preproc: #5b2fd6;
+    --syn-keyword: #c4005a;
+    --syn-type: #00707a;
+    --syn-string: #17661a;
+    --syn-number: #b23a05;
+    --syn-func: #8a5200;
+    --syn-comment: #5c5949;
+    --syn-punct: #4a4738;
+    --syn-ident: #10121a;
+
+    --scan-color: #10121a;
+    --scan-opacity: 0.045;
+    --grain-opacity: 0.035;
+    --dot-color: color-mix(in oklab, #10121a 12%, transparent);
+  }
+
+  /* ---------------------------------------------------------------- *
+   * Accent ownership — one accent per major section.
+   *   --accent     bright fill / hard shadow, identical in both palettes
+   *   --accent-fg  accent as a foreground (text, icon, stroke)
+   *
+   * A custom property is resolved WHERE IT IS DECLARED, not where it is
+   * used. That is why the palette blocks above each carry their own literal
+   * default: a single `--accent-fg` on :root would bake the page palette's
+   * answer in and inherit it straight into a section that had switched.
+   *
+   * These rules sit after the palette blocks deliberately. They match at the
+   * same specificity, so source order is what lets an element carrying both
+   * `data-palette` and `data-accent` resolve to its accent rather than to the
+   * palette default.
+   *
+   * `light-dark()` handles the two variants here because this declaration
+   * always lands on, or inside, the element that set the palette.
+   * ---------------------------------------------------------------- */
+  [data-accent="magenta"] { --accent: #ff3d8b; --accent-fg: light-dark(#c4005a, #ff3d8b); }
+  [data-accent="amber"]   { --accent: #ffb020; --accent-fg: light-dark(#8a5200, #ffb020); }
+  [data-accent="cyan"]    { --accent: #2fd8e0; --accent-fg: light-dark(#00707a, #2fd8e0); }
+  [data-accent="lime"]    { --accent: #67e06a; --accent-fg: light-dark(#17661a, #67e06a); }
+  [data-accent="violet"]  { --accent: #a98bff; --accent-fg: light-dark(#5b2fd6, #a98bff); }
+  [data-accent="orange"]  { --accent: #ff6b35; --accent-fg: light-dark(#b23a05, #ff6b35); }
+
+  /* Hard borders are the form language, so every border defaults to the
+     strong line colour instead of Tailwind's `currentColor`. */
+  *,
+  ::before,
+  ::after {
+    border-color: var(--line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-fg);
+    outline-offset: 2px;
+  }
+
+  h1, h2, h3, h4 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+
+  /* JetBrains Mono ships ligatures: `!=` becomes `≠`, `->` an arrow. Fine in
+     the chrome, wrong in source a beginner is going to retype. */
+  pre, code, kbd, samp { font-variant-ligatures: none; }
+
+  input, textarea, select, button { font: inherit; color: inherit; }
+}
+
+/* ------------------------------------------------------------------ *
+ * Utilities
+ * ------------------------------------------------------------------ */
+
+/** Offset hard shadow. Never blurred — that is the whole point. */
+@utility hard-shadow {
+  box-shadow: 4px 4px 0 0 var(--accent);
+}
+
+@utility hard-shadow-sm {
+  box-shadow: 2px 2px 0 0 var(--accent);
+}
+
+@utility hard-shadow-line {
+  box-shadow: 4px 4px 0 0 var(--line);
+}
+
+/** Hover moves the element toward its shadow so it reads as pressed in. */
+@utility press-in {
+  transition:
+    transform 220ms var(--ease-mech),
+    box-shadow 220ms var(--ease-mech);
+
+  &:hover {
+    transform: translate3d(2px, 2px, 0);
+    box-shadow: 2px 2px 0 0 var(--accent);
+  }
+
+  &:active {
+    transform: translate3d(4px, 4px, 0);
+    box-shadow: 0 0 0 0 var(--accent);
+  }
+}
+
+/** Button flavour of press-in: same travel, with a pop on release. */
+@utility press-pop {
+  transition:
+    transform 180ms var(--ease-pop),
+    box-shadow 180ms var(--ease-pop);
+
+  &:hover {
+    transform: translate3d(2px, 2px, 0);
+    box-shadow: 2px 2px 0 0 var(--accent);
+  }
+
+  &:active {
+    transform: translate3d(4px, 4px, 0);
+    box-shadow: 0 0 0 0 var(--accent);
+    transition-duration: 60ms;
+  }
+}
+
+/** 24px dotted grid — three baseline rows. */
+@utility dot-grid {
+  background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/** Accent-tinted band, the third note after canvas and canvas-alt. */
+@utility tint-bg {
+  background-color: color-mix(in oklab, var(--accent) 9%, var(--canvas));
+}
+
+@utility scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--scan-color) 0 1px,
+    transparent 1px 4px
+  );
+  opacity: var(--scan-opacity);
+}
+
+@utility grain {
+  opacity: var(--grain-opacity);
+  background-size: 180px 180px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@utility crt-vignette {
+  background: radial-gradient(
+    120% 90% at 50% 42%,
+    transparent 52%,
+    color-mix(in oklab, var(--canvas) 78%, #000000) 100%
+  );
+}
+
+/** 4px checkerboard, laid over photography for a printed-halftone feel. */
+@utility dither {
+  background-image: repeating-conic-gradient(
+    var(--scan-color) 0% 25%,
+    transparent 0% 50%
+  );
+  background-size: 4px 4px;
+}
+
+/** Long-form article measure — 65-72ch per the type spec. */
+/** Literal glyphs for code-like text outside `<code>`: `<=` stays `<=`. */
+@utility ligatures-none {
+  font-variant-ligatures: none;
+}
+
+@utility measure {
+  max-width: 68ch;
+}
+
+/**
+ * One edge of a strip of film: 8px of base, a row of 10×8 sprocket holes,
+ * 8px of base — 24px, three baseline rows. The holes are transparent rather
+ * than painted, so whatever band the strip lies on shows through them.
+ */
+@utility sprockets {
+  height: 24px;
+  background:
+    linear-gradient(var(--film, #10121a), var(--film, #10121a)) top / 100% 8px no-repeat,
+    linear-gradient(var(--film, #10121a), var(--film, #10121a)) bottom / 100% 8px no-repeat,
+    repeating-linear-gradient(
+        to right,
+        var(--film, #10121a) 0 8px,
+        transparent 8px 18px,
+        var(--film, #10121a) 18px 26px
+      )
+      center / 100% 8px no-repeat;
+}
+
+/* ------------------------------------------------------------------ *
+ * Keyframes
+ * ------------------------------------------------------------------ */
+
+@keyframes ksp-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: ksp-blink 1.06s steps(1, end) infinite;
+}
+
+/* Marquee: a duplicated track translated by exactly half its own width, so
+   the seam lands on an identical glyph and the loop is invisible. */
+@keyframes ksp-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.marquee-track {
+  animation: ksp-marquee var(--marquee-duration, 38s) linear infinite;
+}
+
+.marquee-track[data-direction="reverse"] {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Build-log bar and skeletons. Both are functional rather than decorative,
+   so reduced motion swaps them for a pulse instead of stopping them dead. */
+@keyframes ksp-build-bar {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes ksp-pulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+
+.build-bar {
+  transform-origin: left center;
+  animation: ksp-build-bar 1.6s var(--ease-mech) infinite;
+}
+
+.skeleton {
+  animation: ksp-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .build-bar {
+    transform: scaleX(1);
+    animation: ksp-pulse 1.4s linear infinite;
+  }
+}
+
+/* Page transition (app/template.tsx).
+ *
+ * Deliberately CSS rather than Framer Motion: `animation-fill-mode: backwards`
+ * leaves no transform behind once it finishes, so the wrapper never becomes a
+ * containing block for the `position: fixed` lightbox and modals inside it. */
+@keyframes ksp-page-in {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.page-in {
+  animation: ksp-page-in 280ms var(--ease-mech) backwards;
+}
+
+/* Hero token field (DriftField.tsx).
+ *
+ * Each token drifts a few dozen pixels and back while fading in and out on a
+ * second, unrelated period, so the field never visibly repeats. Every token is
+ * its own tiny compositor layer — far cheaper than one viewport-sized layer
+ * sliding under the hero. Durations, offsets and delays arrive per token as
+ * custom properties. */
+@keyframes ksp-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(var(--drift-x, 0px), var(--drift-y, -32px), 0); }
+}
+
+@keyframes ksp-drift-fade {
+  0%, 100% { opacity: 0; }
+  30%, 70% { opacity: var(--drift-opacity, 0.5); }
+}
+
+.drift-field > span {
+  opacity: var(--drift-opacity, 0.5);
+  animation:
+    ksp-drift var(--drift-duration, 18s) ease-in-out var(--drift-delay, 0s) infinite alternate,
+    ksp-drift-fade var(--drift-fade, 12s) linear var(--drift-delay, 0s) infinite;
+}
+
+/* CRT power-on (CrtPowerOn.tsx). Once per session, first load only.
+ *
+ * The overlay is invisible by default. An inline head script sets
+ * `data-crt="on"` on <html> before first paint when this session has not seen
+ * it yet, and only that attribute starts the animation — so it plays from the
+ * very first frame, needs no hydration, and never replays on client-side
+ * navigation. A single beam draws across, blooms, and the screen settles
+ * through one soft flicker: two luminance swings in 620ms, well inside the
+ * three-flashes-per-second limit. */
+.crt-flicker {
+  opacity: 0;
+  visibility: hidden;
+}
+
+html[data-crt="on"] .crt-flicker {
+  animation: ksp-crt-screen 620ms linear forwards;
+}
+
+html[data-crt="on"] .crt-flicker-beam {
+  animation: ksp-crt-beam 620ms var(--ease-mech) forwards;
+}
+
+/* The screen starts letting the page through as the beam blooms, so the
+   bloom reads as the picture arriving rather than a grey slab. */
+@keyframes ksp-crt-screen {
+  0%   { opacity: 1; visibility: visible; }
+  36%  { opacity: 1; }
+  50%  { opacity: 0.4; }
+  58%  { opacity: 0.7; }
+  72%  { opacity: 0.1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes ksp-crt-beam {
+  0%   { transform: scale3d(0, 1, 1); opacity: 1; }
+  32%  { transform: scale3d(1, 1, 1); opacity: 1; }
+  50%  { transform: scale3d(1, 500, 1); opacity: 0.14; }
+  60%, 100% { transform: scale3d(1, 500, 1); opacity: 0; }
+}
+
+/* ------------------------------------------------------------------ *
+ * Reduced motion.
+ *
+ * Targeted rather than a blanket `animation: none !important`, because the
+ * spec still wants short opacity fades — it is transforms, parallax and the
+ * decorative loops that have to stop entirely.
+ * ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .marquee-track,
+  .drift-field > span,
+  .crt-flicker,
+  .crt-flicker-beam,
+  .cursor-blink {
+    animation: none !important;
+  }
+
+  .press-in,
+  .press-pop {
+    transition: none;
+  }
+
+  .press-in:hover,
+  .press-in:active,
+  .press-pop:hover,
+  .press-pop:active {
+    transform: none;
+    box-shadow: 4px 4px 0 0 var(--accent);
+  }
+
+  @keyframes ksp-page-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .page-in {
+    animation-duration: 140ms;
+    animation-timing-function: linear;
+  }
+}

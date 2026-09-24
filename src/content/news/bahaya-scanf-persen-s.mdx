@@ -1,0 +1,63 @@
+Ada satu baris yang muncul di hampir setiap submission minggu-minggu awal, dan
+hampir selalu salah:
+
+```c
+char nama[32];
+scanf("%s", nama);
+```
+
+Baris ini membaca satu kata dari masukan ke dalam `nama`. Masalahnya, `scanf`
+tidak tahu bahwa `nama` hanya punya ruang 32 byte. Kalau masukannya lebih panjang,
+`scanf` tetap menulis, melewati ujung array, ke memori yang bukan miliknya.
+
+## Kenapa ini tidak ketahuan saat diuji
+
+Karena saat diuji, kamu mengetik nama yang pendek.
+
+Buffer overflow tidak selalu membuat program berhenti. Yang tertimpa mungkin
+variabel lain di stack, dan programnya tetap jalan dengan nilai yang diam-diam
+berubah. Atau yang tertimpa adalah bagian yang belum dipakai, dan tidak terjadi
+apa-apa sama sekali.
+
+Kelas kesalahan inilah yang selama puluhan tahun jadi sumber kerentanan keamanan
+paling umum di perangkat lunak yang ditulis dengan C.
+
+## Perbaikannya satu angka
+
+`scanf` menerima batas lebar tepat setelah tanda persen:
+
+```c
+char nama[32];
+scanf("%31s", nama);
+```
+
+Angkanya 31, bukan 32. `scanf` menambahkan karakter nol di akhir, dan karakter itu
+juga butuh tempat. Aturannya: **selalu satu kurang dari ukuran array.**
+
+Ini yang paling sering meleset satu. Kalau kamu menulis `%32s` pada array
+berukuran 32, kamu baru saja menggeser masalahnya satu byte, bukan
+menghilangkannya.
+
+## Untuk membaca satu baris penuh
+
+`%s` berhenti di spasi pertama, jadi ia tidak bisa membaca kalimat. Untuk itu
+pakai `fgets`, yang menerima ukuran buffer sebagai argumen:
+
+```c
+char baris[256];
+if (fgets(baris, sizeof baris, stdin) == NULL) {
+    return 1;
+}
+```
+
+Perhatikan bahwa `fgets` ikut menyimpan karakter baris baru kalau muat. Untuk
+sebagian besar soal, hal itu perlu dibuang sendiri.
+
+## Kebiasaan yang layak dibawa
+
+Setiap kali kamu menulis `%s` di dalam `scanf`, berhenti sebentar dan tanyakan
+berapa ukuran tujuannya. Kalau kamu tidak bisa menjawabnya langsung, itu tanda
+bahwa batasnya memang belum kamu pikirkan.
+
+Mulai musim ini, submission yang memakai `%s` tanpa batas lebar akan dikembalikan
+untuk diperbaiki, meski keluarannya sudah benar.

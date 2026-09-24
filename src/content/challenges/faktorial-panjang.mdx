@@ -1,0 +1,22 @@
+`20!` masih muat di dalam `unsigned long long`. `21!` sudah tidak. Padahal soal
+kombinatorika di kelas Analisis dan Desain Algoritma rutin memakai angka jauh di
+atas itu.
+
+Tugasmu menghitung `N!` untuk `N` sampai 100 dan mencetak seluruh digitnya.
+
+## Format masukan
+
+Satu bilangan bulat `N`.
+
+## Format keluaran
+
+Satu baris berisi `N!` tanpa pemisah ribuan dan tanpa nol di depan.
+
+## Catatan
+
+Cara yang lazim: simpan hasilnya sebagai array digit, satu digit per elemen,
+dengan digit paling tidak signifikan di indeks nol. Untuk mengalikan seluruh
+array dengan sebuah bilangan, kalikan setiap digit lalu rambatkan sisa
+penyimpanan ke elemen berikutnya — persis seperti perkalian bersusun di kertas.
+
+`100!` punya 158 digit. Pastikan arraymu cukup besar sebelum menulis ke dalamnya.

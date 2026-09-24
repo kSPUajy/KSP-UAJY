@@ -1,0 +1,130 @@
+import 'server-only'
+
+import type { JoinInfo, RegistrationWindow } from '@/lib/types'
+
+/**
+ * What joining involves. Every fact here matches the registration
+ * announcement in `src/content/news/pendaftaran-anggota-baru-2026.mdx` — if
+ * the club changes its schedule or rules, change both.
+ */
+export const joinInfo: JoinInfo = {
+  ringkasan:
+    'Kelas dibagi dua jalur. Satu untuk yang belum pernah menulis satu baris kode pun, dimulai dari membaca kode orang lain. Satu lagi untuk yang sudah lewat Algoritma dan Pemrograman dan ingin masuk ke manajemen memori, struktur data, dan pemrograman sistem.',
+  syarat: [
+    'Mahasiswa aktif UAJY, dari angkatan mana pun',
+    'Tidak ada syarat kemampuan awal',
+    'Gratis — tanpa biaya pendaftaran, tanpa iuran bulanan',
+  ],
+  manfaat: [
+    {
+      id: 'kelas-rutin',
+      judul: 'kelas rutin',
+      deskripsi: 'Setiap Jumat sore, 90 menit, di ruang FTI 3.2.',
+    },
+    {
+      id: 'pendampingan',
+      judul: 'pendampingan',
+      deskripsi: 'Satu tentor untuk empat peserta, dari pertemuan pertama.',
+    },
+    {
+      id: 'challenge',
+      judul: 'challenge mingguan',
+      deskripsi: 'Soal baru tiap Senin, dengan pembahasan solusi yang terbuka.',
+    },
+    {
+      id: 'arsip',
+      judul: 'arsip materi',
+      deskripsi: 'Akses ke seluruh materi dan rekaman kelas.',
+    },
+    {
+      id: 'sertifikat',
+      judul: 'sertifikat',
+      deskripsi: 'Sertifikat keanggotaan di akhir tahun ajaran.',
+    },
+  ],
+  langkah: [
+    {
+      id: 'formulir',
+      judul: 'Isi formulir pendaftaran',
+      deskripsi:
+        'Nama, NPM, angkatan, dan satu pertanyaan: pernah menulis kode atau belum. Jawabannya tidak menentukan diterima atau tidak — hanya menentukan jalur.',
+      kapan: 'selama pendaftaran dibuka',
+    },
+    {
+      id: 'perkenalan',
+      judul: 'Ikut sesi perkenalan',
+      deskripsi:
+        'Satu jam bersama pengurus dan tentor. Bukan seleksi, tidak ada yang ditolak — sesi ini ada supaya kamu bisa bertanya sebelum memutuskan.',
+      kapan: 'sehari setelah pendaftaran ditutup',
+    },
+    {
+      id: 'jalur',
+      judul: 'Pilih jalur kelas',
+      deskripsi:
+        'Jalur dasar untuk yang belum pernah memrogram, jalur lanjut untuk yang sudah lewat Algoritma dan Pemrograman. Tentor membantu memilih kalau kamu ragu.',
+      kapan: 'di akhir sesi perkenalan',
+    },
+    {
+      id: 'kelas-pertama',
+      judul: 'Datang ke kelas pertama',
+      deskripsi:
+        'Bawa laptop kalau punya. Kalau tidak, laboratorium FTI menyediakan komputer, dan tentormu sudah tahu namamu.',
+      kapan: 'sepekan setelah sesi perkenalan',
+    },
+  ],
+  faq: [
+    {
+      id: 'belum-bisa',
+      pertanyaan: 'Saya belum pernah memrogram sama sekali. Masih boleh daftar?',
+      jawaban:
+        'Justru jalur dasar dibuat untukmu. Semester lalu sembilan dari dua puluh tujuh anggota baru mendaftar tanpa pengalaman apa pun, dan empat di antaranya sekarang ada di papan peringkat challenge.',
+    },
+    {
+      id: 'bukan-informatika',
+      pertanyaan: 'Saya bukan mahasiswa Informatika.',
+      jawaban:
+        'Tidak masalah. Syaratnya hanya mahasiswa aktif UAJY. Anggota kami datang dari Sistem Informasi, Teknik Industri, bahkan Akuntansi.',
+    },
+    {
+      id: 'biaya',
+      pertanyaan: 'Berapa biayanya?',
+      jawaban:
+        'Nol. Tidak ada biaya pendaftaran, tidak ada iuran bulanan, dan tidak ada buku yang harus dibeli. Semua materi ada di arsip anggota.',
+    },
+    {
+      id: 'laptop',
+      pertanyaan: 'Perlu laptop sendiri?',
+      jawaban:
+        'Tidak wajib. Kelas berjalan di laboratorium yang komputernya sudah terpasang gcc. Kalau kamu membawa laptop, tentor akan membantu memasang kompilernya di pertemuan pertama.',
+    },
+    {
+      id: 'waktu',
+      pertanyaan: 'Berapa jam seminggu yang perlu saya sediakan?',
+      jawaban:
+        'Kelasnya 90 menit tiap Jumat sore. Challenge mingguan sifatnya sukarela — sebagian anggota mengerjakan setiap minggu, sebagian hanya kalau topiknya menarik.',
+    },
+    {
+      id: 'bolos',
+      pertanyaan: 'Bagaimana kalau saya tidak bisa datang di satu pertemuan?',
+      jawaban:
+        'Rekaman dan materinya masuk arsip di hari yang sama, dan tentormu bisa ditanya lewat grup. Tidak ada presensi yang menentukan kamu tetap anggota atau tidak.',
+    },
+    {
+      id: 'tengah-semester',
+      pertanyaan: 'Pendaftaran sudah tutup. Bisa masuk di tengah semester?',
+      jawaban:
+        'Kelas tidak menerima peserta baru di tengah jalan, tapi challenge mingguan terbuka untuk semua mahasiswa UAJY kapan pun. Banyak anggota kami masuk lewat pintu itu dulu.',
+    },
+  ],
+}
+
+/**
+ * The first registration round, for `scripts/generate-seed.mts` only. The
+ * live value is the newest row of `registration_rounds`, which admins edit;
+ * the round the announcement describes opened the day it was posted and
+ * closed at the end of 11 September.
+ */
+export const registrationSeed: RegistrationWindow = {
+  buka: '2026-08-24T00:00',
+  tutup: '2026-09-11T23:59',
+}

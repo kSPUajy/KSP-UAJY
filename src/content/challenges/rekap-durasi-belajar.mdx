@@ -1,0 +1,36 @@
+Aplikasi pencatat jam belajar di sekretariat menulis satu baris log setiap kali
+seseorang selesai memakai ruangan. Di akhir minggu, log itu perlu diringkas per
+orang. Karena laporannya juga diminta dalam bentuk berkas, ringkasannya ditulis
+ke disk lebih dulu, baru dicetak ke layar dari berkas itu.
+
+Alurnya sengaja dibuat begitu: kamu wajib benar-benar menulis dan membaca
+kembali sebuah berkas, bukan sekadar menyimpan semuanya di memori.
+
+## Tugas
+
+1. Baca seluruh log dari masukan standar.
+2. Jumlahkan durasi per nama.
+3. Tulis hasilnya ke berkas bernama `rekap.txt`, satu baris per nama, terurut
+   alfabetis menaik, dengan format `<nama> <total>`.
+4. Buka kembali `rekap.txt`, baca isinya baris demi baris, dan cetak ke layar
+   apa adanya.
+
+## Format masukan
+
+Baris pertama berisi bilangan bulat `N`.
+`N` baris berikutnya berformat `<nama>;<durasi>` tanpa spasi, dengan `durasi`
+dalam menit.
+
+## Format keluaran
+
+Isi `rekap.txt`, dicetak baris demi baris.
+
+## Catatan
+
+`fopen` mengembalikan `NULL` kalau gagal, dan alasan paling umum bukan berkasnya
+tidak ada, melainkan izin tulis yang tidak dimiliki. Periksa nilai kembaliannya
+sebelum dipakai — program yang langsung menulis ke `NULL` akan berhenti dengan
+segmentation fault tanpa memberi tahu apa yang salah.
+
+Tutup berkas tulis dengan `fclose` sebelum membukanya untuk dibaca. Data yang
+masih tertahan di buffer belum tentu sudah sampai ke disk.

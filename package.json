@@ -1,0 +1,44 @@
+{
+  "name": "ksp-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "verify:c": "node scripts/verify-c.mjs",
+    "verify:data": "node scripts/verify-data.mjs",
+    "verify": "node scripts/verify-c.mjs && node scripts/verify-data.mjs && node scripts/verify-mdx.mjs",
+    "verify:mdx": "node scripts/verify-mdx.mjs",
+    "seed:generate": "tsx --conditions=react-server scripts/generate-seed.mts",
+    "db:push": "node scripts/db.mjs push",
+    "db:types": "node scripts/db.mjs types",
+    "akun": "tsx --experimental-websocket --env-file=.env.local --conditions=react-server scripts/akun.mts"
+  },
+  "dependencies": {
+    "@mdx-js/mdx": "3.1.1",
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.117.1",
+    "lucide-react": "1.47.0",
+    "motion": "13.4.0",
+    "next": "16.3.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remark-gfm": "4.0.1",
+    "server-only": "0.0.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^10.11.0",
+    "eslint-config-next": "16.3.5",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}

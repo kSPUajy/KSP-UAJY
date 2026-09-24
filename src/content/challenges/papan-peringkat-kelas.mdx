@@ -1,0 +1,32 @@
+Rekap nilai kelas selama ini disimpan sebagai dua array terpisah: satu untuk
+nama, satu untuk nilai. Sistemnya bertahan sampai seseorang perlu mengurutkan
+data itu, dan menyadari kedua array harus digeser bersamaan supaya indeksnya
+tetap sejajar. Satu kali lupa, dan nilai orang lain menempel di namamu.
+
+Tugasmu menyusun papan peringkat memakai `struct`, lalu mengurutkannya.
+
+## Format masukan
+
+Baris pertama berisi bilangan bulat `N`.
+`N` baris berikutnya masing-masing berisi sebuah nama tanpa spasi dan sebuah
+nilai, dipisahkan satu spasi.
+
+## Format keluaran
+
+`N` baris, terurut berdasarkan nilai dari besar ke kecil. Kalau nilainya sama,
+urutkan berdasarkan nama secara alfabetis menaik. Setiap baris berformat:
+
+```
+<peringkat>. <nama> <nilai>
+```
+
+Peringkat dimulai dari 1 dan selalu bertambah satu, termasuk saat nilainya sama.
+
+## Catatan
+
+`qsort` dari `stdlib.h` menerima fungsi pembanding yang mengembalikan bilangan
+negatif, nol, atau positif. Fungsi itu menerima dua `const void *`, jadi kamu
+harus mengubahnya sendiri ke tipe yang benar sebelum membaca isinya.
+
+Hati-hati dengan pembanding yang mengembalikan selisih dua bilangan bulat besar:
+selisihnya bisa meluap. Untuk nilai 0 sampai 100 di soal ini hal itu aman.

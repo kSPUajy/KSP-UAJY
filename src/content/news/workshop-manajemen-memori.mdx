@@ -1,0 +1,35 @@
+Workshop manajemen memori digelar Sabtu lalu selama tiga jam, diikuti 28 peserta.
+Materinya dibawakan Reza Maulana Hakim dan Bimo Santoso Aji, dengan format setengah
+penjelasan dan setengah praktik langsung.
+
+## Struktur sesi
+
+Sesi dibuka bukan dengan `malloc`, melainkan dengan menggambar. Setiap peserta
+diminta menggambar apa yang menurut mereka terjadi di memori ketika sebuah
+variabel dideklarasikan, lalu ketika sebuah pointer menunjuk ke variabel itu.
+
+Dari 28 gambar, 19 di antaranya menggambarkan pointer sebagai panah yang menunjuk
+ke sebuah nilai. Hanya 6 yang menggambarkan pointer sebagai variabel tersendiri
+yang menyimpan alamat, dan punya alamatnya sendiri.
+
+"Perbedaan itu kelihatan sepele sampai kamu perlu pointer ke pointer," kata Reza.
+"Kalau modelmu berupa panah, `int **p` jadi tidak masuk akal. Kalau modelmu berupa
+kotak beralamat, ia cuma kotak yang isinya alamat kotak lain."
+
+## Bagian praktik
+
+Peserta diberi satu program yang sudah jalan dan benar keluarannya, lalu diminta
+menemukan tiga kebocoran memori di dalamnya menggunakan `valgrind`.
+
+Rata-rata peserta menemukan dua dari tiga. Kebocoran ketiga sengaja ditaruh di
+jalur penanganan galat, yang hanya berjalan kalau alokasinya gagal. Tidak ada satu
+pun yang menemukannya lewat pengujian biasa, karena jalur itu tidak pernah dijalani.
+
+Pesan penutupnya diambil dari situ: jalur galat adalah bagian program yang paling
+jarang diuji dan paling sering salah.
+
+## Berkas dan rekaman
+
+Rekaman sesi, berkas latihan, dan kunci jawaban tersedia di arsip materi. Program
+berisi kebocoran memori yang dipakai dalam sesi praktik dibiarkan apa adanya,
+lengkap dengan ketiga kebocorannya, supaya bisa dipakai ulang untuk latihan mandiri.
