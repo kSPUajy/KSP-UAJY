@@ -1,11 +1,14 @@
 import 'server-only'
 
 import type { Database } from '@/lib/supabase/database.types'
+import { KATEGORI_GALERI } from '@/lib/types'
 import type {
   Challenge,
   ChallengeMeta,
   Difficulty,
+  GalleryItem,
   KategoriBerita,
+  KategoriGaleri,
   Modul,
   Sesi,
   NewsPost,
@@ -150,3 +153,20 @@ export const toSesi = (row: SesiRow): Sesi => ({
   pj: row.pj,
   ringkasan: row.ringkasan,
 })
+
+type GalleryRow = Database['public']['Tables']['gallery_items']['Row']
+
+export function toGalleryItem(row: GalleryRow): GalleryItem {
+  return {
+    id: row.id,
+    src: row.src,
+    alt: row.alt,
+    caption: row.caption,
+    tanggal: row.tanggal,
+    kategori: (KATEGORI_GALERI as readonly string[]).includes(row.kategori) ? (row.kategori as KategoriGaleri) : 'lainnya',
+    width: row.width,
+    height: row.height,
+    type: row.type === 'video' && row.video_url ? 'video' : 'image',
+    ...(row.type === 'video' && row.video_url ? { videoUrl: row.video_url } : {}),
+  }
+}

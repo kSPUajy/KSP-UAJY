@@ -23,6 +23,8 @@ export type HeroTimeline = {
   name: number
   tagline: number
   actions: number
+  /** The short schedule printout under the buttons. */
+  status: number
   /** The module panel in the right-hand column, after the buttons. */
   aside: number
   footer: number
@@ -39,6 +41,7 @@ export function heroTimeline(command: string): HeroTimeline {
     name: raster + 0.38,
     tagline: raster + 0.5,
     actions: raster + 0.62,
+    status: raster + 0.68,
     aside: raster + 0.7,
     footer: raster + 0.78,
     countUp: raster + 0.9,

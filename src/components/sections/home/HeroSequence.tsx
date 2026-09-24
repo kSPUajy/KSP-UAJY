@@ -88,6 +88,8 @@ type HeroSequenceProps = {
   backdrop?: React.ReactNode
   /** The right-hand column from `lg` up; under the buttons below it. */
   aside?: React.ReactNode
+  /** A few lines of facts printed under the buttons. */
+  status?: React.ReactNode
 }
 
 /**
@@ -108,6 +110,7 @@ export function HeroSequence({
   footer,
   backdrop,
   aside,
+  status,
 }: HeroSequenceProps) {
   const mode = useMotionMode()
   const timeline = heroTimeline(command)
@@ -131,7 +134,7 @@ export function HeroSequence({
 
           <h1 id="hero-title" className="mt-8 sm:mt-12">
             <span className="relative block w-fit">
-              <span className="block font-display text-[clamp(4.5rem,24vw,11rem)] leading-[0.85] tracking-[0.02em] text-fg">
+              <span className="block font-display text-[clamp(4.5rem,24vw,11rem)] lg:text-[clamp(11rem,14vw,16rem)] leading-[0.85] tracking-[0.02em] text-fg">
                 {wordmark}
               </span>
               {mode === 'reduced' ? null : <RasterMask delay={timeline.raster} />}
@@ -164,10 +167,16 @@ export function HeroSequence({
           >
             {actions}
           </motion.div>
+
+          {status ? (
+            <motion.div data-seq custom={timeline.status} variants={beat} className="mt-10">
+              {status}
+            </motion.div>
+          ) : null}
         </div>
 
         {aside ? (
-          <motion.div data-seq custom={timeline.aside} variants={beat} className="relative w-full min-w-0 lg:max-w-[42rem]">
+          <motion.div data-seq custom={timeline.aside} variants={beat} className="relative w-full min-w-0">
             {aside}
           </motion.div>
         ) : null}

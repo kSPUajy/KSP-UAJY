@@ -17,6 +17,7 @@ export const TAGS = {
   pendaftaran: 'pendaftaran',
   anggota: 'anggota',
   tentor: 'tentor',
+  galeri: 'galeri',
 } as const
 
 export type ContentTag = (typeof TAGS)[keyof typeof TAGS]

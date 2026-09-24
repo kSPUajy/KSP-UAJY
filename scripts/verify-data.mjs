@@ -32,7 +32,6 @@ const EXPECTED = {
   challenges: 12,
   winners: 11,
   news: 8,
-  gallery: 24,
 }
 
 async function source(relative) {
@@ -88,7 +87,6 @@ async function main() {
   const challengesTs = await source('challenges.ts')
   const winnersTs = await source('winners.ts')
   const newsTs = await source('news.ts')
-  const galleryTs = await source('gallery.ts')
 
   // ---- ids, slugs, counts ------------------------------------------------
   const memberIds = field(membersTs, 'id')
@@ -106,7 +104,6 @@ async function main() {
   const newsIds = field(newsTs, 'id')
   const newsSlugs = field(newsTs, 'slug')
 
-  const galleryIds = field(galleryTs, 'id')
 
   expectCount('members.ts id', memberIds.length, EXPECTED.members)
   expectCount('members.ts slug', memberSlugs.length, EXPECTED.members)
@@ -115,7 +112,6 @@ async function main() {
   expectCount('winners.ts id', winnerIds.length, EXPECTED.winners)
   expectCount('news.ts id', newsIds.length, EXPECTED.news)
   expectCount('news.ts slug', newsSlugs.length, EXPECTED.news)
-  expectCount('gallery.ts id', galleryIds.length, EXPECTED.gallery)
 
   // ---- uniqueness --------------------------------------------------------
   expectUnique('members.ts id', memberIds)
@@ -125,7 +121,6 @@ async function main() {
   expectUnique('winners.ts id', winnerIds)
   expectUnique('news.ts id', newsIds)
   expectUnique('news.ts slug', newsSlugs)
-  expectUnique('gallery.ts id', galleryIds)
 
   // A winner slug is a person and may legitimately repeat across their wins,
   // so it is checked for resolvability rather than uniqueness.
@@ -166,24 +161,12 @@ async function main() {
   await expectFiles('berita', newsSlugs, 'news', '.mdx')
   await expectFiles('solusi pemenang', winnerIds, 'solutions', '.c')
 
-  // ---- gallery video --------------------------------------------------
-  const videoBlocks = [...galleryTs.matchAll(/type:\s*'video'/g)]
-  // Counted by key, not by extracted value: videoUrl is built by a helper call
-  // rather than written as a literal.
-  const videoUrls = [...galleryTs.matchAll(/(?:^|[\s{,])videoUrl:/g)]
-  if (videoBlocks.length !== videoUrls.length) {
-    fail(
-      `gallery.ts: ${videoBlocks.length} item bertipe video tapi ${videoUrls.length} videoUrl — setiap video wajib punya URL`,
-    )
-  }
-
   // ---- report ------------------------------------------------------------
   console.log(dim('integritas konten'))
   console.log(`  anggota   : ${memberIds.length}`)
   console.log(`  challenge : ${challengeIds.length} (${pemenangIds.length} sudah ada pemenang)`)
   console.log(`  pemenang  : ${winnerIds.length} kemenangan, ${new Set(winnerSlugs).size} orang`)
   console.log(`  berita    : ${newsIds.length}`)
-  console.log(`  galeri    : ${galleryIds.length} (${videoUrls.length} video)`)
 
   if (problems.length > 0) {
     console.log(red(`\n${problems.length} masalah:`))

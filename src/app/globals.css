@@ -364,25 +364,6 @@
   max-width: 68ch;
 }
 
-/**
- * One edge of a strip of film: 8px of base, a row of 10×8 sprocket holes,
- * 8px of base — 24px, three baseline rows. The holes are transparent rather
- * than painted, so whatever band the strip lies on shows through them.
- */
-@utility sprockets {
-  height: 24px;
-  background:
-    linear-gradient(var(--film, #10121a), var(--film, #10121a)) top / 100% 8px no-repeat,
-    linear-gradient(var(--film, #10121a), var(--film, #10121a)) bottom / 100% 8px no-repeat,
-    repeating-linear-gradient(
-        to right,
-        var(--film, #10121a) 0 8px,
-        transparent 8px 18px,
-        var(--film, #10121a) 18px 26px
-      )
-      center / 100% 8px no-repeat;
-}
-
 /* ------------------------------------------------------------------ *
  * Keyframes
  * ------------------------------------------------------------------ */
@@ -429,6 +410,45 @@
 .carousel:hover .carousel-track,
 .carousel:focus-within .carousel-track {
   animation-play-state: paused;
+}
+
+/* KSP.TV monitors (home gallery). Static is SVG turbulence jumping between
+   offsets in whole steps, so it reads as snow rather than a sliding texture. */
+.tv-static {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: ksp-static 0.36s steps(1) infinite;
+}
+
+@keyframes ksp-static {
+  0%   { background-position: 0 0; }
+  25%  { background-position: -47px 31px; }
+  50%  { background-position: 29px -61px; }
+  75%  { background-position: -83px -17px; }
+  100% { background-position: 11px 53px; }
+}
+
+.tv-roll::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 28%;
+  background: linear-gradient(to bottom, transparent, rgb(255 255 255 / 0.07), transparent);
+  animation: ksp-roll 7s linear infinite;
+}
+
+@keyframes ksp-roll {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(460%); }
+}
+
+.rec-blink {
+  animation: ksp-rec 1.2s steps(1) infinite;
+}
+
+@keyframes ksp-rec {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
 }
 
 /* Build-log bar and skeletons. Both are functional rather than decorative,
@@ -549,6 +569,9 @@ html[data-crt="on"] .crt-flicker-beam {
 
   .marquee-track,
   .carousel-track,
+  .tv-static,
+  .tv-roll::after,
+  .rec-blink,
   .drift-field > span,
   .crt-flicker,
   .crt-flicker-beam,

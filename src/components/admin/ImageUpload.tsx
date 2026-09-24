@@ -1,31 +1,33 @@
 'use client'
 
-import { createClient } from '@supabase/supabase-js'
 import { useId, useState } from 'react'
 
-import { mulaiUploadGambar } from '@/app/admin/shared-actions'
+import { uploadPhoto } from '@/lib/admin/upload'
 
 /**
- * Uploads a JPG/PNG/WebP straight to the public `media` bucket and hands the
- * public URL back, to fill a link field in the form around it.
+ * Shrinks a JPG/PNG/WebP in the browser, uploads it to the public `media`
+ * bucket and hands the public URL back, to fill a link field in the form
+ * around it. A full-size phone photo is fine: it is made small enough first.
  */
-export function ImageUpload({ folder, onUploaded }: { folder: 'berita' | 'pemenang' | 'tentor'; onUploaded: (url: string) => void }) {
+export function ImageUpload({
+  folder,
+  onUploaded,
+}: {
+  folder: 'berita' | 'pemenang' | 'tentor' | 'galeri'
+  onUploaded: (url: string) => void
+}) {
   const id = useId()
   const [status, setStatus] = useState('')
 
   async function upload(file: File): Promise<void> {
-    setStatus('menyiapkan…')
-    const start = await mulaiUploadGambar(folder, file.type, file.size)
-    if (!start.ok) return setStatus(`error: ${start.error}`)
-    setStatus('mengunggah…')
-    const { error } = await createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
-      auth: { persistSession: false },
-    })
-      .storage.from('media')
-      .uploadToSignedUrl(start.path, start.token, file, { contentType: file.type })
-    if (error) return setStatus('error: upload gagal, coba lagi.')
-    onUploaded(start.publicUrl)
-    setStatus('[ok] gambar terunggah — jangan lupa simpan')
+    setStatus('memperkecil & mengunggah…')
+    try {
+      const photo = await uploadPhoto(folder, file)
+      onUploaded(photo.url)
+      setStatus('[ok] gambar terunggah — jangan lupa simpan')
+    } catch (error) {
+      setStatus(`error: ${error instanceof Error ? error.message : 'upload gagal, coba lagi.'}`)
+    }
   }
 
   return (

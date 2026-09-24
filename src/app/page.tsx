@@ -43,7 +43,8 @@ export const metadata: Metadata = pageMetadata({
  */
 export const revalidate = 3600
 
-const GALLERY_FRAMES = 6
+/** The wall cycles through this many of the newest photos. */
+const GALLERY_FRAMES = 30
 
 export default async function HomePage() {
   const [stats, driftTokens, tickerTokens, current, tentors, posts, gallery, joinInfo, lastWinner, registration, schedule, pengurus] =

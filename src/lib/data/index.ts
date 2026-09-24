@@ -2,7 +2,6 @@ import 'server-only'
 
 import { aboutInfo } from '@/lib/data/tentang'
 import { joinInfo } from '@/lib/data/gabung'
-import { galleryItems } from '@/lib/data/gallery'
 import { members } from '@/lib/data/members'
 import { driftTokens, tickerTokens } from '@/lib/data/motifs'
 import { addDays, deadlineToMs, slugify } from '@/lib/format'
@@ -14,6 +13,7 @@ import {
   NEWS_META_COLUMNS,
   toChallenge,
   toChallengeMeta,
+  toGalleryItem,
   toModul,
   toNewsMeta,
   toNewsPost,
@@ -352,7 +352,13 @@ export async function getNewsPostBySlug(slug: string): Promise<NewsPost | null> 
 
 /** Newest first. */
 export async function getGalleryItems(): Promise<GalleryItem[]> {
-  return [...galleryItems].sort((a, b) => b.tanggal.localeCompare(a.tanggal))
+  const { data, error } = await publicDb(TAGS.galeri)
+    .from('gallery_items')
+    .select('*')
+    .order('tanggal', { ascending: false })
+    .order('created_at', { ascending: false })
+  if (error) throw new Error(`Gagal membaca galeri: ${error.message}`)
+  return data.map(toGalleryItem)
 }
 
 // ------------------------------------------------------------------ stats ---

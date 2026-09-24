@@ -65,6 +65,48 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_items: {
+        Row: {
+          alt: string
+          caption: string
+          created_at: string
+          height: number
+          id: string
+          kategori: string
+          src: string
+          tanggal: string
+          type: string
+          video_url: string | null
+          width: number
+        }
+        Insert: {
+          alt: string
+          caption?: string
+          created_at?: string
+          height: number
+          id: string
+          kategori: string
+          src: string
+          tanggal: string
+          type?: string
+          video_url?: string | null
+          width: number
+        }
+        Update: {
+          alt?: string
+          caption?: string
+          created_at?: string
+          height?: number
+          id?: string
+          kategori?: string
+          src?: string
+          tanggal?: string
+          type?: string
+          video_url?: string | null
+          width?: number
+        }
+        Relationships: []
+      }
       module_tentors: {
         Row: {
           module_id: string

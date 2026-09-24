@@ -9,7 +9,9 @@ import { createSupabaseAdmin } from '@/lib/supabase/admin'
 
 const IMAGE_MAX = 3 * 1024 * 1024
 const IMAGE_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' } as const
-const FOLDERS = ['berita', 'pemenang', 'tentor'] as const
+const FOLDERS = ['berita', 'pemenang', 'tentor', 'galeri'] as const
+const VIDEO_MAX = 50 * 1024 * 1024
+const VIDEO_TYPES = { 'video/mp4': 'mp4', 'video/webm': 'webm' } as const
 
 /**
  * Renders MDX exactly as the public pages will — same pipeline, same
@@ -44,6 +46,24 @@ export async function mulaiUploadGambar(
 
   const storage = createSupabaseAdmin().storage.from('media')
   const path = `${folder}/${randomUUID()}.${extension}`
+  const { data, error } = await storage.createSignedUploadUrl(path)
+  if (error || !data) return { ok: false, error: 'Tidak bisa menyiapkan upload.' }
+  return { ok: true, path: data.path, token: data.token, publicUrl: storage.getPublicUrl(path).data.publicUrl }
+}
+
+/** The same, for a short clip into the public `video` bucket. */
+export async function mulaiUploadVideo(
+  contentType: string,
+  size: number,
+): Promise<{ ok: true; path: string; token: string; publicUrl: string } | { ok: false; error: string }> {
+  const auth = await requireAdminAction()
+  if (!auth.ok) return { ok: false, error: auth.state?.message ?? 'Tidak diizinkan.' }
+  const extension = VIDEO_TYPES[contentType as keyof typeof VIDEO_TYPES]
+  if (!extension) return { ok: false, error: 'Video harus MP4 atau WebM.' }
+  if (!Number.isFinite(size) || size <= 0 || size > VIDEO_MAX) return { ok: false, error: 'Video maksimal 50 MB.' }
+
+  const storage = createSupabaseAdmin().storage.from('video')
+  const path = `galeri/${randomUUID()}.${extension}`
   const { data, error } = await storage.createSignedUploadUrl(path)
   if (error || !data) return { ok: false, error: 'Tidak bisa menyiapkan upload.' }
   return { ok: true, path: data.path, token: data.token, publicUrl: storage.getPublicUrl(path).data.publicUrl }

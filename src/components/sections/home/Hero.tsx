@@ -18,6 +18,33 @@ type HeroProps = {
   schedule: readonly TimelineEntry[]
 }
 
+const STATUS_ROWS = (registrationOpen: boolean) =>
+  [
+    { key: 'tentoring', value: 'Senin & Selasa, 19.00–21.00 WIB' },
+    { key: 'tempat', value: 'Lab Komputasi' },
+    { key: 'tugas', value: 'dikumpulkan tiap Minggu, 23.59 WIB' },
+    { key: 'pendaftaran', value: registrationOpen ? 'dibuka — ayo gabung' : 'ditutup untuk periode ini', live: registrationOpen },
+  ] as const
+
+/** The week at a glance, printed like `cat` output under the buttons. */
+function HeroStatus({ registrationOpen }: { registrationOpen: boolean }) {
+  return (
+    <div className="max-w-md border-l-2 border-accent pl-4 text-[12px] leading-6 sm:text-[13px]">
+      <p aria-hidden className="text-muted">
+        <span className="text-accent-fg">$</span> cat ~/ksp/jadwal.conf
+      </p>
+      <dl className="mt-1 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4">
+        {STATUS_ROWS(registrationOpen).map((row) => (
+          <div key={row.key} className="contents">
+            <dt className="text-dim">{row.key}</dt>
+            <dd className={'live' in row && row.live ? 'text-accent-fg' : 'text-fg'}>{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  )
+}
+
 /**
  * Full-viewport terminal. The window fills the first screen; the CRT vignette
  * darkens the dotted desk around it, never the text inside it.
@@ -55,6 +82,7 @@ export function Hero({ stats, driftTokens, registrationOpen, schedule }: HeroPro
             tagline={siteConfig.tagline}
             backdrop={<DriftField tokens={driftTokens} />}
             aside={schedule.length > 0 ? <HeroModulPanel entries={schedule} /> : undefined}
+            status={<HeroStatus registrationOpen={registrationOpen} />}
             actions={
               registrationOpen ? (
                 <>
