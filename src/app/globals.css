@@ -519,7 +519,7 @@
 }
 
 html[data-godmode='on'] {
-  animation: ksp-god 1.8s steps(3) infinite;
+  animation: ksp-god 3.6s steps(3) infinite;
 }
 
 html[data-godmode='on'],
@@ -529,16 +529,58 @@ html[data-godmode='on'] * {
 }
 
 @keyframes ksp-god {
-  0%   { --god: #3ddc4a; }
-  33%  { --god: #ffc21a; }
-  66%  { --god: #ff2e3a; }
-  100% { --god: #3ddc4a; }
+  0%   { --god: #1fd13a; }
+  33%  { --god: #e0a800; }
+  66%  { --god: #ff1a2a; }
+  100% { --god: #1fd13a; }
 }
 
 .god-wash {
   background: var(--god);
   mix-blend-mode: color;
-  opacity: 0.55;
+  opacity: 0.6;
+}
+
+/* The dark closing in from the edges, breathing. */
+.god-vignette {
+  background: radial-gradient(ellipse at center, transparent 25%, rgb(0 0 0 / 0.85) 75%, #000 100%);
+  animation: ksp-god-breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes ksp-god-breathe {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(0.94); }
+}
+
+/* Lights failing: short blackouts at uneven moments. */
+.god-flicker {
+  opacity: 0;
+  animation: ksp-god-flicker 4.3s steps(1) infinite;
+}
+
+@keyframes ksp-god-flicker {
+  0%, 100% { opacity: 0; }
+  31% { opacity: 0.9; }
+  32% { opacity: 0; }
+  33% { opacity: 0.6; }
+  34% { opacity: 0; }
+  71% { opacity: 1; }
+  73% { opacity: 0; }
+}
+
+/* A jolt every few seconds. */
+.god-shake {
+  animation: ksp-god-shake 3.1s steps(1) infinite;
+}
+
+@keyframes ksp-god-shake {
+  0%, 100% { transform: none; }
+  40% { transform: translate(-9px, 4px) skewX(-3deg); }
+  41% { transform: translate(7px, -5px); }
+  42% { transform: translate(-3px, 2px) skewX(2deg); }
+  43% { transform: none; }
+  80% { transform: translate(5px, 6px); }
+  81% { transform: none; }
 }
 
 /* The unidentified sighting in the tentor section: its feed jitters and
@@ -676,6 +718,9 @@ html[data-crt="on"] .crt-flicker-beam {
 
   .marquee-track,
   .carousel-track,
+  .god-vignette,
+  .god-flicker,
+  .god-shake,
   .ghost-feed,
   html[data-godmode='on'],
   .glitch::before,

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
+import { GodMode } from '@/components/overlays/GodMode'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 import { CREATOR, WHOAMI_LINES, komboLine } from '@/lib/creator'
 
@@ -164,34 +165,7 @@ export function CreatorEggs() {
   return (
     <>
       <AnimatePresence>
-        {god ? (
-          <motion.div
-            key="god"
-            aria-hidden
-            className="pointer-events-none fixed inset-0 z-[65]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.6 } }}
-          >
-            <div className="god-wash absolute inset-0" />
-            <div className="absolute inset-0 scanlines opacity-40" />
-            <div className="absolute inset-0 flex items-center justify-center p-4">
-              <motion.p
-                className="glitch glitch-sharp text-center font-display text-[clamp(2.5rem,11vw,9rem)] leading-none tracking-[0.06em] text-(--god) [text-shadow:0_0_24px_var(--god),4px_4px_0_#000]"
-                data-text="STOP SEARCHING"
-                initial={reduced ? false : { scale: 1.6, opacity: 0 }}
-                animate={reduced ? { opacity: 1 } : { scale: [1.6, 1, 1.03, 1], opacity: 1 }}
-                transition={{
-                  duration: 0.7,
-                  ease: [0.16, 1, 0.3, 1],
-                  delay: 0.4,
-                }}
-              >
-                STOP SEARCHING
-              </motion.p>
-            </div>
-          </motion.div>
-        ) : null}
+        {god ? <GodMode key="god" duration={GOD_MS} reduced={reduced} /> : null}
       </AnimatePresence>
       <AnimatePresence>
         {egg ? (
@@ -239,7 +213,7 @@ export function CreatorEggs() {
       </AnimatePresence>
       {god ? (
         <p className="sr-only" role="alert">
-          God mode aktif selama 30 detik. Stop searching.
+          God mode on for 30 seconds. Stop searching.
         </p>
       ) : null}
     </>
