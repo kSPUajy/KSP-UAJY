@@ -191,3 +191,124 @@ export async function renderOgCard({ accent, file, command, eyebrow, title, subt
     { ...OG_SIZE, fonts: await fonts },
   )
 }
+
+/** Instagram's portrait feed size; Stories show it whole on a blurred band. */
+export const IG_SIZE = { width: 1080, height: 1350 } as const
+
+export type IgCard = {
+  cover: string
+  /** e.g. `berita · fakta`. */
+  eyebrow: string
+  title: string
+  excerpt: string
+  /** Site-relative path of the article, printed as where to read the rest. */
+  path: string
+}
+
+/** Headline size for the portrait card: fewer, bigger lines than the OG card. */
+function igTitleSize(title: string): number {
+  if (title.length <= 30) return 76
+  if (title.length <= 50) return 64
+  return 54
+}
+
+/**
+ * The same object as the share card, stood upright for an Instagram post:
+ * the terminal window, the article's cover across the top, then the kicker,
+ * the headline, the standfirst, and where to read the rest. Satori fetches
+ * the cover itself.
+ */
+export async function renderIgCard({ cover, eyebrow, title, excerpt, path: articlePath }: IgCard): Promise<ImageResponse> {
+  const color = ACCENT_HEX.amber
+  const host = siteConfig.url.replace(/^https?:\/\//, '')
+  const heading = clip(title, 80)
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          padding: '56px 72px 76px 56px',
+          backgroundColor: INK.canvas,
+          backgroundImage: `radial-gradient(circle, ${INK.dot} 2px, transparent 2px)`,
+          backgroundSize: '24px 24px',
+          fontFamily: 'JetBrains Mono',
+          color: INK.fg,
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            border: `4px solid ${INK.fg}`,
+            backgroundColor: INK.surface,
+            boxShadow: `18px 18px 0 0 ${color}`,
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              height: 64,
+              padding: '0 28px',
+              borderBottom: `4px solid ${INK.fg}`,
+              backgroundColor: INK.surface2,
+              fontSize: 24,
+              color: INK.dim,
+            }}
+          >
+            <span style={{ color }}>[■]</span>
+            <span>[□][✕]</span>
+            <span style={{ marginLeft: 22 }}>{`~${clip(articlePath, 40)}`}</span>
+          </div>
+
+          {/* eslint-disable-next-line @next/next/no-img-element -- Satori renders plain <img> only */}
+          <img src={cover} width={944} height={531} alt="" style={{ objectFit: 'cover', borderBottom: `4px solid ${INK.fg}` }} />
+
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '36px 48px 40px' }}>
+            <div
+              style={{
+                display: 'flex',
+                fontFamily: 'Silkscreen',
+                fontSize: 26,
+                letterSpacing: 4,
+                textTransform: 'uppercase',
+                color,
+              }}
+            >
+              {`// ${eyebrow}`}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                marginTop: 18,
+                fontSize: igTitleSize(heading),
+                fontWeight: 700,
+                lineHeight: 1.12,
+                letterSpacing: -1,
+              }}
+            >
+              {heading}
+            </div>
+            <div style={{ display: 'flex', marginTop: 22, fontSize: 28, lineHeight: 1.45, color: INK.muted }}>
+              {clip(excerpt, 170)}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto', paddingTop: 28, fontSize: 24 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element -- Satori renders plain <img> only */}
+              <img src={await logo} width={108} height={44} alt="" style={{ marginRight: 24 }} />
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ color: INK.muted, fontSize: 22 }}>baca selengkapnya di</span>
+                <span style={{ color, fontSize: 28, fontWeight: 700 }}>{`${host}/berita`}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+    { ...IG_SIZE, fonts: await fonts },
+  )
+}

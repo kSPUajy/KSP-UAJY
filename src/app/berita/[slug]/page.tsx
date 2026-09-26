@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { MdxContent } from '@/components/mdx/MdxContent'
 import { Reveal } from '@/components/motion/Reveal'
 import { GitLog } from '@/components/sections/berita/GitLog'
+import { ShareInstagram } from '@/components/sections/berita/ShareInstagram'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { Badge, Tag } from '@/components/ui/Badge'
 import { CopyButton } from '@/components/ui/CopyButton'
@@ -241,6 +242,12 @@ export default async function BeritaDetailPage({ params }: BeritaPageProps) {
                   doneMessage="Tautan tersalin ke papan klip"
                 />
               </div>
+              <ShareInstagram
+                slug={post.slug}
+                judul={post.judul}
+                excerpt={post.excerpt}
+                url={`${siteConfig.url}/berita/${post.slug}`}
+              />
             </section>
           </aside>
         </div>
