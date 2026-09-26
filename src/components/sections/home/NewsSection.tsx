@@ -5,6 +5,7 @@ import { Reveal } from '@/components/motion/Reveal'
 import { ButtonLink } from '@/components/ui/Button'
 import { DitherImage } from '@/components/ui/DitherImage'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { SectionMarker } from '@/components/ui/SectionMarker'
 import { SectionShell } from '@/components/ui/SectionShell'
 import { isChallengeClosed } from '@/lib/data'
 import { formatTanggal, formatTanggalPendek, formatTanggalWaktu, namaHari } from '@/lib/format'
@@ -155,9 +156,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
   return (
     <SectionShell accent="amber" tone="alt" labelledBy="berita-title">
       <Reveal>
-        <p className="text-center font-display text-[10px] tracking-[0.18em] text-accent-fg uppercase">
-          {`// ${pad2(index)} — berita`}
-        </p>
+        <SectionMarker index={index} label="berita" className="justify-center" />
       </Reveal>
 
       {lead ? (

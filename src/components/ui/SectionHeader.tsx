@@ -1,7 +1,8 @@
-import { cn, pad2 } from '@/lib/utils'
+import { SectionMarker } from '@/components/ui/SectionMarker'
+import { cn } from '@/lib/utils'
 
 type SectionHeaderProps = {
-  /** Section number, printed in the eyebrow: `// 03 — TENTOR`. */
+  /** Position on the home page; turns the eyebrow into a `SectionMarker` progress bar. */
   index?: number
   eyebrow: string
   title: string
@@ -34,7 +35,6 @@ export function SectionHeader({
   actions,
   className,
 }: SectionHeaderProps) {
-  const label = index === undefined ? `// ${eyebrow}` : `// ${pad2(index)} — ${eyebrow}`
 
   return (
     <div
@@ -47,9 +47,11 @@ export function SectionHeader({
       )}
     >
       <div className={cn('min-w-0', align === 'center' && 'flex flex-col items-center')}>
-        <p className="font-display text-[10px] tracking-[0.18em] text-accent-fg uppercase">
-          {label}
-        </p>
+        {index === undefined ? (
+          <p className="font-display text-[10px] tracking-[0.18em] text-accent-fg uppercase">{`// ${eyebrow}`}</p>
+        ) : (
+          <SectionMarker index={index} label={eyebrow} />
+        )}
 
         <Heading
           id={headingId}

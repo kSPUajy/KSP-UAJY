@@ -2,9 +2,9 @@ import { Reveal } from '@/components/motion/Reveal'
 import { BenefitLog } from '@/components/sections/gabung/BenefitLog'
 import { RegisterButton, RegistrationStatusLine } from '@/components/sections/gabung/Registration'
 import { ButtonLink } from '@/components/ui/Button'
+import { SectionMarker } from '@/components/ui/SectionMarker'
 import { SectionShell } from '@/components/ui/SectionShell'
 import type { JoinInfo, Registration } from '@/lib/types'
-import { pad2 } from '@/lib/utils'
 
 type JoinCtaProps = {
   index: number
@@ -24,9 +24,7 @@ export function JoinCta({ index, info, registration }: JoinCtaProps) {
     <SectionShell accent="lime" tone="void" dots labelledBy="gabung-title">
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:gap-16">
         <Reveal>
-          <p className="font-display text-[10px] tracking-[0.18em] text-accent-fg uppercase">
-            {`// ${pad2(index)} — gabung`}
-          </p>
+          <SectionMarker index={index} label="gabung" />
 
           <h2
             id="gabung-title"

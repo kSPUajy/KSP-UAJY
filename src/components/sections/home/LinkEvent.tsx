@@ -1,8 +1,8 @@
 import { Reveal } from '@/components/motion/Reveal'
 import { ButtonAnchor } from '@/components/ui/Button'
+import { SectionMarker } from '@/components/ui/SectionMarker'
 import { SectionShell } from '@/components/ui/SectionShell'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
-import { pad2 } from '@/lib/utils'
 import { siteConfig } from '@/site.config'
 
 /** The letters of the name and the word each one stands for. */
@@ -30,9 +30,7 @@ export function LinkEvent({ index }: { index: number }) {
     <SectionShell accent="orange" scanlines labelledBy="link-title">
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:gap-16">
         <Reveal>
-          <p className="font-display text-[10px] tracking-[0.18em] text-accent-fg uppercase">
-            {`// ${pad2(index)} — event tahunan`}
-          </p>
+          <SectionMarker index={index} label="event tahunan" />
 
           <h2
             id="link-title"
