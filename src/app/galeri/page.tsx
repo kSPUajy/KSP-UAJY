@@ -12,7 +12,7 @@ import { siteConfig } from '@/site.config'
 
 export const metadata: Metadata = pageMetadata({
   title: 'Galeri',
-  description: `Dokumentasi kegiatan ${siteConfig.name} ${siteConfig.campus.short}: kelas Senin dan Selasa, workshop, kompetisi, dan gathering.`,
+  description: `Papan mading ${siteConfig.name} ${siteConfig.campus.short}: foto dan video dari kelas, workshop, kompetisi, dan kumpul-kumpul anggota.`,
   path: '/galeri',
 })
 
@@ -29,10 +29,10 @@ export default async function GaleriPage() {
         accent="magenta"
         command="ls -lt ~/galeri"
         eyebrow="galeri"
-        title="Papan cetak"
+        title="Papan Mading KSP"
         description={
           items.length > 0
-            ? 'Semua hasil cetak dari printer di beranda, ditempel di satu dinding: kelas Senin dan Selasa, workshop, kompetisi, dan sesi-sesi malam sebelum deadline. Pilih satu untuk melihatnya utuh, dalam warna aslinya.'
+            ? 'Tempat kami menempel momen-momen KSP: kelas Senin dan Selasa, workshop, kompetisi, sampai kumpul-kumpul setelah kelas. Klik salah satu untuk melihatnya lebih besar, dalam warna aslinya.'
             : undefined
         }
         facts={

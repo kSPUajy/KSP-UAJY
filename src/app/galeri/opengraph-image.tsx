@@ -10,7 +10,7 @@ export default function Image() {
     file: '~/galeri/',
     command: 'ls -lt ~/galeri',
     eyebrow: 'galeri',
-    title: 'Dari ruang kelas dan sekitarnya',
-    subtitle: 'Kelas Senin dan Selasa, workshop, kompetisi, dan gathering.',
+    title: 'Papan Mading KSP',
+    subtitle: 'Momen dari kelas, workshop, kompetisi, dan kumpul-kumpul anggota.',
   })
 }
