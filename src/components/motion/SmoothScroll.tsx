@@ -14,6 +14,17 @@ export function scrollToTop(): void {
 }
 
 /**
+ * Jumps an element to the top of the view, clear of the sticky nav — for a
+ * new page of content, where a glide would only delay it. Goes through
+ * Lenis when it is running: a native jump would be undone by Lenis easing
+ * back to where it thinks the page is.
+ */
+export function scrollToElement(element: HTMLElement, offset = -96): void {
+  if (active) active.scrollTo(element, { offset, immediate: true, force: true })
+  else window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY + offset })
+}
+
+/**
  * Eased wheel scrolling for the whole site. Touch keeps the native feel, and
  * `prefers-reduced-motion` skips Lenis entirely. In-page anchors are handed
  * to Lenis too, so they glide at the same pace as the wheel.
