@@ -32,8 +32,9 @@ export function LinkEvent({ index }: { index: number }) {
           alternate instead of all leaning the same way. Text still comes
           first in the markup, and first on a phone. */}
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-16">
-        <Reveal>
-          <SectionMarker index={index} label="event tahunan" />
+        {/* Right column, so it reads flush right from `lg` up. */}
+        <Reveal className="lg:text-right">
+          <SectionMarker index={index} label="event tahunan" className="lg:justify-end" />
 
           <h2
             id="link-title"
@@ -43,15 +44,15 @@ export function LinkEvent({ index }: { index: number }) {
           </h2>
           <p className="mt-2 text-xs tracking-[0.08em] text-muted uppercase">{event.expansion}</p>
 
-          <p className="mt-6 max-w-prose text-sm leading-7 text-muted">
+          <p className="mt-6 max-w-prose text-sm leading-7 text-muted lg:ml-auto">
             Kompetisi besar yang digelar {siteConfig.shortName} setiap tahun di akhir semester genap. Semua yang
             dilatih sepanjang tahun — di kelas, di modul, dan di challenge mingguan — dibuktikan di sini.
           </p>
 
           <dl className="mt-6 space-y-2 text-sm leading-6">
             {FACTS.map((fact) => (
-              <div key={fact.key} className="flex gap-3">
-                <dt className="w-32 shrink-0 text-dim">{fact.key}</dt>
+              <div key={fact.key} className="flex gap-3 lg:justify-end">
+                <dt className="w-32 shrink-0 text-dim lg:w-auto">{fact.key}</dt>
                 <dd className="text-fg">{fact.value}</dd>
               </div>
             ))}
