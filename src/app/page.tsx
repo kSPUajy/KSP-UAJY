@@ -12,6 +12,7 @@ import { TentorTeaser } from '@/components/sections/home/TentorTeaser'
 import { JsonLd, organizationLd } from '@/components/seo/JsonLd'
 import { Marquee } from '@/components/ui/Marquee'
 import {
+  getAllChallenges,
   getChallengeById,
   getChallengeBySlug,
   getCurrentChallenge,
@@ -27,6 +28,7 @@ import {
   getTentors,
   getTickerTokens,
   getWinnerById,
+  isChallengeReleased,
 } from '@/lib/data'
 import { mdxExcerpt } from '@/lib/excerpt'
 import { pageMetadata } from '@/lib/metadata'
@@ -65,11 +67,15 @@ export default async function HomePage() {
       getMembers(),
     ])
 
-  const [currentBody, currentWinner, lastWinnerChallenge] = await Promise.all([
+  const [currentBody, currentWinner, lastWinnerChallenge, allChallenges] = await Promise.all([
     current ? getChallengeBySlug(current.slug) : null,
     current?.pemenangId ? getWinnerById(current.pemenangId) : null,
     lastWinner ? getChallengeById(lastWinner.challengeId) : null,
+    getAllChallenges(),
   ])
+  // Only its date and module are shown, never the title, until it is out.
+  const nextChallenge =
+    [...allChallenges].filter((challenge) => !isChallengeReleased(challenge)).sort((a, b) => a.minggu - b.minggu)[0] ?? null
 
   return (
     <>
@@ -97,7 +103,14 @@ export default async function HomePage() {
       />
       <LinkEvent index={3} />
       <TentorTeaser index={4} tentors={tentors} schedule={schedule} />
-      <NewsSection index={5} posts={posts} />
+      <NewsSection
+        index={5}
+        posts={posts}
+        schedule={schedule}
+        current={current}
+        nextChallenge={nextChallenge}
+        registration={registration}
+      />
       <GalleryStrip index={6} items={gallery.slice(0, GALLERY_FRAMES)} />
       <FeedbackSection index={7} />
       <JoinCta index={8} info={joinInfo} registration={registration} />
