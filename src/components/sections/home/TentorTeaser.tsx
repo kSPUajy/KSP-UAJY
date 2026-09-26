@@ -110,7 +110,7 @@ export function TentorTeaser({ index, tentors, schedule }: TentorTeaserProps) {
             headingId="tentor-title"
             description={
               tentors.length > 0
-                ? `${tentors.length} tentor aktif. Semuanya mahasiswa yang dulu duduk di kursi yang sama — dan masih ingat rasanya segfault pertama.`
+                ? `${tentors.length} tentor aktif. Semuanya mahasiswa yang dulu duduk di kursi yang sama — dan masih ingat rasanya pertama kali programnya error.`
                 : undefined
             }
             actions={

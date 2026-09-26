@@ -23,13 +23,13 @@ export const aboutInfo: AboutInfo = {
       id: 'tidak-ada-sihir',
       judul: 'Tidak ada yang disembunyikan',
       deskripsi:
-        'C tidak mengalokasikan memori diam-diam, dan kami juga tidak. Setiap pointer digambar di papan, setiap malloc punya free yang bisa ditunjuk.',
+        'Setiap konsep dijelaskan sampai ke dasarnya, digambar di papan kalau perlu. Tidak ada bagian yang dilewati dengan jawaban "pokoknya begitu".',
     },
     {
       id: 'salah-di-depan',
-      judul: 'Salah di depan umum',
+      judul: 'Salah itu bagian dari belajar',
       deskripsi:
-        'Solusi pemenang dipublikasikan bersama percobaan yang gagal lebih dulu. Cerita tentang segfault jam sebelas malam lebih banyak mengajarkan daripada kode yang sudah rapi.',
+        'Jawaban terbaik challenge dibagikan bersama percobaan yang gagal lebih dulu. Cerita tentang program yang error jam sebelas malam sering lebih banyak mengajarkan daripada hasil akhir yang sudah rapi.',
     },
     {
       id: 'terbuka',
@@ -57,7 +57,7 @@ export const aboutInfo: AboutInfo = {
       periode: 'Okt 2025',
       judul: 'Workshop manajemen memori',
       deskripsi:
-        'Dibuka dengan menggambar, bukan dengan malloc. Modulnya kini jadi materi wajib jalur lanjut.',
+        'Dibuka dengan menggambar di papan, bukan langsung menulis kode. Modulnya kini jadi materi wajib jalur lanjut.',
     },
     {
       periode: 'Des 2025',
@@ -81,7 +81,7 @@ export const aboutInfo: AboutInfo = {
       periode: 'Jul 2026',
       judul: 'Challenge mingguan musim kedua',
       deskripsi:
-        'Dua belas soal, tingkat SEGFAULT, petunjuk yang terkunci, dan solusi pemenang yang terbit bersama cerita pendekatannya.',
+        'Dua belas soal, tingkat kesulitan tertinggi yang baru, petunjuk yang dibuka bertahap, dan jawaban pemenang yang terbit bersama cerita di baliknya.',
     },
   ],
   sekretariat: {
