@@ -115,6 +115,13 @@ export const viewport: Viewport = {
  * 3. `data-needs-js` marks controls that only work with script, such as the
  *    challenge archive's filter. Better absent than silently inert.
  */
+/**
+ * A refresh starts at the top of the page, not wherever the reader was: the
+ * browser's own restoration is switched off for reloads only, before it can
+ * run. Back/forward keep their position, and a `#hash` still wins.
+ */
+const SCROLL_TOP_ON_RELOAD = `try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'&&!location.hash){history.scrollRestoration='manual';window.scrollTo(0,0)}}catch(e){}`
+
 const NO_SCRIPT_STYLES = `<style>
 body{display:flex;flex-direction:column}
 body>footer{order:2}
@@ -145,6 +152,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: CRT_INIT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: SCROLL_TOP_ON_RELOAD }} />
         <noscript dangerouslySetInnerHTML={{ __html: NO_SCRIPT_STYLES }} />
       </head>
       <body className="min-h-dvh antialiased">

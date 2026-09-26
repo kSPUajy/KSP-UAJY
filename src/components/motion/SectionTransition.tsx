@@ -7,26 +7,17 @@ import type { Variants } from 'motion/react'
 import { useMotionMode } from '@/lib/hooks/useReducedMotion'
 
 /**
- * - `print`: the band is revealed top to bottom in hard steps, like terminal
- *   output arriving line by line.
  * - `crt`: the band opens from a single horizontal line, like a tube TV
  *   switching on.
  */
-export type SectionTransitionKind = 'print' | 'crt'
+export type SectionTransitionKind = 'crt'
 
 type SectionTransitionProps = {
   kind: SectionTransitionKind
   children: React.ReactNode
 }
 
-/** Eight hard steps rather than a smooth ease: output, not a curtain. */
-const stepped = (t: number): number => Math.floor(t * 8) / 8
-
 const VARIANTS: Record<SectionTransitionKind, Variants> = {
-  print: {
-    hidden: { clipPath: 'inset(0 0 100% 0)' },
-    shown: { clipPath: 'inset(0 0 0% 0)', transition: { duration: 0.9, ease: stepped } },
-  },
   crt: {
     hidden: { scaleY: 0.006, scaleX: 0.7, opacity: 0.4, filter: 'brightness(2.4)' },
     shown: {
@@ -45,9 +36,9 @@ const VARIANTS: Record<SectionTransitionKind, Variants> = {
  * section scrolls into view; under reduced motion the section is simply
  * there.
  *
- * The outer box is what gets watched: it is never clipped or scaled, where
- * the animated inner box starts clipped to nothing — and a clipped-away
- * element never counts as "in view", so it would wait forever.
+ * The outer box is what gets watched: it is never scaled, where the
+ * animated inner box starts squashed to a line and would barely register
+ * as "in view".
  */
 export function SectionTransition({ kind, children }: SectionTransitionProps) {
   const mode = useMotionMode()
@@ -60,7 +51,7 @@ export function SectionTransition({ kind, children }: SectionTransitionProps) {
     <div ref={outer}>
       <motion.div
         data-reveal
-        style={kind === 'crt' ? { transformOrigin: '50% 50%' } : undefined}
+        style={{ transformOrigin: '50% 50%' }}
         variants={VARIANTS[kind]}
         initial="hidden"
         animate={inView ? 'shown' : 'hidden'}

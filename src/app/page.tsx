@@ -103,9 +103,7 @@ export default async function HomePage() {
         }
       />
       <LinkEvent index={3} />
-      <SectionTransition kind="print">
-        <TentorTeaser index={4} tentors={tentors} schedule={schedule} />
-      </SectionTransition>
+      <TentorTeaser index={4} tentors={tentors} schedule={schedule} />
       <NewsSection
         index={5}
         posts={posts}
