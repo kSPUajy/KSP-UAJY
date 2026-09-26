@@ -32,6 +32,136 @@ export const newsSources: readonly NewsSource[] = [
     tags: ['fakta', 'bahasa-c', 'pemula'],
   },
   {
+    id: 'n-16',
+    slug: 'kenapa-array-dimulai-dari-nol',
+    judul: 'Kenapa Array Dimulai dari Nol?',
+    tanggal: '2026-09-25',
+    kategori: 'fakta',
+    // stocksnap, CC0: https://stocksnap.io/photo/locker-cabinet-06HGHYMGHH
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/b3429625-9b95-4714-bc36-97d234c16e6d.jpg',
+    excerpt:
+      'Elemen pertama array bukan nomor 1, melainkan 0. Ternyata alasannya masuk akal sekali, dan paham ini menyelamatkanmu dari bug paling umum saat memakai array.',
+    penulis: TIM,
+    tags: ['fakta', 'array', 'pemula'],
+  },
+  {
+    id: 'n-17',
+    slug: 'mengenal-tipe-data-dasar-c',
+    judul: 'Mengenal Tipe Data Dasar di C',
+    tanggal: '2026-09-23',
+    kategori: 'tutorial',
+    // flickr, CC0: https://www.flickr.com/photos/200781279@N05/53866700628
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/be2529a9-3c44-4009-a3a3-f65c54740c8f.jpg',
+    excerpt:
+      'int, float, double, dan char: kapan dipakai, cara mencetaknya, dan dua jebakan yang paling sering menjebak pemula.',
+    penulis: TIM,
+    tags: ['tutorial', 'tipe-data', 'pemula'],
+  },
+  {
+    id: 'n-18',
+    slug: 'for-while-do-while',
+    judul: 'for, while, do-while: Kapan Pakai yang Mana?',
+    tanggal: '2026-09-21',
+    kategori: 'tips',
+    // stocksnap, CC0: https://stocksnap.io/photo/spiral-staircase-COJQ6XJU0V
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/8722d7b2-5102-4d06-81ba-1201096035d0.jpg',
+    excerpt:
+      'Tiga jenis perulangan yang bisa saling menggantikan, tapi masing-masing paling cocok untuk situasi yang berbeda. Begini cara memilihnya.',
+    penulis: TIM,
+    tags: ['tips', 'perulangan', 'pemula'],
+  },
+  {
+    id: 'n-19',
+    slug: 'scanf-melewati-input-karakter',
+    judul: 'Kenapa scanf Melewati Input Karakter?',
+    tanggal: '2026-09-18',
+    kategori: 'tips',
+    // stocksnap, CC0: https://stocksnap.io/photo/laptop-keyboard-H8VOUVLWYR
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/338cbe57-20a0-4e82-bd5f-b97f2468a3ed.jpg',
+    excerpt:
+      'Pertanyaan kedua langsung terlewat tanpa sempat dijawab? Ada karakter tersembunyi dari tombol Enter yang tertinggal. Perbaikannya cuma satu spasi.',
+    penulis: TIM,
+    tags: ['tips', 'scanf', 'input'],
+  },
+  {
+    id: 'n-20',
+    slug: 'flowchart-sebelum-ngoding',
+    judul: 'Flowchart: Rencanakan Dulu, Ngoding Kemudian',
+    tanggal: '2026-09-14',
+    kategori: 'tips',
+    // stocksnap, CC0: https://stocksnap.io/photo/whiteboard-webdesign-NUEH6AWK1X
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/a7686b60-e44a-4b23-a3bb-3d2539b2580c.jpg',
+    excerpt:
+      'Daripada langsung mengetik lalu berputar-putar, gambar dulu alurnya. Kalau alurnya sudah benar, kodenya tinggal mengikuti.',
+    penulis: TIM,
+    tags: ['tips', 'flowchart', 'pemula'],
+  },
+  {
+    id: 'n-21',
+    slug: 'apa-itu-algoritma',
+    judul: 'Apa Itu Algoritma? Kamu Sudah Memakainya Setiap Hari',
+    tanggal: '2026-09-10',
+    kategori: 'fakta',
+    // stocksnap, CC0: https://stocksnap.io/photo/flowchart-whiteboard-CDC8HFPYWR
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/c3ddce61-de37-4ac0-b010-839db30d468d.jpg',
+    excerpt:
+      'Dari resep mi instan sampai mencari nama di daftar hadir. Algoritma tidak serumit namanya, dan asal-usul katanya pun menarik.',
+    penulis: TIM,
+    tags: ['fakta', 'algoritma', 'dasar'],
+  },
+  {
+    id: 'n-22',
+    slug: 'bug-pertama-serangga-sungguhan',
+    judul: 'Bug Pertama di Dunia Adalah Serangga Sungguhan',
+    tanggal: '2026-09-06',
+    kategori: 'fakta',
+    // flickr, PDM: https://www.flickr.com/photos/39422575@N02/52242029077
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/d5456aed-1982-4fcc-99fb-1ff88653c2c8.jpg',
+    excerpt:
+      'Tahun 1947, sebuah komputer bermasalah karena seekor ngengat terjepit di dalamnya. Kisah di balik istilah bug dan debugging.',
+    penulis: TIM,
+    tags: ['fakta', 'sejarah', 'debugging'],
+  },
+  {
+    id: 'n-23',
+    slug: 'bilangan-biner-cara-komputer-menghitung',
+    judul: 'Bilangan Biner: Cara Komputer Menghitung',
+    tanggal: '2026-09-04',
+    kategori: 'fakta',
+    // rawpixel, CC0: https://www.rawpixel.com/image/5908040/image-public-domain-technology-free
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/7dc7a100-ef37-4cce-a218-9d781555fb71.jpg',
+    excerpt:
+      'Semua yang ada di komputer pada akhirnya hanyalah deretan 0 dan 1. Begini cara membacanya, dan cara mengubah angka biasa menjadi biner.',
+    penulis: TIM,
+    tags: ['fakta', 'biner', 'dasar'],
+  },
+  {
+    id: 'n-24',
+    slug: 'compiler-vs-interpreter',
+    judul: 'Compiler vs Interpreter: Apa Bedanya?',
+    tanggal: '2026-09-01',
+    kategori: 'fakta',
+    // stocksnap, CC0: https://stocksnap.io/photo/books-dictionary-U74O1AOW5J
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/f4d660ef-b55f-4474-bd7b-4794ce38d1f6.jpg',
+    excerpt:
+      'Kenapa C harus di-compile sementara Python bisa langsung dijalankan? Dua cara komputer menerjemahkan kode, dijelaskan dengan analogi buku.',
+    penulis: TIM,
+    tags: ['fakta', 'compiler', 'dasar'],
+  },
+  {
+    id: 'n-25',
+    slug: 'tips-belajar-ngoding-tidak-cepat-menyerah',
+    judul: 'Tips Belajar Ngoding Supaya Tidak Cepat Menyerah',
+    tanggal: '2026-08-27',
+    kategori: 'tips',
+    // flickr, CC0: https://www.flickr.com/photos/42853072@N07/53380185474
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/b1f5e90a-d433-4fbd-b903-528ce17d9b90.jpg',
+    excerpt:
+      'Error tidak habis-habis dan teman terasa jauh di depan? Tujuh kebiasaan kecil supaya semester pertama pemrograman terasa lebih ringan.',
+    penulis: TIM,
+    tags: ['tips', 'belajar', 'pemula'],
+  },
+  {
     id: 'n-14',
     slug: 'kebiasaan-kecil-kode-c-rapi',
     judul: 'Lima Kebiasaan Kecil Supaya Kode C Lebih Rapi',

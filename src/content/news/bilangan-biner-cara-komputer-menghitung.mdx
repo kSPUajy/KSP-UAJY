@@ -1,0 +1,50 @@
+Semua yang ada di komputer, mulai dari angka, huruf, foto, sampai video,
+pada akhirnya disimpan sebagai deretan **0 dan 1**. Sistem bilangan yang hanya
+memakai dua angka ini disebut bilangan biner.
+
+## Kenapa hanya 0 dan 1?
+
+Komputer dibangun dari jutaan komponen elektronik kecil yang hanya punya dua
+keadaan: mengalirkan listrik atau tidak. Dua keadaan itu paling mudah dan
+paling andal dibedakan, jadi dipakailah dua angka: 1 untuk "ada listrik" dan
+0 untuk "tidak ada".
+
+## Membaca bilangan biner
+
+Di bilangan desimal yang biasa kita pakai, setiap posisi bernilai sepuluh
+kali posisi di kanannya: satuan, puluhan, ratusan. Di biner, setiap posisi
+bernilai **dua kali** posisi di kanannya:
+
+| Posisi | 8 | 4 | 2 | 1 |
+| --- | --- | --- | --- | --- |
+| Biner `1101` | 1 | 1 | 0 | 1 |
+
+Jumlahkan nilai posisi yang berisi 1: 8 + 4 + 1 = **13**. Jadi `1101` dalam
+biner sama dengan 13 dalam desimal.
+
+## Mengubah desimal ke biner
+
+Caranya: bagi terus dengan 2, catat sisanya, lalu baca dari bawah ke atas.
+Contoh untuk 13:
+
+| Pembagian | Hasil | Sisa |
+| --- | --- | --- |
+| 13 ÷ 2 | 6 | 1 |
+| 6 ÷ 2 | 3 | 0 |
+| 3 ÷ 2 | 1 | 1 |
+| 1 ÷ 2 | 0 | 1 |
+
+Dibaca dari bawah: `1101`. Cocok dengan contoh sebelumnya.
+
+Langkah ini juga bisa jadi latihan perulangan di C: gunakan `% 2` untuk
+mengambil sisa dan `/ 2` untuk membagi, ulangi sampai angkanya habis.
+
+## Bit dan byte
+
+Satu angka biner disebut **bit**. Delapan bit disebut satu **byte**. Dengan
+delapan bit, ada 256 kombinasi berbeda, dari `00000000` sampai `11111111`,
+cukup untuk menyimpan satu huruf. Itu sebabnya ukuran berkas dihitung dalam
+byte, kilobyte, megabyte, dan seterusnya.
+
+Jadi saat kamu menyimpan tugas berukuran 2 kilobyte, sebenarnya kamu
+menyimpan sekitar enam belas ribu angka 0 dan 1.

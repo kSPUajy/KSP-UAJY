@@ -1,0 +1,68 @@
+C punya tiga jenis perulangan: `for`, `while`, dan `do-while`. Ketiganya bisa
+dipakai untuk mengulang, tapi masing-masing paling cocok untuk situasi yang
+berbeda. Memilih yang tepat membuat kodemu lebih mudah dibaca.
+
+## `for`: jumlah ulangannya sudah diketahui
+
+Pakai `for` kalau kamu tahu persis berapa kali perulangan harus berjalan.
+
+```c
+int i;
+for (i = 1; i <= 3; i++) {
+    printf("%d ", i);
+}
+```
+
+Keluarannya `1 2 3`. Semua pengaturan perulangan (nilai awal, kondisi, dan
+perubahan) ada di satu baris, jadi mudah dilihat sekilas.
+
+Ingat, di Dev-C++ variabel `i` harus dideklarasikan di luar `for`.
+
+## `while`: berhenti saat kondisi tertentu terpenuhi
+
+Pakai `while` kalau jumlah ulangannya belum diketahui, dan perulangan harus
+berjalan **selama** suatu kondisi masih benar.
+
+```c
+i = 10;
+while (i > 0) {
+    i = i / 2;
+    printf("%d ", i);
+}
+```
+
+Keluarannya `5 2 1 0`. Kita tidak menentukan jumlah ulangannya di awal.
+Perulangan berhenti sendiri saat `i` tidak lagi lebih dari 0.
+
+Karena kondisinya diperiksa di awal, isi `while` bisa saja tidak dijalankan
+sama sekali kalau kondisinya sudah salah sejak awal.
+
+## `do-while`: jalan minimal sekali
+
+`do-while` memeriksa kondisinya di akhir, jadi isinya **pasti** dijalankan
+paling tidak satu kali. Ini paling cocok untuk meminta input sampai valid:
+
+```c
+int angka;
+do {
+    printf("Masukkan angka positif: ");
+    scanf("%d", &angka);
+} while (angka <= 0);
+```
+
+Program akan terus bertanya sampai pengguna memasukkan angka yang lebih dari
+nol. Pertanyaannya harus muncul minimal sekali, dan `do-while` menjamin itu.
+
+Jangan lupa titik koma setelah `while (...)` di akhir `do-while`.
+
+## Ringkasnya
+
+| Situasi | Pilihan |
+| --- | --- |
+| Jumlah ulangan sudah pasti | `for` |
+| Ulang selama kondisi benar, bisa nol kali | `while` |
+| Harus jalan minimal sekali | `do-while` |
+
+Ketiganya sebenarnya bisa saling menggantikan. Tapi memilih yang paling cocok
+membuat maksud kodemu langsung terbaca oleh orang lain, termasuk oleh dirimu
+sendiri seminggu kemudian.

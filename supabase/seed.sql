@@ -119,6 +119,545 @@ program C yang sesulit mungkin dibaca tapi tetap berjalan dengan benar.
 Pesertanya membuat program yang bentuk kodenya menyerupai gambar, atau
 program yang bisa mencetak kodenya sendiri. Menghibur untuk dilihat, tapi
 jangan ditiru di tugasmu.$ksp$, array[$ksp$fakta$ksp$, $ksp$bahasa-c$ksp$, $ksp$pemula$ksp$]::text[]),
+  ($ksp$n-16$ksp$, $ksp$kenapa-array-dimulai-dari-nol$ksp$, $ksp$Kenapa Array Dimulai dari Nol?$ksp$, $ksp$2026-09-25$ksp$, $ksp$fakta$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/b3429625-9b95-4714-bc36-97d234c16e6d.jpg$ksp$, $ksp$Elemen pertama array bukan nomor 1, melainkan 0. Ternyata alasannya masuk akal sekali, dan paham ini menyelamatkanmu dari bug paling umum saat memakai array.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Salah satu hal pertama yang membingungkan saat belajar array: elemen pertama
+bukan nomor 1, melainkan nomor **0**. Kenapa begitu? Ternyata alasannya masuk
+akal sekali.
+
+## Contoh sederhana
+
+```c
+int nilai[3] = {80, 75, 90};
+printf("%d %d %d\n", nilai[0], nilai[1], nilai[2]);
+```
+
+Keluarannya `80 75 90`. Array berisi tiga elemen, dan nomornya 0, 1, dan 2.
+Tidak ada `nilai[3]`.
+
+## Indeks adalah jarak dari awal
+
+Anggap array seperti deretan loker yang berjejer. Indeks bukan "loker
+ke berapa", melainkan "berapa langkah dari loker pertama".
+
+- Loker pertama berjarak **0 langkah** dari awal, jadi indeksnya 0.
+- Loker kedua berjarak 1 langkah, jadi indeksnya 1.
+- Dan seterusnya.
+
+Komputer menyimpan isi array berderet di memori. Untuk mencari `nilai[2]`,
+komputer cukup mengambil alamat awal array lalu melompat dua kali ukuran
+satu elemen. Dengan indeks mulai dari 0, perhitungan ini jadi sesederhana
+mungkin, tanpa perlu dikurangi satu setiap saat.
+
+## Akibatnya untuk perulangan
+
+Karena indeks terakhir adalah jumlah elemen dikurangi satu, perulangan untuk
+array biasanya ditulis seperti ini:
+
+```c
+int i;
+for (i = 0; i < 3; i++) {
+    printf("nilai[%d] = %d\n", i, nilai[i]);
+}
+```
+
+Perhatikan dua hal: mulai dari `i = 0`, dan kondisinya `i < 3`, **bukan**
+`i <= 3`.
+
+## Hati-hati melewati batas
+
+Kalau kamu menulis `nilai[3]` pada array berisi tiga elemen, C tidak akan
+menghentikanmu. Program tetap berjalan, tapi yang dibaca adalah memori di
+luar array, dan hasilnya bisa berupa angka acak atau program yang tiba-tiba
+berhenti. Kesalahan ini disebut *out of bounds*, dan salah satu cara paling
+umum terjadinya adalah memakai `<=` di kondisi perulangan.
+
+## Bukan hanya C
+
+Hampir semua bahasa populer, seperti Java, Python, dan JavaScript, juga
+memulai indeks dari 0. Jadi kebiasaan ini akan terus berguna, bahasa apa pun
+yang kamu pelajari berikutnya.$ksp$, array[$ksp$fakta$ksp$, $ksp$array$ksp$, $ksp$pemula$ksp$]::text[]),
+  ($ksp$n-17$ksp$, $ksp$mengenal-tipe-data-dasar-c$ksp$, $ksp$Mengenal Tipe Data Dasar di C$ksp$, $ksp$2026-09-23$ksp$, $ksp$tutorial$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/be2529a9-3c44-4009-a3a3-f65c54740c8f.jpg$ksp$, $ksp$int, float, double, dan char: kapan dipakai, cara mencetaknya, dan dua jebakan yang paling sering menjebak pemula.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Setiap variabel di C harus punya tipe. Tipe menentukan jenis nilai yang bisa
+disimpan, berapa banyak memori yang dipakai, dan cara nilainya dicetak. Ada
+empat tipe dasar yang akan kamu pakai hampir setiap hari.
+
+## Empat tipe dasar
+
+| Tipe | Untuk menyimpan | Contoh | Format printf |
+| --- | --- | --- | --- |
+| `int` | bilangan bulat | `18`, `-5` | `%d` |
+| `float` | bilangan pecahan | `170.5` | `%f` |
+| `double` | bilangan pecahan yang lebih teliti | `3.75` | `%f` |
+| `char` | satu karakter | `'A'` | `%c` |
+
+Contoh pemakaiannya:
+
+```c
+int umur = 18;
+float tinggi = 170.5;
+double ipk = 3.75;
+char huruf = 'A';
+
+printf("%d\n", umur);
+printf("%f\n", tinggi);
+printf("%.2f\n", ipk);
+printf("%c\n", huruf);
+```
+
+Keluarannya:
+
+```
+18
+170.500000
+3.75
+A
+```
+
+Perhatikan bahwa `%f` secara bawaan mencetak enam angka di belakang koma.
+Pakai `%.2f` kalau hanya butuh dua.
+
+## `float` atau `double`?
+
+Keduanya untuk bilangan pecahan, tapi `double` menyimpan angka dengan
+ketelitian sekitar dua kali lipat `float`. Di komputer yang biasa dipakai
+sekarang, `float` memakai 4 byte dan `double` 8 byte. Untuk tugas kuliah,
+`double` biasanya pilihan yang lebih aman.
+
+## Jebakan: `scanf` untuk `double`
+
+Saat mencetak, `double` memakai `%f`. Tapi saat **membaca** dengan `scanf`,
+`double` harus memakai `%lf`:
+
+```c
+double ipk;
+scanf("%lf", &ipk);
+```
+
+Kalau kamu memakai `%f` di `scanf` untuk variabel `double`, nilai yang
+tersimpan akan kacau. Ini salah satu kesalahan paling sering di awal belajar.
+
+## Jebakan: pembagian bilangan bulat
+
+```c
+printf("%d\n", 5 / 2);
+```
+
+Hasilnya `2`, bukan `2.5`. Kalau kedua angkanya `int`, hasilnya juga `int` dan
+angka di belakang koma dibuang. Kalau butuh hasil pecahan, jadikan salah satu
+angkanya pecahan, misalnya `5.0 / 2`.
+
+## Satu karakter, bukan kata
+
+`char` hanya menyimpan **satu** karakter, dan ditulis dengan tanda kutip
+tunggal: `'A'`. Tanda kutip ganda seperti `"A"` adalah teks (string), dan itu
+hal yang berbeda.$ksp$, array[$ksp$tutorial$ksp$, $ksp$tipe-data$ksp$, $ksp$pemula$ksp$]::text[]),
+  ($ksp$n-18$ksp$, $ksp$for-while-do-while$ksp$, $ksp$for, while, do-while: Kapan Pakai yang Mana?$ksp$, $ksp$2026-09-21$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/8722d7b2-5102-4d06-81ba-1201096035d0.jpg$ksp$, $ksp$Tiga jenis perulangan yang bisa saling menggantikan, tapi masing-masing paling cocok untuk situasi yang berbeda. Begini cara memilihnya.$ksp$, $ksp$Tim KSP$ksp$, $ksp$C punya tiga jenis perulangan: `for`, `while`, dan `do-while`. Ketiganya bisa
+dipakai untuk mengulang, tapi masing-masing paling cocok untuk situasi yang
+berbeda. Memilih yang tepat membuat kodemu lebih mudah dibaca.
+
+## `for`: jumlah ulangannya sudah diketahui
+
+Pakai `for` kalau kamu tahu persis berapa kali perulangan harus berjalan.
+
+```c
+int i;
+for (i = 1; i <= 3; i++) {
+    printf("%d ", i);
+}
+```
+
+Keluarannya `1 2 3`. Semua pengaturan perulangan (nilai awal, kondisi, dan
+perubahan) ada di satu baris, jadi mudah dilihat sekilas.
+
+Ingat, di Dev-C++ variabel `i` harus dideklarasikan di luar `for`.
+
+## `while`: berhenti saat kondisi tertentu terpenuhi
+
+Pakai `while` kalau jumlah ulangannya belum diketahui, dan perulangan harus
+berjalan **selama** suatu kondisi masih benar.
+
+```c
+i = 10;
+while (i > 0) {
+    i = i / 2;
+    printf("%d ", i);
+}
+```
+
+Keluarannya `5 2 1 0`. Kita tidak menentukan jumlah ulangannya di awal.
+Perulangan berhenti sendiri saat `i` tidak lagi lebih dari 0.
+
+Karena kondisinya diperiksa di awal, isi `while` bisa saja tidak dijalankan
+sama sekali kalau kondisinya sudah salah sejak awal.
+
+## `do-while`: jalan minimal sekali
+
+`do-while` memeriksa kondisinya di akhir, jadi isinya **pasti** dijalankan
+paling tidak satu kali. Ini paling cocok untuk meminta input sampai valid:
+
+```c
+int angka;
+do {
+    printf("Masukkan angka positif: ");
+    scanf("%d", &angka);
+} while (angka <= 0);
+```
+
+Program akan terus bertanya sampai pengguna memasukkan angka yang lebih dari
+nol. Pertanyaannya harus muncul minimal sekali, dan `do-while` menjamin itu.
+
+Jangan lupa titik koma setelah `while (...)` di akhir `do-while`.
+
+## Ringkasnya
+
+| Situasi | Pilihan |
+| --- | --- |
+| Jumlah ulangan sudah pasti | `for` |
+| Ulang selama kondisi benar, bisa nol kali | `while` |
+| Harus jalan minimal sekali | `do-while` |
+
+Ketiganya sebenarnya bisa saling menggantikan. Tapi memilih yang paling cocok
+membuat maksud kodemu langsung terbaca oleh orang lain, termasuk oleh dirimu
+sendiri seminggu kemudian.$ksp$, array[$ksp$tips$ksp$, $ksp$perulangan$ksp$, $ksp$pemula$ksp$]::text[]),
+  ($ksp$n-19$ksp$, $ksp$scanf-melewati-input-karakter$ksp$, $ksp$Kenapa scanf Melewati Input Karakter?$ksp$, $ksp$2026-09-18$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/338cbe57-20a0-4e82-bd5f-b97f2468a3ed.jpg$ksp$, $ksp$Pertanyaan kedua langsung terlewat tanpa sempat dijawab? Ada karakter tersembunyi dari tombol Enter yang tertinggal. Perbaikannya cuma satu spasi.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Kamu menulis program yang meminta umur, lalu bertanya "Lanjut? (y/n)". Tapi
+saat dijalankan, pertanyaan kedua langsung terlewat tanpa sempat kamu jawab.
+Programnya tidak rusak. Ada karakter tersembunyi yang tertinggal.
+
+## Programnya
+
+```c
+int umur;
+char jawab;
+
+printf("Umur: ");
+scanf("%d", &umur);
+printf("Lanjut? (y/n): ");
+scanf("%c", &jawab);
+printf("[%c] kode %d\n", jawab, jawab);
+```
+
+Kalau kamu mengetik `18` lalu menekan Enter, program langsung selesai dan
+mencetak kurung yang kosong, diikuti `kode 10`.
+
+## Apa yang terjadi
+
+Saat kamu mengetik `18` lalu Enter, yang masuk sebenarnya tiga karakter: `1`,
+`8`, dan karakter **baris baru** dari tombol Enter.
+
+`scanf("%d")` mengambil angka `18`, tapi berhenti tepat sebelum baris baru.
+Karakter baris baru itu tertinggal, menunggu dibaca. Lalu `scanf("%c")`
+datang dan dengan senang hati mengambilnya, karena bagi `%c`, baris baru juga
+sebuah karakter. Angka `10` di keluaran adalah kode karakter baris baru itu.
+
+## Perbaikannya satu spasi
+
+Tambahkan satu spasi sebelum `%c`:
+
+```c
+scanf(" %c", &jawab);
+```
+
+Spasi di dalam format `scanf` artinya "lewati semua spasi, tab, dan baris
+baru yang ada". Setelah itu barulah satu karakter dibaca. Sekarang program
+menunggu jawabanmu dengan benar.
+
+## Kenapa `%d` tidak mengalami ini?
+
+Format seperti `%d`, `%f`, dan `%s` secara otomatis melewati spasi dan baris
+baru sebelum membaca. Hanya `%c` yang tidak, karena tugasnya memang membaca
+karakter apa pun, termasuk spasi.
+
+Jadi aturannya mudah diingat: **setiap kali membaca `%c` setelah membaca
+input lain, beri spasi di depannya.**$ksp$, array[$ksp$tips$ksp$, $ksp$scanf$ksp$, $ksp$input$ksp$]::text[]),
+  ($ksp$n-20$ksp$, $ksp$flowchart-sebelum-ngoding$ksp$, $ksp$Flowchart: Rencanakan Dulu, Ngoding Kemudian$ksp$, $ksp$2026-09-14$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/a7686b60-e44a-4b23-a3bb-3d2539b2580c.jpg$ksp$, $ksp$Daripada langsung mengetik lalu berputar-putar, gambar dulu alurnya. Kalau alurnya sudah benar, kodenya tinggal mengikuti.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Banyak pemula langsung membuka Dev-C++ dan mulai mengetik begitu membaca
+soal. Hasilnya sering berputar-putar: kode ditulis, dihapus, ditulis ulang.
+Ada cara yang lebih tenang: gambar dulu alurnya dengan flowchart.
+
+## Apa itu flowchart?
+
+Flowchart adalah diagram yang menggambarkan langkah-langkah penyelesaian
+masalah, dari awal sampai akhir. Setiap bentuk punya arti:
+
+| Bentuk | Arti |
+| --- | --- |
+| Oval | mulai atau selesai |
+| Persegi panjang | proses, misalnya menghitung |
+| Jajaran genjang | input atau output |
+| Belah ketupat | keputusan, jawabannya ya atau tidak |
+| Panah | arah alur |
+
+## Contoh: menentukan lulus atau tidak
+
+Soalnya: baca nilai, lalu cetak "lulus" kalau nilainya minimal 60.
+
+Alurnya dalam flowchart:
+
+1. **Mulai** (oval)
+2. **Baca nilai** (jajaran genjang)
+3. **Apakah nilai lebih dari atau sama dengan 60?** (belah ketupat)
+4. Kalau **ya**, cetak "lulus". Kalau **tidak**, cetak "tidak lulus" (jajaran genjang)
+5. **Selesai** (oval)
+
+Setelah alurnya jelas, menerjemahkannya ke C hampir seperti menyalin:
+
+```c
+int nilai;
+scanf("%d", &nilai);
+if (nilai >= 60) {
+    printf("lulus\n");
+} else {
+    printf("tidak lulus\n");
+}
+```
+
+## Kenapa ini membantu
+
+- **Memisahkan dua masalah.** Memikirkan *apa* yang harus dilakukan dan
+  *bagaimana* menulisnya di C adalah dua hal berbeda. Flowchart membuatmu
+  menyelesaikan yang pertama dulu.
+- **Kesalahan logika terlihat lebih awal.** Jalur yang lupa ditangani, atau
+  perulangan yang tidak pernah berhenti, lebih mudah terlihat di gambar
+  daripada di tengah puluhan baris kode.
+- **Tidak bergantung bahasa.** Flowchart yang sama bisa diterjemahkan ke C,
+  Java, atau bahasa apa pun.
+
+Itu sebabnya kelas KSP dimulai dari flowchart sebelum menyentuh kode. Kalau
+alurnya sudah benar, kodenya tinggal mengikuti.$ksp$, array[$ksp$tips$ksp$, $ksp$flowchart$ksp$, $ksp$pemula$ksp$]::text[]),
+  ($ksp$n-21$ksp$, $ksp$apa-itu-algoritma$ksp$, $ksp$Apa Itu Algoritma? Kamu Sudah Memakainya Setiap Hari$ksp$, $ksp$2026-09-10$ksp$, $ksp$fakta$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/c3ddce61-de37-4ac0-b010-839db30d468d.jpg$ksp$, $ksp$Dari resep mi instan sampai mencari nama di daftar hadir. Algoritma tidak serumit namanya, dan asal-usul katanya pun menarik.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Kata "algoritma" sering terdengar rumit, seolah hanya dipahami ilmuwan
+komputer. Padahal kamu sudah menjalankan algoritma setiap hari, jauh sebelum
+belajar pemrograman.
+
+## Algoritma adalah langkah-langkah
+
+Algoritma adalah urutan langkah yang jelas untuk menyelesaikan suatu masalah.
+Syaratnya sederhana: setiap langkah harus jelas, urutannya tepat, dan
+langkah-langkah itu harus berakhir.
+
+Resep memasak mi instan adalah contoh algoritma:
+
+1. Rebus air sampai mendidih.
+2. Masukkan mi, tunggu tiga menit.
+3. Tiriskan, lalu campur dengan bumbu.
+4. Sajikan.
+
+Kalau urutannya ditukar, misalnya bumbu dicampur sebelum air mendidih,
+hasilnya berantakan. Begitu juga dengan program.
+
+## Dari mana namanya?
+
+Kata "algoritma" berasal dari nama **Al-Khwarizmi**, matematikawan Persia
+abad ke-9. Tulisannya tentang cara berhitung dengan angka memperkenalkan
+sistem bilangan yang kita pakai sekarang ke dunia Barat, dan namanya lama-lama
+berubah menjadi istilah untuk langkah-langkah penyelesaian masalah.
+
+## Satu masalah, banyak algoritma
+
+Untuk satu masalah, biasanya ada lebih dari satu algoritma. Misalnya mencari
+nama "Rena" di daftar hadir yang tidak berurutan:
+
+- **Cara pertama:** baca nama satu per satu dari atas sampai ketemu.
+- **Cara kedua:** kalau daftarnya sudah urut abjad, buka bagian tengah, lihat
+  apakah "Rena" ada di sebelum atau sesudahnya, lalu ulangi pada separuh yang
+  tersisa.
+
+Cara kedua jauh lebih cepat untuk daftar yang panjang, tapi hanya bisa dipakai
+kalau daftarnya sudah terurut. Memilih algoritma yang tepat untuk situasi
+yang tepat adalah salah satu keterampilan terpenting seorang programmer.
+
+## Algoritma dan program
+
+Algoritma adalah **ide** langkah-langkahnya. Program adalah algoritma yang
+**ditulis** dalam bahasa yang dimengerti komputer, seperti C. Itu sebabnya
+belajar memrogram sebenarnya adalah belajar dua hal: menyusun langkah yang
+benar, lalu menuliskannya dengan tepat.$ksp$, array[$ksp$fakta$ksp$, $ksp$algoritma$ksp$, $ksp$dasar$ksp$]::text[]),
+  ($ksp$n-22$ksp$, $ksp$bug-pertama-serangga-sungguhan$ksp$, $ksp$Bug Pertama di Dunia Adalah Serangga Sungguhan$ksp$, $ksp$2026-09-06$ksp$, $ksp$fakta$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/d5456aed-1982-4fcc-99fb-1ff88653c2c8.jpg$ksp$, $ksp$Tahun 1947, sebuah komputer bermasalah karena seekor ngengat terjepit di dalamnya. Kisah di balik istilah bug dan debugging.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Kita menyebut kesalahan di program sebagai *bug*, yang artinya serangga. Tapi
+dari mana istilah itu berasal? Ada satu kejadian terkenal yang sampai sekarang
+sering diceritakan.
+
+## Ngengat di dalam komputer
+
+Pada 9 September 1947, tim yang mengoperasikan komputer Harvard Mark II di
+Amerika Serikat menemukan masalah pada mesin mereka. Setelah diperiksa,
+penyebabnya ternyata seekor **ngengat** yang terjepit di salah satu relai
+komputer.
+
+Ngengat itu diambil, lalu ditempel dengan selotip di buku catatan kerja tim,
+disertai tulisan yang kurang lebih berarti "kasus pertama bug yang benar-benar
+ditemukan". Halaman catatan itu masih disimpan sampai sekarang di museum
+Smithsonian.
+
+## Istilahnya sebenarnya sudah ada lebih dulu
+
+Ada satu hal yang sering terlewat: kata *bug* untuk menyebut gangguan pada
+mesin sudah dipakai para insinyur jauh sebelum 1947, bahkan sejak zaman
+Thomas Edison. Justru karena istilahnya sudah umum, tim itu merasa lucu
+menemukan "bug" yang benar-benar berupa serangga.
+
+Kisah ini sering dikaitkan dengan **Grace Hopper**, salah satu pelopor
+pemrograman yang bekerja dengan komputer Mark, dan dialah yang membuat cerita
+ini terkenal.
+
+## Dari *bug* ke *debugging*
+
+Dari istilah itu lahir kata **debugging**: proses mencari dan membuang bug
+dari program. Kalau kamu pernah menambahkan `printf` di tengah kode untuk
+melihat nilai variabel, kamu sudah melakukan debugging.
+
+Bedanya, bug zaman sekarang tidak bisa diambil dengan pinset. Kebanyakan bug
+berasal dari hal kecil: titik koma yang salah tempat, `=` yang seharusnya
+`==`, atau indeks array yang kelebihan satu. Tapi prinsipnya tetap sama
+seperti tahun 1947: periksa dengan teliti sampai penyebabnya ketemu.$ksp$, array[$ksp$fakta$ksp$, $ksp$sejarah$ksp$, $ksp$debugging$ksp$]::text[]),
+  ($ksp$n-23$ksp$, $ksp$bilangan-biner-cara-komputer-menghitung$ksp$, $ksp$Bilangan Biner: Cara Komputer Menghitung$ksp$, $ksp$2026-09-04$ksp$, $ksp$fakta$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/7dc7a100-ef37-4cce-a218-9d781555fb71.jpg$ksp$, $ksp$Semua yang ada di komputer pada akhirnya hanyalah deretan 0 dan 1. Begini cara membacanya, dan cara mengubah angka biasa menjadi biner.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Semua yang ada di komputer, mulai dari angka, huruf, foto, sampai video,
+pada akhirnya disimpan sebagai deretan **0 dan 1**. Sistem bilangan yang hanya
+memakai dua angka ini disebut bilangan biner.
+
+## Kenapa hanya 0 dan 1?
+
+Komputer dibangun dari jutaan komponen elektronik kecil yang hanya punya dua
+keadaan: mengalirkan listrik atau tidak. Dua keadaan itu paling mudah dan
+paling andal dibedakan, jadi dipakailah dua angka: 1 untuk "ada listrik" dan
+0 untuk "tidak ada".
+
+## Membaca bilangan biner
+
+Di bilangan desimal yang biasa kita pakai, setiap posisi bernilai sepuluh
+kali posisi di kanannya: satuan, puluhan, ratusan. Di biner, setiap posisi
+bernilai **dua kali** posisi di kanannya:
+
+| Posisi | 8 | 4 | 2 | 1 |
+| --- | --- | --- | --- | --- |
+| Biner `1101` | 1 | 1 | 0 | 1 |
+
+Jumlahkan nilai posisi yang berisi 1: 8 + 4 + 1 = **13**. Jadi `1101` dalam
+biner sama dengan 13 dalam desimal.
+
+## Mengubah desimal ke biner
+
+Caranya: bagi terus dengan 2, catat sisanya, lalu baca dari bawah ke atas.
+Contoh untuk 13:
+
+| Pembagian | Hasil | Sisa |
+| --- | --- | --- |
+| 13 ÷ 2 | 6 | 1 |
+| 6 ÷ 2 | 3 | 0 |
+| 3 ÷ 2 | 1 | 1 |
+| 1 ÷ 2 | 0 | 1 |
+
+Dibaca dari bawah: `1101`. Cocok dengan contoh sebelumnya.
+
+Langkah ini juga bisa jadi latihan perulangan di C: gunakan `% 2` untuk
+mengambil sisa dan `/ 2` untuk membagi, ulangi sampai angkanya habis.
+
+## Bit dan byte
+
+Satu angka biner disebut **bit**. Delapan bit disebut satu **byte**. Dengan
+delapan bit, ada 256 kombinasi berbeda, dari `00000000` sampai `11111111`,
+cukup untuk menyimpan satu huruf. Itu sebabnya ukuran berkas dihitung dalam
+byte, kilobyte, megabyte, dan seterusnya.
+
+Jadi saat kamu menyimpan tugas berukuran 2 kilobyte, sebenarnya kamu
+menyimpan sekitar enam belas ribu angka 0 dan 1.$ksp$, array[$ksp$fakta$ksp$, $ksp$biner$ksp$, $ksp$dasar$ksp$]::text[]),
+  ($ksp$n-24$ksp$, $ksp$compiler-vs-interpreter$ksp$, $ksp$Compiler vs Interpreter: Apa Bedanya?$ksp$, $ksp$2026-09-01$ksp$, $ksp$fakta$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/f4d660ef-b55f-4474-bd7b-4794ce38d1f6.jpg$ksp$, $ksp$Kenapa C harus di-compile sementara Python bisa langsung dijalankan? Dua cara komputer menerjemahkan kode, dijelaskan dengan analogi buku.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Komputer sebenarnya hanya mengerti bahasa mesin, yaitu deretan angka yang
+nyaris mustahil dibaca manusia. Kode yang kita tulis di C atau Python harus
+diterjemahkan lebih dulu. Ada dua cara utama melakukannya: dengan
+**compiler** atau dengan **interpreter**.
+
+## Compiler: terjemahkan semuanya dulu
+
+Compiler membaca **seluruh** kode programmu, lalu menerjemahkannya sekaligus
+menjadi program yang siap dijalankan. Di Windows, hasilnya berupa berkas
+`.exe`.
+
+Itulah yang terjadi saat kamu menekan **Compile** di Dev-C++. Kalau ada
+kesalahan di mana pun, compiler menolak dan menampilkan daftar error. Kalau
+berhasil, berkas `.exe` bisa dijalankan berkali-kali tanpa perlu
+diterjemahkan ulang.
+
+Bahasa yang umumnya memakai compiler: **C**, C++, dan Go.
+
+## Interpreter: terjemahkan sambil jalan
+
+Interpreter membaca kode **baris demi baris**, menerjemahkan, lalu langsung
+menjalankannya. Tidak ada berkas `.exe` yang dihasilkan. Kalau ada kesalahan
+di baris ke-50, program tetap berjalan sampai baris ke-49, lalu berhenti.
+
+Bahasa yang umumnya memakai interpreter: **Python**, JavaScript, dan PHP.
+
+## Seperti menerjemahkan buku
+
+Bayangkan kamu punya buku berbahasa asing.
+
+- **Compiler** seperti penerjemah yang menerjemahkan seluruh buku dulu,
+  baru memberikannya kepadamu. Butuh waktu di awal, tapi setelah itu kamu bisa
+  membacanya dengan lancar kapan saja.
+- **Interpreter** seperti penerjemah yang duduk di sebelahmu dan
+  menerjemahkan kalimat demi kalimat sambil kamu membaca. Bisa langsung mulai,
+  tapi setiap kali membaca ulang, semuanya harus diterjemahkan lagi.
+
+## Mana yang lebih baik?
+
+Tidak ada yang lebih baik secara mutlak.
+
+| | Compiler | Interpreter |
+| --- | --- | --- |
+| Kecepatan program | umumnya lebih cepat | umumnya lebih lambat |
+| Menemukan kesalahan | sebelum program jalan | saat baris itu dijalankan |
+| Mencoba kode kecil | harus compile dulu | bisa langsung dicoba |
+
+Program C terkenal cepat salah satunya karena sudah diterjemahkan penuh ke
+bahasa mesin sebelum dijalankan. Sementara Python disukai pemula karena kodenya
+bisa langsung dicoba tanpa proses compile.
+
+Batasnya pun kini tidak lagi setegas dulu. Java, misalnya, memakai gabungan
+keduanya. Tapi memahami dua cara dasar ini akan membantumu mengerti apa yang
+sebenarnya terjadi setiap kali kamu menekan tombol Compile.$ksp$, array[$ksp$fakta$ksp$, $ksp$compiler$ksp$, $ksp$dasar$ksp$]::text[]),
+  ($ksp$n-25$ksp$, $ksp$tips-belajar-ngoding-tidak-cepat-menyerah$ksp$, $ksp$Tips Belajar Ngoding Supaya Tidak Cepat Menyerah$ksp$, $ksp$2026-08-27$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/b1f5e90a-d433-4fbd-b903-528ce17d9b90.jpg$ksp$, $ksp$Error tidak habis-habis dan teman terasa jauh di depan? Tujuh kebiasaan kecil supaya semester pertama pemrograman terasa lebih ringan.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Hampir semua orang pernah merasa ingin berhenti di minggu-minggu awal belajar
+pemrograman. Errornya tidak habis-habis, soalnya terasa asing, dan teman lain
+kelihatannya sudah jauh di depan. Kabar baiknya: perasaan itu normal, dan ada
+cara untuk melewatinya.
+
+## 1. Ketik sendiri, jangan hanya dibaca
+
+Membaca contoh kode terasa mudah. Mengetiknya sendiri ternyata lain cerita.
+Saat mengetik, kamu akan menemukan detail yang terlewat saat membaca: titik
+koma, tanda kurung, atau huruf besar-kecil. Detail-detail itulah yang
+membangun pemahaman.
+
+## 2. Pecah soal jadi bagian kecil
+
+Soal yang panjang terasa menakutkan kalau dilihat utuh. Pecah jadi langkah
+kecil: baca input dulu, pastikan benar dengan mencetaknya, baru lanjut ke
+perhitungan. Setiap langkah kecil yang berhasil memberi semangat untuk
+langkah berikutnya.
+
+## 3. Error itu petunjuk, bukan kegagalan
+
+Programmer berpengalaman pun melihat error setiap hari. Bedanya, mereka
+membaca pesannya dengan tenang. Setiap error yang berhasil kamu perbaiki
+adalah hal yang tidak akan membuatmu bingung lagi di lain waktu.
+
+## 4. Coba dulu 20 menit, baru bertanya
+
+Berusaha sendiri itu penting, tapi terjebak berjam-jam tidak ada gunanya.
+Coba dulu sekitar 20 menit. Kalau masih buntu, tanyakan ke teman atau tentor,
+sambil menjelaskan apa yang sudah kamu coba. Sering kali, saat menjelaskan
+masalahnya, kamu justru menemukan jawabannya sendiri.
+
+## 5. Sedikit tapi rutin
+
+Belajar 30 menit setiap hari jauh lebih efektif daripada lima jam sekaligus
+sekali seminggu. Otak butuh waktu untuk mencerna, dan kebiasaan kecil yang
+rutin lebih mudah dipertahankan.
+
+## 6. Bandingkan dengan dirimu yang kemarin
+
+Setiap orang punya titik awal yang berbeda. Ada yang sudah belajar sejak SMA,
+ada yang baru pertama kali melihat kode. Yang penting bukan seberapa jauh kamu
+dibanding orang lain, tapi seberapa jauh kamu dibanding dirimu minggu lalu.
+
+## 7. Jangan belajar sendirian
+
+Belajar bersama teman membuat kesulitan terasa lebih ringan. Itu juga alasan
+KSP ada: supaya tidak ada yang harus melewati semester pertama pemrograman
+sendirian.$ksp$, array[$ksp$tips$ksp$, $ksp$belajar$ksp$, $ksp$pemula$ksp$]::text[]),
   ($ksp$n-14$ksp$, $ksp$kebiasaan-kecil-kode-c-rapi$ksp$, $ksp$Lima Kebiasaan Kecil Supaya Kode C Lebih Rapi$ksp$, $ksp$2026-09-24$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/1ab11745-52ea-45a8-88aa-ec7bc33a2e59.jpg$ksp$, $ksp$Kode yang rapi lebih mudah dibaca, lebih mudah diperiksa, dan lebih mudah kamu perbaiki sendiri. Lima kebiasaan kecil yang dampaknya besar.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Kode yang rapi bukan soal gaya-gayaan. Kode yang rapi lebih mudah dibaca, lebih
 mudah diperiksa tentor, dan yang paling penting, lebih mudah kamu perbaiki
 sendiri saat ada yang salah. Berikut lima kebiasaan kecil yang dampaknya besar.

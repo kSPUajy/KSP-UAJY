@@ -1,0 +1,54 @@
+Komputer sebenarnya hanya mengerti bahasa mesin, yaitu deretan angka yang
+nyaris mustahil dibaca manusia. Kode yang kita tulis di C atau Python harus
+diterjemahkan lebih dulu. Ada dua cara utama melakukannya: dengan
+**compiler** atau dengan **interpreter**.
+
+## Compiler: terjemahkan semuanya dulu
+
+Compiler membaca **seluruh** kode programmu, lalu menerjemahkannya sekaligus
+menjadi program yang siap dijalankan. Di Windows, hasilnya berupa berkas
+`.exe`.
+
+Itulah yang terjadi saat kamu menekan **Compile** di Dev-C++. Kalau ada
+kesalahan di mana pun, compiler menolak dan menampilkan daftar error. Kalau
+berhasil, berkas `.exe` bisa dijalankan berkali-kali tanpa perlu
+diterjemahkan ulang.
+
+Bahasa yang umumnya memakai compiler: **C**, C++, dan Go.
+
+## Interpreter: terjemahkan sambil jalan
+
+Interpreter membaca kode **baris demi baris**, menerjemahkan, lalu langsung
+menjalankannya. Tidak ada berkas `.exe` yang dihasilkan. Kalau ada kesalahan
+di baris ke-50, program tetap berjalan sampai baris ke-49, lalu berhenti.
+
+Bahasa yang umumnya memakai interpreter: **Python**, JavaScript, dan PHP.
+
+## Seperti menerjemahkan buku
+
+Bayangkan kamu punya buku berbahasa asing.
+
+- **Compiler** seperti penerjemah yang menerjemahkan seluruh buku dulu,
+  baru memberikannya kepadamu. Butuh waktu di awal, tapi setelah itu kamu bisa
+  membacanya dengan lancar kapan saja.
+- **Interpreter** seperti penerjemah yang duduk di sebelahmu dan
+  menerjemahkan kalimat demi kalimat sambil kamu membaca. Bisa langsung mulai,
+  tapi setiap kali membaca ulang, semuanya harus diterjemahkan lagi.
+
+## Mana yang lebih baik?
+
+Tidak ada yang lebih baik secara mutlak.
+
+| | Compiler | Interpreter |
+| --- | --- | --- |
+| Kecepatan program | umumnya lebih cepat | umumnya lebih lambat |
+| Menemukan kesalahan | sebelum program jalan | saat baris itu dijalankan |
+| Mencoba kode kecil | harus compile dulu | bisa langsung dicoba |
+
+Program C terkenal cepat salah satunya karena sudah diterjemahkan penuh ke
+bahasa mesin sebelum dijalankan. Sementara Python disukai pemula karena kodenya
+bisa langsung dicoba tanpa proses compile.
+
+Batasnya pun kini tidak lagi setegas dulu. Java, misalnya, memakai gabungan
+keduanya. Tapi memahami dua cara dasar ini akan membantumu mengerti apa yang
+sebenarnya terjadi setiap kali kamu menekan tombol Compile.

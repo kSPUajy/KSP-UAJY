@@ -1,0 +1,74 @@
+Setiap variabel di C harus punya tipe. Tipe menentukan jenis nilai yang bisa
+disimpan, berapa banyak memori yang dipakai, dan cara nilainya dicetak. Ada
+empat tipe dasar yang akan kamu pakai hampir setiap hari.
+
+## Empat tipe dasar
+
+| Tipe | Untuk menyimpan | Contoh | Format printf |
+| --- | --- | --- | --- |
+| `int` | bilangan bulat | `18`, `-5` | `%d` |
+| `float` | bilangan pecahan | `170.5` | `%f` |
+| `double` | bilangan pecahan yang lebih teliti | `3.75` | `%f` |
+| `char` | satu karakter | `'A'` | `%c` |
+
+Contoh pemakaiannya:
+
+```c
+int umur = 18;
+float tinggi = 170.5;
+double ipk = 3.75;
+char huruf = 'A';
+
+printf("%d\n", umur);
+printf("%f\n", tinggi);
+printf("%.2f\n", ipk);
+printf("%c\n", huruf);
+```
+
+Keluarannya:
+
+```
+18
+170.500000
+3.75
+A
+```
+
+Perhatikan bahwa `%f` secara bawaan mencetak enam angka di belakang koma.
+Pakai `%.2f` kalau hanya butuh dua.
+
+## `float` atau `double`?
+
+Keduanya untuk bilangan pecahan, tapi `double` menyimpan angka dengan
+ketelitian sekitar dua kali lipat `float`. Di komputer yang biasa dipakai
+sekarang, `float` memakai 4 byte dan `double` 8 byte. Untuk tugas kuliah,
+`double` biasanya pilihan yang lebih aman.
+
+## Jebakan: `scanf` untuk `double`
+
+Saat mencetak, `double` memakai `%f`. Tapi saat **membaca** dengan `scanf`,
+`double` harus memakai `%lf`:
+
+```c
+double ipk;
+scanf("%lf", &ipk);
+```
+
+Kalau kamu memakai `%f` di `scanf` untuk variabel `double`, nilai yang
+tersimpan akan kacau. Ini salah satu kesalahan paling sering di awal belajar.
+
+## Jebakan: pembagian bilangan bulat
+
+```c
+printf("%d\n", 5 / 2);
+```
+
+Hasilnya `2`, bukan `2.5`. Kalau kedua angkanya `int`, hasilnya juga `int` dan
+angka di belakang koma dibuang. Kalau butuh hasil pecahan, jadikan salah satu
+angkanya pecahan, misalnya `5.0 / 2`.
+
+## Satu karakter, bukan kata
+
+`char` hanya menyimpan **satu** karakter, dan ditulis dengan tanda kutip
+tunggal: `'A'`. Tanda kutip ganda seperti `"A"` adalah teks (string), dan itu
+hal yang berbeda.

@@ -1,0 +1,56 @@
+Salah satu hal pertama yang membingungkan saat belajar array: elemen pertama
+bukan nomor 1, melainkan nomor **0**. Kenapa begitu? Ternyata alasannya masuk
+akal sekali.
+
+## Contoh sederhana
+
+```c
+int nilai[3] = {80, 75, 90};
+printf("%d %d %d\n", nilai[0], nilai[1], nilai[2]);
+```
+
+Keluarannya `80 75 90`. Array berisi tiga elemen, dan nomornya 0, 1, dan 2.
+Tidak ada `nilai[3]`.
+
+## Indeks adalah jarak dari awal
+
+Anggap array seperti deretan loker yang berjejer. Indeks bukan "loker
+ke berapa", melainkan "berapa langkah dari loker pertama".
+
+- Loker pertama berjarak **0 langkah** dari awal, jadi indeksnya 0.
+- Loker kedua berjarak 1 langkah, jadi indeksnya 1.
+- Dan seterusnya.
+
+Komputer menyimpan isi array berderet di memori. Untuk mencari `nilai[2]`,
+komputer cukup mengambil alamat awal array lalu melompat dua kali ukuran
+satu elemen. Dengan indeks mulai dari 0, perhitungan ini jadi sesederhana
+mungkin, tanpa perlu dikurangi satu setiap saat.
+
+## Akibatnya untuk perulangan
+
+Karena indeks terakhir adalah jumlah elemen dikurangi satu, perulangan untuk
+array biasanya ditulis seperti ini:
+
+```c
+int i;
+for (i = 0; i < 3; i++) {
+    printf("nilai[%d] = %d\n", i, nilai[i]);
+}
+```
+
+Perhatikan dua hal: mulai dari `i = 0`, dan kondisinya `i < 3`, **bukan**
+`i <= 3`.
+
+## Hati-hati melewati batas
+
+Kalau kamu menulis `nilai[3]` pada array berisi tiga elemen, C tidak akan
+menghentikanmu. Program tetap berjalan, tapi yang dibaca adalah memori di
+luar array, dan hasilnya bisa berupa angka acak atau program yang tiba-tiba
+berhenti. Kesalahan ini disebut *out of bounds*, dan salah satu cara paling
+umum terjadinya adalah memakai `<=` di kondisi perulangan.
+
+## Bukan hanya C
+
+Hampir semua bahasa populer, seperti Java, Python, dan JavaScript, juga
+memulai indeks dari 0. Jadi kebiasaan ini akan terus berguna, bahasa apa pun
+yang kamu pelajari berikutnya.

@@ -1,0 +1,54 @@
+Banyak pemula langsung membuka Dev-C++ dan mulai mengetik begitu membaca
+soal. Hasilnya sering berputar-putar: kode ditulis, dihapus, ditulis ulang.
+Ada cara yang lebih tenang: gambar dulu alurnya dengan flowchart.
+
+## Apa itu flowchart?
+
+Flowchart adalah diagram yang menggambarkan langkah-langkah penyelesaian
+masalah, dari awal sampai akhir. Setiap bentuk punya arti:
+
+| Bentuk | Arti |
+| --- | --- |
+| Oval | mulai atau selesai |
+| Persegi panjang | proses, misalnya menghitung |
+| Jajaran genjang | input atau output |
+| Belah ketupat | keputusan, jawabannya ya atau tidak |
+| Panah | arah alur |
+
+## Contoh: menentukan lulus atau tidak
+
+Soalnya: baca nilai, lalu cetak "lulus" kalau nilainya minimal 60.
+
+Alurnya dalam flowchart:
+
+1. **Mulai** (oval)
+2. **Baca nilai** (jajaran genjang)
+3. **Apakah nilai lebih dari atau sama dengan 60?** (belah ketupat)
+4. Kalau **ya**, cetak "lulus". Kalau **tidak**, cetak "tidak lulus" (jajaran genjang)
+5. **Selesai** (oval)
+
+Setelah alurnya jelas, menerjemahkannya ke C hampir seperti menyalin:
+
+```c
+int nilai;
+scanf("%d", &nilai);
+if (nilai >= 60) {
+    printf("lulus\n");
+} else {
+    printf("tidak lulus\n");
+}
+```
+
+## Kenapa ini membantu
+
+- **Memisahkan dua masalah.** Memikirkan *apa* yang harus dilakukan dan
+  *bagaimana* menulisnya di C adalah dua hal berbeda. Flowchart membuatmu
+  menyelesaikan yang pertama dulu.
+- **Kesalahan logika terlihat lebih awal.** Jalur yang lupa ditangani, atau
+  perulangan yang tidak pernah berhenti, lebih mudah terlihat di gambar
+  daripada di tengah puluhan baris kode.
+- **Tidak bergantung bahasa.** Flowchart yang sama bisa diterjemahkan ke C,
+  Java, atau bahasa apa pun.
+
+Itu sebabnya kelas KSP dimulai dari flowchart sebelum menyentuh kode. Kalau
+alurnya sudah benar, kodenya tinggal mengikuti.

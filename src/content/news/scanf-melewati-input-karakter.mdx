@@ -1,0 +1,50 @@
+Kamu menulis program yang meminta umur, lalu bertanya "Lanjut? (y/n)". Tapi
+saat dijalankan, pertanyaan kedua langsung terlewat tanpa sempat kamu jawab.
+Programnya tidak rusak. Ada karakter tersembunyi yang tertinggal.
+
+## Programnya
+
+```c
+int umur;
+char jawab;
+
+printf("Umur: ");
+scanf("%d", &umur);
+printf("Lanjut? (y/n): ");
+scanf("%c", &jawab);
+printf("[%c] kode %d\n", jawab, jawab);
+```
+
+Kalau kamu mengetik `18` lalu menekan Enter, program langsung selesai dan
+mencetak kurung yang kosong, diikuti `kode 10`.
+
+## Apa yang terjadi
+
+Saat kamu mengetik `18` lalu Enter, yang masuk sebenarnya tiga karakter: `1`,
+`8`, dan karakter **baris baru** dari tombol Enter.
+
+`scanf("%d")` mengambil angka `18`, tapi berhenti tepat sebelum baris baru.
+Karakter baris baru itu tertinggal, menunggu dibaca. Lalu `scanf("%c")`
+datang dan dengan senang hati mengambilnya, karena bagi `%c`, baris baru juga
+sebuah karakter. Angka `10` di keluaran adalah kode karakter baris baru itu.
+
+## Perbaikannya satu spasi
+
+Tambahkan satu spasi sebelum `%c`:
+
+```c
+scanf(" %c", &jawab);
+```
+
+Spasi di dalam format `scanf` artinya "lewati semua spasi, tab, dan baris
+baru yang ada". Setelah itu barulah satu karakter dibaca. Sekarang program
+menunggu jawabanmu dengan benar.
+
+## Kenapa `%d` tidak mengalami ini?
+
+Format seperti `%d`, `%f`, dan `%s` secara otomatis melewati spasi dan baris
+baru sebelum membaca. Hanya `%c` yang tidak, karena tugasnya memang membaca
+karakter apa pun, termasuk spasi.
+
+Jadi aturannya mudah diingat: **setiap kali membaca `%c` setelah membaca
+input lain, beri spasi di depannya.**
