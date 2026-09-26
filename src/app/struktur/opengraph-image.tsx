@@ -10,7 +10,7 @@ export default function Image() {
     file: '~/struktur/org.h',
     command: 'cd ~/struktur',
     eyebrow: 'struktur',
-    title: 'Siapa mengurus apa',
-    subtitle: 'Pengurus inti dan divisi akademik, media, serta acara.',
+    title: 'Orang-orang di balik KSP',
+    subtitle: 'Pengurus harian, kominfo, dan USDA yang menjalankan KSP setiap minggu.',
   })
 }

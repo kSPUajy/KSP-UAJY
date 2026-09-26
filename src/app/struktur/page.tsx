@@ -60,10 +60,10 @@ export default async function StrukturPage() {
         accent="violet"
         command="cd ~/struktur"
         eyebrow="struktur"
-        title="Siapa mengurus apa"
+        title="Orang-orang di balik KSP"
         description={
           members.length > 0
-            ? `${members.length} pengurus — pengurus harian, kominfo, dan USDA — yang menjaga kelas, publikasi, dan kegiatan tetap jalan tiap minggu. Pilih siapa pun untuk membuka detailnya — atau ganti tampilan ke tree kalau lebih suka membaca daftar.`
+            ? `${members.length} pengurus yang bekerja di balik layar supaya kelas, kabar, dan kegiatan KSP tetap berjalan setiap minggu — dari pengurus harian, kominfo, sampai USDA. Klik salah satu nama untuk mengenal perannya, atau ganti ke tampilan tree untuk melihat semuanya sekaligus.`
             : undefined
         }
         facts={

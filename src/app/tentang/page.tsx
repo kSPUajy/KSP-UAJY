@@ -29,7 +29,7 @@ type Shortcut = {
 
 /** Where to go next, each in the accent of the page it opens. */
 const SHORTCUTS: readonly Shortcut[] = [
-  { href: '/struktur', path: '~/struktur', deskripsi: 'Siapa mengurus apa, per divisi.', accent: 'violet' },
+  { href: '/struktur', path: '~/struktur', deskripsi: 'Orang-orang di balik KSP, per divisi.', accent: 'violet' },
   { href: '/tentor', path: '~/tentor', deskripsi: 'Kakak tingkat yang memegang kelas.', accent: 'cyan' },
   { href: '/challenge', path: '~/challenge', deskripsi: 'Satu soal C tiap Senin.', accent: 'magenta' },
   { href: '/gabung', path: '~/gabung', deskripsi: 'Syarat, alur, dan FAQ pendaftaran.', accent: 'lime' },
