@@ -10,7 +10,7 @@ import { isChallengeClosed } from '@/lib/data'
 import { formatTanggal, formatTanggalPendek, formatTanggalWaktu, namaHari } from '@/lib/format'
 import { COVER, KATEGORI_BERITA } from '@/lib/types'
 import type { ChallengeMeta, NewsPostMeta, Registration, TimelineEntry } from '@/lib/types'
-import { pad2 } from '@/lib/utils'
+import { cn, pad2 } from '@/lib/utils'
 import { siteConfig } from '@/site.config'
 
 type NewsSectionProps = {
@@ -28,6 +28,8 @@ const LEAD_SIZES = '(min-width: 1024px) 760px, 92vw'
 /** Stories in the side column, then one-line headlines along the foot. */
 const SIDE = 3
 const FOOT = 4
+/** A phone gets the lead and two more; the rest is a tap away on /berita. */
+const PHONE_SIDE = 2
 
 type Brief = { label: string; value: string; note: string; href: string }
 
@@ -161,10 +163,10 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                 </span>
                 <span>Edisi digital</span>
               </div>
-              <h2 id="berita-title" className="pt-4 font-blackletter text-[clamp(3rem,11vw,7rem)] leading-none sm:pt-5">
+              <h2 id="berita-title" className="py-3 font-blackletter text-[clamp(3rem,11vw,7rem)] leading-none sm:pt-5 sm:pb-0">
                 Kabar KSP
               </h2>
-              <p className="pt-1 pb-3 text-sm text-muted italic">&ldquo;{siteConfig.tagline}&rdquo;</p>
+              <p className="hidden pt-1 pb-3 text-sm text-muted italic sm:block">&ldquo;{siteConfig.tagline}&rdquo;</p>
               {/* The rubric line is the index: each desk, how many stories, and a way in. */}
               <nav aria-label="Rubrik berita" className="border-y-4 border-double border-line py-1.5">
                 <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-[11px] tracking-[0.14em] uppercase sm:text-xs">
@@ -206,7 +208,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
               </div>
             </div>
 
-            <div className="relative mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-0">
+            <div className="relative mt-5 grid grid-cols-1 gap-6 sm:mt-6 sm:gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-0">
               {/* Lead story. */}
               <article className="group relative lg:border-r lg:border-line lg:pr-8">
                 <Kicker>{lead.kategori}</Kicker>
@@ -230,7 +232,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                   sizes={LEAD_SIZES}
                   className="mt-5 aspect-video w-full"
                 />
-                <p className="mt-5 text-[17px] leading-7 text-justify hyphens-auto text-fg first-letter:float-left first-letter:mt-1 first-letter:mr-2 first-letter:text-[4.25rem] first-letter:leading-[0.8] first-letter:font-extrabold">
+                <p className="mt-5 line-clamp-4 text-[17px] leading-7 text-justify sm:line-clamp-none hyphens-auto text-fg first-letter:float-left first-letter:mt-1 first-letter:mr-2 first-letter:text-[4.25rem] first-letter:leading-[0.8] first-letter:font-extrabold">
                   {lead.excerpt}
                 </p>
                 <p className="mt-3 text-right text-sm text-muted italic">(bersambung ke halaman 2 &rarr;)</p>
@@ -243,8 +245,14 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                       Juga di edisi ini
                     </p>
                     <ul>
-                      {side.map((post) => (
-                        <li key={post.id} className="group relative border-b border-line-soft py-4 last:border-b-0">
+                      {side.map((post, position) => (
+                        <li
+                          key={post.id}
+                          className={cn(
+                            'group relative border-b border-line-soft py-3 last:border-b-0 sm:py-4',
+                            position >= PHONE_SIDE && 'hidden sm:block',
+                          )}
+                        >
                           <Kicker>{post.kategori}</Kicker>
                           <h3 className="mt-1.5 text-xl leading-tight font-extrabold text-balance">
                             <Link
@@ -254,7 +262,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                               {post.judul}
                             </Link>
                           </h3>
-                          <p className="mt-1.5 line-clamp-3 text-[15px] leading-6 text-justify hyphens-auto text-muted">
+                          <p className="mt-1.5 line-clamp-3 hidden text-[15px] leading-6 text-justify hyphens-auto text-muted sm:block">
                             {post.excerpt}
                           </p>
                           <time dateTime={post.tanggal} className="mt-2 block text-[11px] text-dim">
@@ -267,7 +275,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                 ) : null}
 
                 {/* Sekilas KSP: live figures, boxed like the weather. */}
-                <section aria-labelledby="sekilas-title" className="mt-4 border-2 border-line bg-canvas p-4">
+                <section aria-labelledby="sekilas-title" className="mt-4 hidden border-2 border-line bg-canvas p-4 sm:block">
                   <p
                     id="sekilas-title"
                     className="flex items-center justify-between text-sm font-extrabold tracking-[0.1em] uppercase"
@@ -299,9 +307,9 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
             </div>
 
             {/* Older headlines, along the foot of the page. */}
-            <footer className="relative mt-8 border-t-4 border-double border-line pt-4">
+            <footer className="relative mt-6 border-t-4 border-double border-line pt-4 sm:mt-8">
               {foot.length > 0 ? (
-                <ul className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
+                <ul className="hidden gap-x-6 gap-y-3 sm:grid sm:grid-cols-2 lg:grid-cols-4">
                   {foot.map((post) => (
                     <li
                       key={post.id}
