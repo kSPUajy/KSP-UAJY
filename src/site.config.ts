@@ -25,7 +25,7 @@ export const siteConfig = {
   wordmark: 'KSP',
 
   // TODO(brand): placeholder copy — replace once the club settles on a tagline.
-  tagline: 'Belajar C dari pointer sampai produksi.',
+  tagline: 'Seek the Clue, Crack the code.',
 
   /** Typed out at the hero prompt, after the `$`. Keep it to one line on a phone. */
   heroCommand: './kelompok-studi --bahasa=C --status=open',
