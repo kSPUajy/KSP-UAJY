@@ -31,7 +31,7 @@ const EXPECTED = {
   members: 15,
   challenges: 10,
   winners: 0,
-  news: 8,
+  news: 9,
 }
 
 async function source(relative) {

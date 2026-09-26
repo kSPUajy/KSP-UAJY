@@ -19,6 +19,19 @@ const TIM = 'Tim KSP'
 
 export const newsSources: readonly NewsSource[] = [
   {
+    id: 'n-15',
+    slug: 'sepuluh-fakta-lain-bahasa-c',
+    judul: 'Sepuluh Fakta Lain tentang Bahasa C',
+    tanggal: '2026-09-26',
+    kategori: 'fakta',
+    // stocksnap, CC0: https://stocksnap.io/photo/floppy-disk-5SNBAUPE1V
+    cover: 'https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/e0bb080d-d8d1-4f5b-91c4-f69644675b08.jpg',
+    excerpt:
+      'Huruf yang sebenarnya angka, nol di depan yang mengubah arti, sampai lomba menulis kode paling membingungkan. Sepuluh kejutan kecil lagi dari bahasa C.',
+    penulis: TIM,
+    tags: ['fakta', 'bahasa-c', 'pemula'],
+  },
+  {
     id: 'n-14',
     slug: 'kebiasaan-kecil-kode-c-rapi',
     judul: 'Lima Kebiasaan Kecil Supaya Kode C Lebih Rapi',

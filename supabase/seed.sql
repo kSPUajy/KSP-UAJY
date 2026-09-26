@@ -21,6 +21,104 @@ insert into public.sesi (id, judul, rilis, pj, ringkasan) values
   ($ksp$sesi-review$ksp$, $ksp$Review Materi$ksp$, $ksp$2027-02-22$ksp$, $ksp$PH$ksp$, $ksp$Mengulang materi semester ganjil sebelum lanjut ke prosedur dan fungsi. Tanpa modul dan tanpa tugas.$ksp$);
 
 insert into public.news_posts (id, slug, judul, tanggal, kategori, cover, excerpt, penulis, body_mdx, tags) values
+  ($ksp$n-15$ksp$, $ksp$sepuluh-fakta-lain-bahasa-c$ksp$, $ksp$Sepuluh Fakta Lain tentang Bahasa C$ksp$, $ksp$2026-09-26$ksp$, $ksp$fakta$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/e0bb080d-d8d1-4f5b-91c4-f69644675b08.jpg$ksp$, $ksp$Huruf yang sebenarnya angka, nol di depan yang mengubah arti, sampai lomba menulis kode paling membingungkan. Sepuluh kejutan kecil lagi dari bahasa C.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Tujuh fakta sebelumnya ternyata belum cukup. Bahasa C masih menyimpan banyak
+kejutan kecil, dan beberapa di antaranya justru sering menjebak pemula. Berikut
+sepuluh fakta lagi, lengkap dengan contoh yang bisa kamu coba langsung di
+Dev-C++.
+
+## 1. Unix ditulis ulang dengan C
+
+Pada 1973, sistem operasi Unix ditulis ulang dengan C. Itu menjadikannya salah
+satu sistem operasi pertama yang ditulis dengan bahasa tingkat tinggi, bukan
+bahasa mesin. Sejak saat itu, C dan Unix tumbuh bersama.
+
+## 2. Penciptanya memenangkan "Nobel"-nya ilmu komputer
+
+Dennis Ritchie dan Ken Thompson menerima Turing Award pada 1983 atas karya
+mereka membangun Unix. Turing Award sering disebut sebagai penghargaan
+tertinggi di bidang ilmu komputer.
+
+## 3. `printf` bukan bagian inti bahasa C
+
+`printf` berasal dari pustaka standar, bukan dari bahasa C itu sendiri. Itu
+sebabnya kita harus menulis `#include <stdio.h>` di awal program: baris itu
+yang memberi tahu compiler bahwa `printf` ada.
+
+## 4. Huruf sebenarnya adalah angka
+
+Di dalam komputer, setiap karakter disimpan sebagai angka. Huruf `A` adalah 65,
+dan kamu bahkan bisa menjumlahkannya:
+
+```c
+printf("%c %d\n", 'A' + 1, 'A');
+```
+
+Keluarannya `B 65`. Satu setelah `A` adalah `B`.
+
+## 5. Nol di depan angka mengubah artinya
+
+Coba tebak keluaran program ini:
+
+```c
+printf("%d\n", 010);
+```
+
+Jawabannya bukan 10, tapi **8**. Angka yang diawali `0` dibaca C sebagai
+bilangan oktal (basis 8). Jadi hati-hati saat menulis angka seperti `007`.
+
+## 6. Pembagian bilangan bulat membuang sisanya
+
+```c
+printf("%d %d %.1f\n", 7 / 2, 7 % 2, 7.0 / 2);
+```
+
+Keluarannya `3 1 3.5`. Kalau kedua angkanya bilangan bulat, hasil pembagiannya
+juga bulat dan sisanya dibuang. Sisanya bisa diambil dengan `%`. Kalau butuh
+hasil pecahan, salah satu angkanya harus desimal, seperti `7.0`.
+
+## 7. Semua angka selain nol dianggap benar
+
+C versi awal tidak punya tipe `true` dan `false`. Aturannya sederhana: `0`
+berarti salah, angka lain apa pun berarti benar.
+
+```c
+if (5) printf("benar\n");
+```
+
+Baris itu selalu mencetak `benar`, karena 5 bukan nol.
+
+## 8. `=` dan `==` itu sangat berbeda
+
+`=` artinya "isi dengan", sedangkan `==` artinya "apakah sama dengan". Menulis
+yang pertama di dalam `if` adalah bug klasik:
+
+```c
+if (x = 0) printf("tidak pernah tercetak\n");
+```
+
+Baris ini tidak memeriksa apakah `x` sama dengan 0. Ia *mengisi* `x` dengan 0,
+lalu memeriksa hasilnya, yang selalu salah. Kalau `-Wall` menyala, compiler
+akan memberi peringatan `suggest parentheses around assignment used as truth
+value`, tanda bahwa kemungkinan besar kamu bermaksud menulis `==`.
+
+## 9. Satu titik koma bisa mengosongkan perulangan
+
+```c
+for (i = 0; i < 3; i++);
+printf("i = %d\n", i);
+```
+
+Perhatikan titik koma di akhir baris `for`. Titik koma itu dianggap sebagai
+isi perulangan yang kosong, jadi `printf` di bawahnya hanya jalan **sekali**,
+setelah perulangan selesai, dan mencetak `i = 3`.
+
+## 10. Ada lomba menulis kode C yang paling membingungkan
+
+Sejak 1984 ada International Obfuscated C Code Contest, lomba untuk menulis
+program C yang sesulit mungkin dibaca tapi tetap berjalan dengan benar.
+Pesertanya membuat program yang bentuk kodenya menyerupai gambar, atau
+program yang bisa mencetak kodenya sendiri. Menghibur untuk dilihat, tapi
+jangan ditiru di tugasmu.$ksp$, array[$ksp$fakta$ksp$, $ksp$bahasa-c$ksp$, $ksp$pemula$ksp$]::text[]),
   ($ksp$n-14$ksp$, $ksp$kebiasaan-kecil-kode-c-rapi$ksp$, $ksp$Lima Kebiasaan Kecil Supaya Kode C Lebih Rapi$ksp$, $ksp$2026-09-24$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/1ab11745-52ea-45a8-88aa-ec7bc33a2e59.jpg$ksp$, $ksp$Kode yang rapi lebih mudah dibaca, lebih mudah diperiksa, dan lebih mudah kamu perbaiki sendiri. Lima kebiasaan kecil yang dampaknya besar.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Kode yang rapi bukan soal gaya-gayaan. Kode yang rapi lebih mudah dibaca, lebih
 mudah diperiksa tentor, dan yang paling penting, lebih mudah kamu perbaiki
 sendiri saat ada yang salah. Berikut lima kebiasaan kecil yang dampaknya besar.
