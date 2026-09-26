@@ -1,0 +1,54 @@
+Programmu sudah bisa dikompilasi, tapi hasilnya salah. Tidak ada pesan error, dan
+kamu tidak tahu harus mulai dari mana. Di sinilah teknik paling sederhana dan
+paling sering dipakai programmer berguna: **mencetak isi variabel untuk melihat
+apa yang sebenarnya terjadi.**
+
+## Idenya sederhana
+
+Bug terjadi karena ada perbedaan antara apa yang kamu *kira* dikerjakan program
+dan apa yang *benar-benar* dikerjakannya. Dengan menambahkan `printf` di
+tempat-tempat penting, kamu bisa melihat langsung nilainya, alih-alih menebak.
+
+## Contoh: jumlah yang salah
+
+Misalnya program ini seharusnya menjumlahkan 1 sampai 5, tapi hasilnya tidak
+sesuai harapan:
+
+```c
+int i;
+int total = 0;
+for (i = 1; i < 5; i++) {
+    total += i;
+}
+printf("%d\n", total);
+```
+
+Tambahkan satu baris di dalam perulangan:
+
+```c
+for (i = 1; i < 5; i++) {
+    total += i;
+    printf("i = %d, total = %d\n", i, total);
+}
+```
+
+Keluarannya langsung memperlihatkan masalahnya: `i` berhenti di 4, bukan 5.
+Kondisinya seharusnya `i <= 5`.
+
+## Tips supaya lebih efektif
+
+1. **Beri label.** Tulis `printf("i = %d\n", i)`, bukan hanya `printf("%d\n", i)`.
+   Kalau ada banyak baris keluaran, kamu tahu mana yang mana.
+2. **Cetak sebelum dan sesudah.** Kalau curiga pada satu bagian, cetak nilainya
+   sebelum dan sesudah bagian itu. Dari situ kelihatan di mana nilainya mulai
+   salah.
+3. **Selalu akhiri dengan `\n`.** Keluaran tanpa baris baru kadang tertahan dan
+   tidak langsung muncul, apalagi kalau programnya berhenti mendadak.
+4. **Persempit sedikit demi sedikit.** Mulai dari beberapa titik, lalu tambah
+   `printf` di sekitar bagian yang mencurigakan sampai ketemu baris penyebabnya.
+
+## Jangan lupa dihapus
+
+Setelah bugnya ketemu, hapus lagi semua `printf` tambahan. Kalau programmu
+dinilai dari keluarannya, satu baris ekstra saja bisa membuat jawaban yang
+sebenarnya benar dianggap salah.

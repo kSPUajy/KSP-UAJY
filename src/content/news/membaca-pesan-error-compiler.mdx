@@ -1,0 +1,88 @@
+Pertama kali melihat daftar pesan error itu menakutkan. Tapi pesan error
+sebenarnya adalah teman: compiler sedang memberi tahu di mana masalahnya. Kamu
+hanya perlu tahu cara membacanya. Contoh di artikel ini memakai Dev-C++, aplikasi
+yang dipakai di kelas.
+
+## Di mana pesan error muncul
+
+Saat kamu menekan **Compile** (F9) dan ada yang salah, Dev-C++ membuka tab
+**Compiler** di bagian bawah jendela. Isinya tabel dengan empat kolom:
+
+| Line | Col | File | Message |
+| --- | --- | --- | --- |
+| 5 | 5 | galat.c | [Error] expected ';' before 'return' |
+
+- **Line** adalah nomor baris tempat masalahnya ditemukan.
+- **Col** adalah posisi kolomnya di baris itu.
+- **Message** adalah penjelasannya. Awalan `[Error]` artinya program tidak bisa
+  dijalankan sampai ini diperbaiki.
+
+Klik dua kali baris pesannya, dan Dev-C++ langsung melompat ke baris kode yang
+bermasalah.
+
+## Tiga pesan yang paling sering muncul
+
+**Lupa titik koma**
+
+```c
+printf("%d\n", jumlah)
+return 0;
+```
+
+Pesannya: `expected ';' before 'return'`. Compiler baru sadar ada yang kurang saat
+bertemu `return`, jadi baris yang ditunjuk sering kali baris *setelah* kesalahan
+yang sebenarnya.
+
+**Salah ketik nama variabel**
+
+```c
+int jumlah = 0;
+printf("%d\n", jumlh);
+```
+
+Pesannya: `'jumlh' undeclared (first use in this function)`. Artinya nama
+`jumlh` belum pernah dibuat. Periksa ejaannya, atau pastikan variabelnya sudah
+dideklarasikan di atas.
+
+**Deklarasi di dalam `for`**
+
+```c
+for (int i = 0; i < 5; i++) {
+```
+
+Pesannya: `'for' loop initial declarations are only allowed in C99 or C11 mode`.
+Ini khas Dev-C++, yang secara bawaan memakai aturan C versi lama. Perbaikannya
+mudah: deklarasikan variabelnya di luar `for`.
+
+```c
+int i;
+for (i = 0; i < 5; i++) {
+```
+
+## Error dan warning itu berbeda
+
+**Error** membuat program gagal dikompilasi. **Warning** (awalan `[Warning]`)
+tidak menghentikan kompilasi, tapi hampir selalu menandakan ada yang salah.
+Contoh paling klasik adalah lupa tanda `&` di `scanf`:
+
+```c
+scanf("%d", umur);
+```
+
+```
+[Warning] format '%d' expects argument of type 'int *', but argument 2 has type 'int'
+```
+
+Program ini tetap bisa dijalankan, tapi hasilnya kacau atau langsung berhenti.
+Supaya warning penting seperti ini selalu muncul, nyalakan `-Wall` di Dev-C++:
+buka **Tools → Compiler Options**, centang **Add the following commands when
+calling the compiler**, lalu isi dengan `-Wall`.
+
+## Tiga kebiasaan yang membantu
+
+1. **Perbaiki error pertama dulu.** Satu kesalahan bisa memicu banyak error lain
+   di bawahnya. Sering kali, setelah error pertama diperbaiki, sisanya ikut hilang.
+2. **Lihat juga baris sebelumnya.** Kalau baris yang ditunjuk terlihat benar,
+   kesalahannya mungkin ada di baris tepat di atasnya.
+3. **Kompilasi sesering mungkin.** Menulis lima baris lalu kompilasi jauh lebih
+   mudah daripada menulis seratus baris lalu menghadapi dua puluh error sekaligus.

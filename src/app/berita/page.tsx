@@ -15,7 +15,7 @@ import { siteConfig } from '@/site.config'
 
 export const metadata: Metadata = pageMetadata({
   title: 'Berita',
-  description: `Kabar terbaru ${siteConfig.name} ${siteConfig.campus.short}: pengumuman, cerita kegiatan, prestasi anggota, dan tips belajar dari para tentor.`,
+  description: `Artikel ${siteConfig.name} ${siteConfig.campus.short}: fakta menarik tentang bahasa C, tips dan trik untuk pemula, dan pengumuman penting.`,
   path: '/berita',
 })
 
@@ -37,7 +37,7 @@ export default async function BeritaPage() {
         title="Kabar dari KSP"
         description={
           posts.length > 0
-            ? 'Semua kabar terbaru KSP ada di sini: pengumuman pendaftaran dan jadwal kelas, cerita dari setiap kegiatan, prestasi anggota, sampai tips belajar dari para tentor. Biar kamu tidak ketinggalan apa pun.'
+            ? 'Bacaan ringan seputar bahasa C: fakta menarik, tips dan trik untuk pemula, sampai pengumuman penting dari KSP. Cocok dibaca sambil menunggu kelas dimulai.'
             : undefined
         }
         facts={

@@ -5,12 +5,102 @@ import type { NewsPost } from '@/lib/types'
 /**
  * Article metadata. The body is not here — it lives in
  * `src/content/news/<slug>.mdx` and the accessor loads it.
+ *
+ * Apart from the registration notice, these are articles about C itself —
+ * facts and beginner tips — rather than reports of events, so nothing here
+ * describes something that did not happen. Signed "Tim KSP", not a person.
  */
 export type NewsSource = Omit<NewsPost, 'bodyMdx'>
 
 const cover = (seed: string): string => `https://picsum.photos/seed/${seed}/1200/675`
 
+const TIM = 'Tim KSP'
+
 export const newsSources: readonly NewsSource[] = [
+  {
+    id: 'n-14',
+    slug: 'kebiasaan-kecil-kode-c-rapi',
+    judul: 'Lima Kebiasaan Kecil Supaya Kode C Lebih Rapi',
+    tanggal: '2026-09-24',
+    kategori: 'tips',
+    cover: cover('ksp-artikel-rapi'),
+    excerpt:
+      'Kode yang rapi lebih mudah dibaca, lebih mudah diperiksa, dan lebih mudah kamu perbaiki sendiri. Lima kebiasaan kecil yang dampaknya besar.',
+    penulis: TIM,
+    tags: ['tips', 'pemula', 'gaya-kode'],
+  },
+  {
+    id: 'n-13',
+    slug: 'debugging-pakai-printf',
+    judul: 'Debugging Pakai printf: Cara Paling Sederhana Menemukan Bug',
+    tanggal: '2026-09-20',
+    kategori: 'tips',
+    cover: cover('ksp-artikel-debug'),
+    excerpt:
+      'Programnya jalan tapi hasilnya salah, dan tidak ada pesan error. Cetak isi variabelnya, dan lihat sendiri apa yang sebenarnya terjadi.',
+    penulis: TIM,
+    tags: ['tips', 'debugging', 'printf'],
+  },
+  {
+    id: 'n-12',
+    slug: 'trik-printf-yang-jarang-diketahui',
+    judul: 'Trik printf yang Jarang Diketahui',
+    tanggal: '2026-09-16',
+    kategori: 'tips',
+    cover: cover('ksp-artikel-printf'),
+    excerpt:
+      'Mengatur lebar kolom, mengisi dengan nol, mencetak tanda persen, sampai fakta bahwa printf ternyata mengembalikan nilai.',
+    penulis: TIM,
+    tags: ['tips', 'printf', 'format'],
+  },
+  {
+    id: 'n-11',
+    slug: 'membaca-pesan-error-compiler',
+    judul: 'Membaca Pesan Error Compiler Tanpa Panik',
+    tanggal: '2026-09-12',
+    kategori: 'tips',
+    cover: cover('ksp-artikel-error'),
+    excerpt:
+      'Pesan error itu teman: compiler memberi tahu letak masalahnya. Begini cara membacanya di Dev-C++, termasuk error for loop yang sering bikin bingung.',
+    penulis: TIM,
+    tags: ['tips', 'compiler', 'pemula'],
+  },
+  {
+    id: 'n-10',
+    slug: 'fakta-unik-bahasa-c',
+    judul: 'Tujuh Fakta Unik tentang Bahasa C',
+    tanggal: '2026-09-08',
+    kategori: 'fakta',
+    cover: cover('ksp-artikel-fakta'),
+    excerpt:
+      'Dari asal-usul namanya, program "Hello, world!" pertama, sampai keunikan kecil yang bikin programmer berpengalaman pun kaget.',
+    penulis: TIM,
+    tags: ['fakta', 'sejarah', 'bahasa-c'],
+  },
+  {
+    id: 'n-09',
+    slug: 'kenapa-bahasa-c-masih-dipakai',
+    judul: 'Kenapa Bahasa C Masih Dipakai Sampai Sekarang',
+    tanggal: '2026-09-02',
+    kategori: 'fakta',
+    cover: cover('ksp-artikel-kenapa-c'),
+    excerpt:
+      'Umurnya sudah lebih dari lima puluh tahun, tapi C masih ada di Linux, Python, sampai mesin cuci. Ini alasannya.',
+    penulis: TIM,
+    tags: ['fakta', 'sejarah', 'bahasa-c'],
+  },
+  {
+    id: 'n-06',
+    slug: 'bahaya-scanf-persen-s',
+    judul: 'Berhenti Menulis scanf Persen-s Tanpa Batas Lebar',
+    tanggal: '2026-08-30',
+    kategori: 'tutorial',
+    cover: cover('ksp-berita-scanf'),
+    excerpt:
+      'Satu baris yang sering muncul di program pemula, dan hampir selalu menyimpan masalah. Perbaikannya cuma satu angka, dan angkanya bukan yang kamu kira.',
+    penulis: TIM,
+    tags: ['string', 'tutorial', 'keamanan'],
+  },
   {
     id: 'n-01',
     slug: 'pendaftaran-anggota-baru-2026',
@@ -19,92 +109,8 @@ export const newsSources: readonly NewsSource[] = [
     kategori: 'pengumuman',
     cover: cover('ksp-berita-pendaftaran'),
     excerpt:
-      'Terbuka untuk mahasiswa aktif UAJY semester 1 sebagai persiapan mata kuliah dasar pemrograman C, tanpa syarat kemampuan awal. Semester lalu sembilan dari dua puluh tujuh anggota baru mendaftar tanpa pengalaman apa pun.',
-    penulis: 'Salsabila Rahmawati',
+      'Terbuka untuk mahasiswa aktif UAJY semester 1 sebagai persiapan mata kuliah dasar pemrograman C, tanpa syarat kemampuan awal. Biaya Rp150.000 dengan cashback 70%.',
+    penulis: 'Pengurus KSP',
     tags: ['pendaftaran', 'anggota-baru', 'kelas'],
-  },
-  {
-    id: 'n-02',
-    slug: 'pemenang-termuda-challenge',
-    judul: 'Theresia Menang Dua Minggu Beruntun di Musim Keduanya',
-    tanggal: '2026-08-01',
-    kategori: 'prestasi',
-    cover: cover('ksp-berita-theresia'),
-    excerpt:
-      'Angkatan 2025, bergabung lewat challenge sebelum mengambil satu kelas pun, dan kini memimpin papan peringkat sepanjang masa dengan sembilan kemenangan.',
-    penulis: 'Damar Aji Setiawan',
-    tags: ['challenge', 'hall-of-fame', 'anggota'],
-  },
-  {
-    id: 'n-03',
-    slug: 'challenge-mingguan-musim-kedua',
-    judul: 'Challenge Mingguan Musim Kedua Dimulai Hari Ini',
-    tanggal: '2026-07-06',
-    kategori: 'pengumuman',
-    cover: cover('ksp-berita-challenge'),
-    excerpt:
-      'Dua belas soal, satu setiap Senin. Tiga perubahan dari musim pertama: tingkat SEGFAULT, petunjuk yang terkunci bertingkat, dan solusi pemenang yang dipublikasikan lengkap dengan tulisan pendekatannya.',
-    penulis: 'Nadia Puspita Ramadhani',
-    tags: ['challenge', 'pengumuman'],
-  },
-  {
-    id: 'n-04',
-    slug: 'peringkat-empat-lomba-se-diy',
-    judul: 'Peringkat Empat dari 31 Tim di Lomba Pemrograman Se-DIY',
-    tanggal: '2026-05-12',
-    kategori: 'prestasi',
-    cover: cover('ksp-berita-lomba'),
-    excerpt:
-      'Delapan dari sebelas soal terselesaikan, terpaut satu soal dari podium. Empat puluh menit hilang di satu soal bitwise, dan tim membawa pulang dua catatan yang langsung masuk materi kelas.',
-    penulis: 'Damar Aji Setiawan',
-    tags: ['kompetisi', 'prestasi', 'tim'],
-  },
-  {
-    id: 'n-05',
-    slug: 'tiga-kesalahan-malloc',
-    judul: 'Tiga Kesalahan malloc yang Paling Sering Muncul',
-    tanggal: '2026-04-18',
-    kategori: 'tutorial',
-    cover: cover('ksp-berita-malloc'),
-    excerpt:
-      'Dikumpulkan dari lebih dari tiga ratus submission dalam dua semester. Ketiganya punya satu kesamaan: programnya tetap jalan, sampai suatu hari tidak.',
-    penulis: 'Reza Maulana Hakim',
-    tags: ['memori', 'tutorial', 'malloc'],
-  },
-  {
-    id: 'n-06',
-    slug: 'bahaya-scanf-persen-s',
-    judul: 'Berhenti Menulis scanf Persen-s Tanpa Batas Lebar',
-    tanggal: '2026-02-27',
-    kategori: 'tutorial',
-    cover: cover('ksp-berita-scanf'),
-    excerpt:
-      'Satu baris yang muncul di hampir setiap submission minggu-minggu awal, dan hampir selalu salah. Perbaikannya cuma satu angka, dan angkanya bukan yang kamu kira.',
-    penulis: 'Melati Kusumaningrum',
-    tags: ['string', 'tutorial', 'keamanan'],
-  },
-  {
-    id: 'n-07',
-    slug: 'kompetisi-internal-akhir-semester',
-    judul: 'Kompetisi Internal: 34 Peserta, Satu Soal Tak Tersentuh',
-    tanggal: '2025-12-01',
-    kategori: 'liputan',
-    cover: cover('ksp-berita-kompetisi'),
-    excerpt:
-      'Tiga jam, delapan soal. Tujuh dari delapan submission untuk soal nomor tujuh sebenarnya sudah benar secara logika, dan yang hilang cuma satu hal.',
-    penulis: 'Kevin Alexander Tanuwijaya',
-    tags: ['kompetisi', 'liputan', 'graf'],
-  },
-  {
-    id: 'n-08',
-    slug: 'workshop-manajemen-memori',
-    judul: 'Catatan dari Workshop Manajemen Memori',
-    tanggal: '2025-10-27',
-    kategori: 'liputan',
-    cover: cover('ksp-berita-workshop'),
-    excerpt:
-      'Dibuka bukan dengan malloc, melainkan dengan menggambar. Dari 28 gambar, hanya 6 yang menempatkan pointer sebagai variabel yang punya alamatnya sendiri.',
-    penulis: 'Salsabila Rahmawati',
-    tags: ['workshop', 'memori', 'liputan'],
   },
 ]

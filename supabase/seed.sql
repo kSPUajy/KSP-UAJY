@@ -21,268 +21,382 @@ insert into public.sesi (id, judul, rilis, pj, ringkasan) values
   ($ksp$sesi-review$ksp$, $ksp$Review Materi$ksp$, $ksp$2027-02-22$ksp$, $ksp$PH$ksp$, $ksp$Mengulang materi semester ganjil sebelum lanjut ke prosedur dan fungsi. Tanpa modul dan tanpa tugas.$ksp$);
 
 insert into public.news_posts (id, slug, judul, tanggal, kategori, cover, excerpt, penulis, body_mdx, tags) values
-  ($ksp$n-01$ksp$, $ksp$pendaftaran-anggota-baru-2026$ksp$, $ksp$Pendaftaran Anggota Baru Semester Ganjil 2026/2027 Dibuka$ksp$, $ksp$2026-08-24$ksp$, $ksp$pengumuman$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-pendaftaran/1200/675$ksp$, $ksp$Terbuka untuk mahasiswa aktif UAJY semester 1 sebagai persiapan mata kuliah dasar pemrograman C, tanpa syarat kemampuan awal. Semester lalu sembilan dari dua puluh tujuh anggota baru mendaftar tanpa pengalaman apa pun.$ksp$, $ksp$Salsabila Rahmawati$ksp$, $ksp$Pendaftaran anggota baru Kelompok Studi Pemrograman untuk semester ganjil
-2026/2027 resmi dibuka mulai hari ini sampai 11 September 2026. Pendaftaran
-terbuka untuk mahasiswa aktif UAJY semester 1, dan tidak ada syarat kemampuan
-awal. Kelasnya disusun untuk mempersiapkanmu menghadapi mata kuliah dasar
-pemrograman berbahasa C.
+  ($ksp$n-14$ksp$, $ksp$kebiasaan-kecil-kode-c-rapi$ksp$, $ksp$Lima Kebiasaan Kecil Supaya Kode C Lebih Rapi$ksp$, $ksp$2026-09-24$ksp$, $ksp$tips$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-rapi/1200/675$ksp$, $ksp$Kode yang rapi lebih mudah dibaca, lebih mudah diperiksa, dan lebih mudah kamu perbaiki sendiri. Lima kebiasaan kecil yang dampaknya besar.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Kode yang rapi bukan soal gaya-gayaan. Kode yang rapi lebih mudah dibaca, lebih
+mudah diperiksa tentor, dan yang paling penting, lebih mudah kamu perbaiki
+sendiri saat ada yang salah. Berikut lima kebiasaan kecil yang dampaknya besar.
 
-## Tidak perlu bisa C dulu
+## 1. Indentasi yang konsisten
 
-Ini pertanyaan yang paling sering masuk ke kotak masuk kami, jadi mari
-diselesaikan di awal: **kamu tidak perlu sudah bisa memrogram untuk mendaftar.**
-
-Kelasnya dimulai dari nol. Kalau kamu belum pernah menulis satu baris kode pun,
-tentor akan mendampingimu dari pertemuan pertama. Kalau sudah pernah, kelas ini
-jadi tempat merapikan dasar sebelum kuliahnya dimulai.
-
-Semester lalu, sembilan dari dua puluh tujuh anggota baru mendaftar tanpa
-pengalaman apa pun. Empat di antaranya sekarang mengisi papan peringkat
-challenge mingguan.
-
-## Apa yang kamu dapat
-
-- Kelas rutin setiap Jumat sore, 90 menit, di ruang FTI 3.2
-- Pendampingan satu tentor untuk empat peserta
-- Challenge mingguan dengan pembahasan solusi terbuka
-- Akses ke arsip modul dan soal latihan
-- Sertifikat keanggotaan di akhir tahun ajaran, bisa ditukar SPAMA tipe organisasi
-
-Biaya pendaftaran Rp150.000, dibayar sekali. Kalau presensimu memenuhi, 70%
-(Rp105.000) dikembalikan sebagai cashback. Tidak ada iuran bulanan.
-
-## Alur pendaftaran
-
-1. Isi formulir pendaftaran daring
-2. Ikuti sesi perkenalan pada 12 September 2026
-3. Pilih jalur kelas yang sesuai
-4. Mulai kelas pertama pada 19 September 2026
-
-Sesi perkenalan bukan seleksi. Tidak ada yang ditolak. Sesi itu ada supaya kamu
-bisa bertanya sebelum memutuskan, dan supaya kami bisa menempatkanmu di jalur
-yang tepat.
-
-## Kenapa C, di tahun 2026
-
-Pertanyaan yang wajar. Hampir tidak ada orang yang memulai proyek baru dengan C
-sekarang, dan itu memang bukan tujuannya.
-
-Alasannya sederhana: C tidak menyembunyikan apa pun. Ketika kamu menulis Python
-atau JavaScript, banyak keputusan sudah diambil untukmu — kapan memori
-dialokasikan, kapan dilepaskan, bagaimana sebuah string disimpan. Semua itu tetap
-terjadi, hanya saja di tempat yang tidak kamu lihat.
-
-Setelah satu semester di C, hal-hal itu berhenti jadi misteri. Dan ketika kamu
-kembali ke bahasa yang kamu pakai sehari-hari, kamu membacanya dengan cara yang
-berbeda.$ksp$, array[$ksp$pendaftaran$ksp$, $ksp$anggota-baru$ksp$, $ksp$kelas$ksp$]::text[]),
-  ($ksp$n-02$ksp$, $ksp$pemenang-termuda-challenge$ksp$, $ksp$Theresia Menang Dua Minggu Beruntun di Musim Keduanya$ksp$, $ksp$2026-08-01$ksp$, $ksp$prestasi$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-theresia/1200/675$ksp$, $ksp$Angkatan 2025, bergabung lewat challenge sebelum mengambil satu kelas pun, dan kini memimpin papan peringkat sepanjang masa dengan sembilan kemenangan.$ksp$, $ksp$Damar Aji Setiawan$ksp$, $ksp$Theresia Maharani Putri, mahasiswa angkatan 2025, memenangi challenge minggu
-ketiga dan keempat berturut-turut. Dengan itu ia menjadi peserta angkatan pertama
-pertama yang memenangi dua challenge beruntun sejak program ini dimulai pada 2025.
-
-## Dua soal yang berbeda jauh
-
-Minggu ketiga adalah soal string bertingkat MUDAH. Minggu keempat adalah soal
-aritmetika bilangan besar bertingkat SEDANG, yang menuntut peserta menyimpan
-hasilnya sebagai array digit karena tidak ada tipe bilangan bulat di C yang cukup
-besar untuk menampung `25!`.
-
-Keduanya diselesaikan dalam hitungan jam setelah soalnya terbit.
-
-"Soal minggu ketiga saya kerjakan dua kali," katanya. "Percobaan pertama saya coba
-membandingkan langsung sambil melompati tanda baca dari dua arah, dan langsung
-berantakan begitu ada tanda baca beruntun. Saya buang, lalu tulis ulang dengan cara
-yang lebih panjang tapi bisa saya baca sekali jalan."
-
-Pendekatan itu, menurut Reza Maulana Hakim yang memeriksa submission tersebut,
-adalah alasan utama ia menang. "Kode yang lebih pendek belum tentu kode yang lebih
-benar. Dia tahu kapan harus membuang percobaan pertamanya, dan itu keterampilan
-yang biasanya butuh waktu lama untuk tumbuh."
-
-## Masuk lewat challenge
-
-Theresia bergabung dengan KSP pada Februari 2026, empat bulan sebelum musim kedua
-dimulai, dan tidak langsung mengambil kelas. Ia mengerjakan challenge lebih dulu.
-
-"Saya ikut karena penasaran, bukan karena mau masuk kelompok studi. Baru setelah
-soal SEGFAULT pertama saya tembus, saya sadar saya sudah belajar lebih banyak dalam
-tiga minggu daripada satu semester sebelumnya."
-
-Ia sekarang mengisi posisi staf di Divisi Akademik dan ikut menyiapkan sesi latihan
-untuk anggota baru.
-
-## Papan peringkat sementara
-
-Dengan dua kemenangan musim ini, total kemenangan sepanjang masa Theresia mencapai
-sembilan, memimpin papan peringkat di atas Gilang Prasetyo Nugroho yang mengoleksi
-delapan.
-
-Papan peringkat lengkap tersedia di halaman Hall of Fame dan diperbarui setiap
-Senin pagi.$ksp$, array[$ksp$challenge$ksp$, $ksp$hall-of-fame$ksp$, $ksp$anggota$ksp$]::text[]),
-  ($ksp$n-03$ksp$, $ksp$challenge-mingguan-musim-kedua$ksp$, $ksp$Challenge Mingguan Musim Kedua Dimulai Hari Ini$ksp$, $ksp$2026-07-06$ksp$, $ksp$pengumuman$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-challenge/1200/675$ksp$, $ksp$Dua belas soal, satu setiap Senin. Tiga perubahan dari musim pertama: tingkat SEGFAULT, petunjuk yang terkunci bertingkat, dan solusi pemenang yang dipublikasikan lengkap dengan tulisan pendekatannya.$ksp$, $ksp$Nadia Puspita Ramadhani$ksp$, $ksp$Challenge mingguan musim kedua dimulai hari ini. Dua belas soal, satu soal setiap
-Senin, dengan batas pengumpulan Minggu pukul 23.59. Seluruh soal terbuka untuk
-anggota maupun non-anggota.
-
-## Yang berubah dari musim pertama
-
-Tiga hal.
-
-**Tingkat kesulitan sekarang punya empat tingkat, bukan tiga.** Tingkat keempat
-diberi nama SEGFAULT, dan dipakai untuk soal yang menuntut pengelolaan memori
-manual atau struktur data yang dibangun sendiri. Musim ini ada dua soal
-bertingkat SEGFAULT, keduanya di paruh kedua.
-
-**Petunjuk sekarang bertingkat dan bisa dibuka satu per satu.** Musim lalu semua
-petunjuk muncul sekaligus, dan sebagian besar orang membacanya sebelum sempat
-mencoba. Sekarang petunjuknya terkunci dan kamu memilih sendiri kapan membukanya.
-Membukanya tidak mengurangi nilai apa pun. Kuncinya ada supaya kamu berhenti
-sebentar dan bertanya apakah benar-benar butuh.
-
-**Solusi pemenang dipublikasikan lengkap dengan tulisan pendekatannya.** Kode saja
-tidak banyak mengajarkan. Yang mengajarkan adalah cerita tentang percobaan yang
-gagal lebih dulu, dan itu yang kami minta dari setiap pemenang.
-
-## Jadwal
-
-Soal terbit setiap Senin pukul 08.00. Pembahasan terbit setiap Selasa berikutnya,
-bersamaan dengan pengumuman pemenang.
-
-Peserta yang mengumpulkan setelah batas waktu tetap mendapat koreksi, hanya tidak
-masuk penilaian. Kami lebih suka kamu menyelesaikannya terlambat daripada tidak
-sama sekali.
-
-## Cara ikut
-
-Tidak ada pendaftaran terpisah. Buka halaman challenge, pilih soal minggu ini,
-kerjakan, lalu kirim berkas `.c` ke surel pengurus sebelum batas waktu.
-
-Satu berkas, satu `main`, tanpa pustaka di luar pustaka standar C.$ksp$, array[$ksp$challenge$ksp$, $ksp$pengumuman$ksp$]::text[]),
-  ($ksp$n-04$ksp$, $ksp$peringkat-empat-lomba-se-diy$ksp$, $ksp$Peringkat Empat dari 31 Tim di Lomba Pemrograman Se-DIY$ksp$, $ksp$2026-05-12$ksp$, $ksp$prestasi$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-lomba/1200/675$ksp$, $ksp$Delapan dari sebelas soal terselesaikan, terpaut satu soal dari podium. Empat puluh menit hilang di satu soal bitwise, dan tim membawa pulang dua catatan yang langsung masuk materi kelas.$ksp$, $ksp$Damar Aji Setiawan$ksp$, $ksp$Tim Kelompok Studi Pemrograman UAJY meraih peringkat empat pada Lomba Pemrograman
-Antar Kampus se-DIY yang digelar Sabtu lalu, bersaing dengan tiga puluh satu tim
-dari sebelas perguruan tinggi.
-
-Tim beranggotakan Gilang Prasetyo Nugroho, Damar Aji Setiawan, dan Theresia
-Maharani Putri, dengan Reza Maulana Hakim sebagai pendamping.
-
-## Jalannya lomba
-
-Format lomba lima jam dengan sebelas soal. Tim KSP menyelesaikan delapan soal,
-terpaut satu soal dari tiga tim di atasnya yang masing-masing menyelesaikan
-sembilan.
-
-Empat soal pertama selesai dalam lima puluh menit. Soal kelima, tentang pemampatan
-data dengan operasi bit, memakan waktu hampir satu jam penuh, dan menurut catatan
-tim itulah yang menentukan selisih akhirnya.
-
-"Kami sebenarnya tahu cara menyelesaikannya sejak menit kelima," kata Gilang.
-"Yang lama justru meyakinkan diri bahwa pergeseran bitnya tidak meluap. Kami
-kehilangan empat puluh menit untuk sesuatu yang seharusnya bisa dipastikan dalam
-sepuluh."
-
-## Yang dibawa pulang
-
-Pendamping tim mencatat dua hal yang akan langsung masuk ke materi kelas.
-
-Yang pertama, kebiasaan menulis kasus uji sendiri sebelum mengumpulkan. Tiga dari
-sebelas soal punya kasus tepi yang tidak muncul di contoh, dan dua di antaranya
-sempat membuat tim tertahan.
-
-Yang kedua, pembagian peran. Selama tiga jam pertama ketiganya mengerjakan soal
-berbeda tanpa berkoordinasi, dan dua di antaranya sempat mengerjakan soal yang
-sama tanpa sadar.
-
-Materi tentang strategi tim akan masuk ke kelas persiapan kompetisi semester
-depan.
-
-## Peringkat akhir lima besar
-
-1. Universitas Gadjah Mada, 9 soal
-2. Universitas Islam Indonesia, 9 soal
-3. Universitas Sanata Dharma, 9 soal
-4. **Universitas Atma Jaya Yogyakarta, 8 soal**
-5. Universitas Ahmad Dahlan, 8 soal$ksp$, array[$ksp$kompetisi$ksp$, $ksp$prestasi$ksp$, $ksp$tim$ksp$]::text[]),
-  ($ksp$n-05$ksp$, $ksp$tiga-kesalahan-malloc$ksp$, $ksp$Tiga Kesalahan malloc yang Paling Sering Muncul$ksp$, $ksp$2026-04-18$ksp$, $ksp$tutorial$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-malloc/1200/675$ksp$, $ksp$Dikumpulkan dari lebih dari tiga ratus submission dalam dua semester. Ketiganya punya satu kesamaan: programnya tetap jalan, sampai suatu hari tidak.$ksp$, $ksp$Reza Maulana Hakim$ksp$, $ksp$Setelah mengoreksi lebih dari tiga ratus submission dalam dua semester terakhir,
-pola kesalahannya mulai terlihat berulang. Tiga di antaranya menyangkut `malloc`
-dan kerabatnya, dan ketiganya punya satu kesamaan: programnya tetap jalan, sampai
-suatu hari tidak.
-
-## 1. Menimpa pointer dengan hasil realloc
-
-Ini yang paling sering, dan paling halus.
+Setiap kali masuk ke dalam blok kurung kurawal, geser ke kanan satu tingkat.
+Dengan begitu, kamu bisa melihat sekilas bagian mana yang ada di dalam `if` dan
+mana yang di dalam perulangan.
 
 ```c
-data = realloc(data, kapasitas_baru * sizeof *data);
-```
-
-Baris ini benar selama `realloc` berhasil. Ketika gagal, `realloc` mengembalikan
-`NULL` dan **tidak** membebaskan blok lama. Karena hasilnya langsung ditimpakan ke
-`data`, satu-satunya pointer ke blok lama baru saja hilang. Memorinya bocor dan
-tidak ada cara mengambilnya kembali.
-
-Bentuk yang benar menampung hasilnya lebih dulu:
-
-```c
-int *lebih = realloc(data, kapasitas_baru * sizeof *data);
-if (lebih == NULL) {
-    free(data);
-    return EXIT_FAILURE;
-}
-data = lebih;
-```
-
-Di komputer dengan memori besar, versi yang salah hampir tidak pernah gagal saat
-diuji. Itu sebabnya ia lolos terus.
-
-## 2. Membaca simpul setelah dibebaskan
-
-Muncul hampir di setiap submission linked list.
-
-```c
-free(depan);
-depan = depan->next;
-```
-
-Setelah `free`, isi memori itu bukan lagi milikmu. Membacanya adalah perilaku tak
-terdefinisi. Bukan berarti pasti crash, tapi berarti tidak ada jaminan apa pun.
-Dalam praktiknya nilai lamanya sering masih ada di sana beberapa saat, jadi
-programnya kelihatan jalan.
-
-Simpan penerusnya lebih dulu:
-
-```c
-Simpul *berikut = depan->next;
-free(depan);
-depan = berikut;
-```
-
-## 3. Mengira free menghapus pointernya
-
-`free` melepaskan memorinya. Ia tidak mengubah nilai pointer yang kamu pegang.
-
-```c
-free(p);
-if (p != NULL) {
-    p->nilai = 10;
+for (i = 0; i < n; i++) {
+    if (nilai[i] > 70) {
+        lulus++;
+    }
 }
 ```
 
-Pemeriksaan di atas masih bernilai benar, dan itulah masalahnya. Setelah `free`,
-`p` masih menyimpan alamat lama, yang sekarang disebut dangling pointer. Kalau
-pointernya masih akan hidup beberapa baris lagi, setel sendiri ke `NULL` supaya
-pemeriksaan berikutnya berarti sesuatu.
+Bandingkan kalau semuanya ditulis rata kiri. Mencari kurung yang lupa ditutup
+jadi jauh lebih sulit.
 
-## Cara memastikan
+## 2. Nama variabel yang menjelaskan isinya
 
-Tiga kesalahan ini punya satu hal yang sama: pengujian biasa tidak menangkapnya.
+`jumlahMahasiswa` lebih jelas daripada `jm`, apalagi `x`. Nama yang jelas membuat
+kode bisa dibaca seperti kalimat, dan kamu tidak perlu mengingat-ingat arti
+setiap singkatan. Pengecualiannya adalah variabel penghitung perulangan seperti
+`i` dan `j`, yang memang sudah umum dipakai.
 
-Yang menangkapnya adalah alat. Di Linux dan WSL, `valgrind ./program` akan
-menyebutkan persis baris mana yang bocor dan baris mana yang membaca memori bebas.
-Pada gcc dan clang, `-fsanitize=address` melakukan hal serupa tanpa perlu alat
-terpisah.
+## 3. Beri nilai awal pada variabel
 
-Biasakan menjalankan salah satunya sebelum mengumpulkan. Butuh satu perintah, dan
-menghemat satu sore.$ksp$, array[$ksp$memori$ksp$, $ksp$tutorial$ksp$, $ksp$malloc$ksp$]::text[]),
-  ($ksp$n-06$ksp$, $ksp$bahaya-scanf-persen-s$ksp$, $ksp$Berhenti Menulis scanf Persen-s Tanpa Batas Lebar$ksp$, $ksp$2026-02-27$ksp$, $ksp$tutorial$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-scanf/1200/675$ksp$, $ksp$Satu baris yang muncul di hampir setiap submission minggu-minggu awal, dan hampir selalu salah. Perbaikannya cuma satu angka, dan angkanya bukan yang kamu kira.$ksp$, $ksp$Melati Kusumaningrum$ksp$, $ksp$Ada satu baris yang muncul di hampir setiap submission minggu-minggu awal, dan
-hampir selalu salah:
+Di C, variabel yang dibuat di dalam fungsi tanpa nilai awal isinya acak, bukan
+nol.
+
+```c
+int total;      // isinya tidak bisa ditebak
+int total = 0;  // aman
+```
+
+Lupa memberi nilai awal adalah salah satu penyebab paling umum hasil
+penjumlahan yang tiba-tiba aneh.
+
+## 4. Komentar untuk menjelaskan "kenapa"
+
+Kode sudah menunjukkan *apa* yang dilakukan. Komentar paling berguna saat
+menjelaskan *kenapa* kamu melakukannya:
+
+```c
+// dikali 1.0 supaya hasilnya pecahan, bukan pembagian bulat
+double rata = total * 1.0 / n;
+```
+
+## 5. Biarkan compiler membantumu
+
+Nyalakan `-Wall` supaya compiler memperingatkan hal-hal yang mencurigakan,
+misalnya variabel yang dibuat tapi tidak pernah dipakai. Di Dev-C++, buka
+**Tools → Compiler Options**, centang **Add the following commands when calling
+the compiler**, lalu isi dengan `-Wall`.
+
+Anggap setiap warning sebagai pekerjaan rumah yang harus diselesaikan, bukan
+tulisan yang boleh diabaikan.$ksp$, array[$ksp$tips$ksp$, $ksp$pemula$ksp$, $ksp$gaya-kode$ksp$]::text[]),
+  ($ksp$n-13$ksp$, $ksp$debugging-pakai-printf$ksp$, $ksp$Debugging Pakai printf: Cara Paling Sederhana Menemukan Bug$ksp$, $ksp$2026-09-20$ksp$, $ksp$tips$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-debug/1200/675$ksp$, $ksp$Programnya jalan tapi hasilnya salah, dan tidak ada pesan error. Cetak isi variabelnya, dan lihat sendiri apa yang sebenarnya terjadi.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Programmu sudah bisa dikompilasi, tapi hasilnya salah. Tidak ada pesan error, dan
+kamu tidak tahu harus mulai dari mana. Di sinilah teknik paling sederhana dan
+paling sering dipakai programmer berguna: **mencetak isi variabel untuk melihat
+apa yang sebenarnya terjadi.**
+
+## Idenya sederhana
+
+Bug terjadi karena ada perbedaan antara apa yang kamu *kira* dikerjakan program
+dan apa yang *benar-benar* dikerjakannya. Dengan menambahkan `printf` di
+tempat-tempat penting, kamu bisa melihat langsung nilainya, alih-alih menebak.
+
+## Contoh: jumlah yang salah
+
+Misalnya program ini seharusnya menjumlahkan 1 sampai 5, tapi hasilnya tidak
+sesuai harapan:
+
+```c
+int i;
+int total = 0;
+for (i = 1; i < 5; i++) {
+    total += i;
+}
+printf("%d\n", total);
+```
+
+Tambahkan satu baris di dalam perulangan:
+
+```c
+for (i = 1; i < 5; i++) {
+    total += i;
+    printf("i = %d, total = %d\n", i, total);
+}
+```
+
+Keluarannya langsung memperlihatkan masalahnya: `i` berhenti di 4, bukan 5.
+Kondisinya seharusnya `i <= 5`.
+
+## Tips supaya lebih efektif
+
+1. **Beri label.** Tulis `printf("i = %d\n", i)`, bukan hanya `printf("%d\n", i)`.
+   Kalau ada banyak baris keluaran, kamu tahu mana yang mana.
+2. **Cetak sebelum dan sesudah.** Kalau curiga pada satu bagian, cetak nilainya
+   sebelum dan sesudah bagian itu. Dari situ kelihatan di mana nilainya mulai
+   salah.
+3. **Selalu akhiri dengan `\n`.** Keluaran tanpa baris baru kadang tertahan dan
+   tidak langsung muncul, apalagi kalau programnya berhenti mendadak.
+4. **Persempit sedikit demi sedikit.** Mulai dari beberapa titik, lalu tambah
+   `printf` di sekitar bagian yang mencurigakan sampai ketemu baris penyebabnya.
+
+## Jangan lupa dihapus
+
+Setelah bugnya ketemu, hapus lagi semua `printf` tambahan. Kalau programmu
+dinilai dari keluarannya, satu baris ekstra saja bisa membuat jawaban yang
+sebenarnya benar dianggap salah.$ksp$, array[$ksp$tips$ksp$, $ksp$debugging$ksp$, $ksp$printf$ksp$]::text[]),
+  ($ksp$n-12$ksp$, $ksp$trik-printf-yang-jarang-diketahui$ksp$, $ksp$Trik printf yang Jarang Diketahui$ksp$, $ksp$2026-09-16$ksp$, $ksp$tips$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-printf/1200/675$ksp$, $ksp$Mengatur lebar kolom, mengisi dengan nol, mencetak tanda persen, sampai fakta bahwa printf ternyata mengembalikan nilai.$ksp$, $ksp$Tim KSP$ksp$, $ksp$`printf` adalah fungsi pertama yang dipelajari hampir semua orang. Tapi banyak
+yang hanya memakai `%d` dan `%s`, padahal `printf` bisa melakukan jauh lebih
+banyak. Berikut beberapa trik yang berguna, terutama untuk soal yang meminta
+format keluaran tertentu.
+
+## Mengatur lebar kolom
+
+Angka di antara `%` dan huruf format menentukan lebar minimal:
+
+```c
+printf("[%5d]\n", 42);   // [   42]
+printf("[%-5d]\n", 42);  // [42   ]
+printf("[%05d]\n", 42);  // [00042]
+```
+
+- `%5d` menambah spasi di kiri sampai lebarnya 5 karakter.
+- `%-5d` sama, tapi rata kiri.
+- `%05d` mengisi dengan nol, cocok untuk nomor urut seperti `00042`.
+
+Trik ini sangat membantu saat membuat tabel yang kolomnya harus lurus.
+
+## Membatasi angka di belakang koma
+
+```c
+printf("[%.2f]\n", 3.14159);   // [3.14]
+printf("[%8.2f]\n", 3.14159);  // [    3.14]
+```
+
+`%.2f` mencetak tepat dua angka di belakang koma dan sudah membulatkan sendiri.
+Keduanya bisa digabung: `%8.2f` berarti lebar 8, dengan dua angka desimal.
+
+## Mencetak tanda persen
+
+Karena `%` punya arti khusus, untuk mencetak tanda persen yang sebenarnya, tulis
+dua kali:
+
+```c
+printf("diskon 50%%\n");  // diskon 50%
+```
+
+## Lebar kolom dari variabel
+
+Kalau lebarnya baru diketahui saat program berjalan, pakai `*`:
+
+```c
+int lebar = 6;
+printf("[%*d]\n", lebar, 42);  // [    42]
+```
+
+## Bonus: angka dalam bentuk lain
+
+```c
+printf("%x %o\n", 255, 8);  // ff 10
+printf("%c\n", 65);         // A
+```
+
+`%x` mencetak bilangan heksadesimal, `%o` oktal, dan `%c` mencetak karakter
+dari kode ASCII-nya. Ternyata huruf `A` di komputer disimpan sebagai angka 65.
+
+## `printf` juga mengembalikan nilai
+
+Jarang ada yang tahu bahwa `printf` mengembalikan jumlah karakter yang dicetak:
+
+```c
+int n = printf("halo\n");
+printf("%d\n", n);  // 5
+```
+
+Hasilnya 5: empat huruf ditambah satu karakter baris baru.$ksp$, array[$ksp$tips$ksp$, $ksp$printf$ksp$, $ksp$format$ksp$]::text[]),
+  ($ksp$n-11$ksp$, $ksp$membaca-pesan-error-compiler$ksp$, $ksp$Membaca Pesan Error Compiler Tanpa Panik$ksp$, $ksp$2026-09-12$ksp$, $ksp$tips$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-error/1200/675$ksp$, $ksp$Pesan error itu teman: compiler memberi tahu letak masalahnya. Begini cara membacanya di Dev-C++, termasuk error for loop yang sering bikin bingung.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Pertama kali melihat daftar pesan error itu menakutkan. Tapi pesan error
+sebenarnya adalah teman: compiler sedang memberi tahu di mana masalahnya. Kamu
+hanya perlu tahu cara membacanya. Contoh di artikel ini memakai Dev-C++, aplikasi
+yang dipakai di kelas.
+
+## Di mana pesan error muncul
+
+Saat kamu menekan **Compile** (F9) dan ada yang salah, Dev-C++ membuka tab
+**Compiler** di bagian bawah jendela. Isinya tabel dengan empat kolom:
+
+| Line | Col | File | Message |
+| --- | --- | --- | --- |
+| 5 | 5 | galat.c | [Error] expected ';' before 'return' |
+
+- **Line** adalah nomor baris tempat masalahnya ditemukan.
+- **Col** adalah posisi kolomnya di baris itu.
+- **Message** adalah penjelasannya. Awalan `[Error]` artinya program tidak bisa
+  dijalankan sampai ini diperbaiki.
+
+Klik dua kali baris pesannya, dan Dev-C++ langsung melompat ke baris kode yang
+bermasalah.
+
+## Tiga pesan yang paling sering muncul
+
+**Lupa titik koma**
+
+```c
+printf("%d\n", jumlah)
+return 0;
+```
+
+Pesannya: `expected ';' before 'return'`. Compiler baru sadar ada yang kurang saat
+bertemu `return`, jadi baris yang ditunjuk sering kali baris *setelah* kesalahan
+yang sebenarnya.
+
+**Salah ketik nama variabel**
+
+```c
+int jumlah = 0;
+printf("%d\n", jumlh);
+```
+
+Pesannya: `'jumlh' undeclared (first use in this function)`. Artinya nama
+`jumlh` belum pernah dibuat. Periksa ejaannya, atau pastikan variabelnya sudah
+dideklarasikan di atas.
+
+**Deklarasi di dalam `for`**
+
+```c
+for (int i = 0; i < 5; i++) {
+```
+
+Pesannya: `'for' loop initial declarations are only allowed in C99 or C11 mode`.
+Ini khas Dev-C++, yang secara bawaan memakai aturan C versi lama. Perbaikannya
+mudah: deklarasikan variabelnya di luar `for`.
+
+```c
+int i;
+for (i = 0; i < 5; i++) {
+```
+
+## Error dan warning itu berbeda
+
+**Error** membuat program gagal dikompilasi. **Warning** (awalan `[Warning]`)
+tidak menghentikan kompilasi, tapi hampir selalu menandakan ada yang salah.
+Contoh paling klasik adalah lupa tanda `&` di `scanf`:
+
+```c
+scanf("%d", umur);
+```
+
+```
+[Warning] format '%d' expects argument of type 'int *', but argument 2 has type 'int'
+```
+
+Program ini tetap bisa dijalankan, tapi hasilnya kacau atau langsung berhenti.
+Supaya warning penting seperti ini selalu muncul, nyalakan `-Wall` di Dev-C++:
+buka **Tools → Compiler Options**, centang **Add the following commands when
+calling the compiler**, lalu isi dengan `-Wall`.
+
+## Tiga kebiasaan yang membantu
+
+1. **Perbaiki error pertama dulu.** Satu kesalahan bisa memicu banyak error lain
+   di bawahnya. Sering kali, setelah error pertama diperbaiki, sisanya ikut hilang.
+2. **Lihat juga baris sebelumnya.** Kalau baris yang ditunjuk terlihat benar,
+   kesalahannya mungkin ada di baris tepat di atasnya.
+3. **Kompilasi sesering mungkin.** Menulis lima baris lalu kompilasi jauh lebih
+   mudah daripada menulis seratus baris lalu menghadapi dua puluh error sekaligus.$ksp$, array[$ksp$tips$ksp$, $ksp$compiler$ksp$, $ksp$pemula$ksp$]::text[]),
+  ($ksp$n-10$ksp$, $ksp$fakta-unik-bahasa-c$ksp$, $ksp$Tujuh Fakta Unik tentang Bahasa C$ksp$, $ksp$2026-09-08$ksp$, $ksp$fakta$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-fakta/1200/675$ksp$, $ksp$Dari asal-usul namanya, program "Hello, world!" pertama, sampai keunikan kecil yang bikin programmer berpengalaman pun kaget.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Di balik kesannya yang serius, bahasa C punya banyak cerita dan keunikan kecil.
+Berikut tujuh di antaranya.
+
+## 1. Namanya diambil dari huruf sebelumnya
+
+C adalah penerus bahasa bernama **B**, buatan Ken Thompson di Bell Labs. B sendiri
+turunan dari bahasa BCPL. Jadi nama C bukan singkatan apa-apa, hanya huruf
+berikutnya setelah B.
+
+## 2. "Hello, world!" dipopulerkan oleh buku C
+
+Program pertama yang hampir semua orang tulis, yaitu mencetak `Hello, world!`,
+dipopulerkan oleh buku *The C Programming Language* karya Brian Kernighan dan
+Dennis Ritchie yang terbit tahun 1978. Sejak itu, hampir setiap tutorial bahasa
+pemrograman dimulai dengan cara yang sama.
+
+## 3. Kata kuncinya sedikit sekali
+
+Standar C yang pertama (C89) hanya punya **32 kata kunci**, seperti `int`, `if`,
+`for`, dan `return`. Bandingkan dengan bahasa modern yang bisa punya jauh lebih
+banyak. C memang sengaja dibuat kecil.
+
+## 4. `a[2]` sama dengan `2[a]`
+
+Ini keunikan yang sering bikin orang kaget. Coba jalankan:
+
+```c
+int a[3] = {10, 20, 30};
+printf("%d %d\n", a[2], 2[a]);
+```
+
+Keluarannya `30 30`. Di balik layar, C membaca `a[2]` sebagai "ambil nilai di
+posisi a ditambah 2", dan penjumlahan bisa dibalik urutannya. Tentu saja, jangan
+menulis seperti ini di tugasmu. Ini hanya fakta menarik.
+
+## 5. `sizeof` bukan fungsi
+
+`sizeof` terlihat seperti fungsi karena sering ditulis dengan kurung, tapi
+sebenarnya ia operator, sama seperti `+` atau `*`. Untuk variabel, kurungnya
+boleh tidak ditulis:
+
+```c
+int x = 5;
+int ukuran = sizeof x;
+printf("%d\n", ukuran);
+```
+
+## 6. C terus diperbarui
+
+C bukan bahasa yang berhenti di tahun 1970-an. Standarnya terus diperbarui:
+C89, C99, C11, C17, dan yang terbaru C23. Setiap versi menambahkan fitur baru
+sambil tetap menjaga kode lama supaya masih bisa berjalan.
+
+## 7. `return 0` di akhir `main` punya arti
+
+Angka yang dikembalikan `main` dikirim ke sistem operasi. Angka `0` berarti
+"program selesai dengan baik", sedangkan angka lain biasanya berarti ada masalah.
+Sejak C99, kalau `main` selesai tanpa `return`, C otomatis menganggapnya
+mengembalikan `0`.$ksp$, array[$ksp$fakta$ksp$, $ksp$sejarah$ksp$, $ksp$bahasa-c$ksp$]::text[]),
+  ($ksp$n-09$ksp$, $ksp$kenapa-bahasa-c-masih-dipakai$ksp$, $ksp$Kenapa Bahasa C Masih Dipakai Sampai Sekarang$ksp$, $ksp$2026-09-02$ksp$, $ksp$fakta$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-kenapa-c/1200/675$ksp$, $ksp$Umurnya sudah lebih dari lima puluh tahun, tapi C masih ada di Linux, Python, sampai mesin cuci. Ini alasannya.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Umur bahasa C sudah lebih dari lima puluh tahun. Di dunia teknologi, itu setara
+dengan zaman purba. Tapi sampai hari ini C masih diajarkan di hampir setiap
+jurusan informatika, dan masih dipakai untuk membangun perangkat lunak yang kamu
+pakai setiap hari. Kenapa bisa begitu?
+
+## Lahir untuk membangun sistem operasi
+
+C dibuat oleh Dennis Ritchie di Bell Labs pada awal 1970-an. Tujuannya sangat
+praktis: menulis ulang sistem operasi Unix supaya tidak perlu ditulis dalam
+bahasa mesin yang berbeda-beda untuk setiap komputer.
+
+Hasilnya, C menjadi bahasa yang dekat dengan cara kerja komputer, tapi tetap bisa
+dibaca manusia. Kombinasi itulah yang membuatnya bertahan.
+
+## Diam-diam ada di mana-mana
+
+Banyak perangkat lunak besar yang kamu kenal ditulis dengan C, atau punya inti
+yang ditulis dengan C:
+
+- **Linux**, sistem operasi yang menjalankan sebagian besar server di internet
+  dan menjadi dasar Android, intinya ditulis dengan C.
+- **Python**, bahasa yang terkenal mudah dipelajari, dijalankan oleh program yang
+  juga ditulis dengan C.
+- **Git**, alat yang dipakai hampir semua programmer untuk menyimpan riwayat kode.
+- **SQLite**, database kecil yang ada di hampir setiap ponsel.
+- Program di dalam **mesin cuci, remote AC, sampai kendaraan** banyak yang
+  ditulis dengan C, karena C bisa berjalan di perangkat dengan memori yang sangat
+  kecil.
+
+## Pintu masuk ke bahasa lain
+
+Kalau kamu sudah paham C, bahasa lain akan terasa familier. C++, Java, C#,
+JavaScript, dan banyak bahasa lain meminjam gaya penulisan C: kurung kurawal untuk
+blok kode, titik koma di akhir perintah, dan bentuk perulangan `for` yang sama.
+
+## Mengajarkan cara komputer berpikir
+
+Bahasa yang lebih modern banyak mengerjakan hal secara otomatis di belakang
+layar. Itu memudahkan, tapi juga menyembunyikan cara kerjanya. C tidak
+menyembunyikan banyak hal. Kamu harus menentukan sendiri tipe data setiap
+variabel, dan memikirkan langkah demi langkah apa yang dikerjakan program.
+
+Karena itu, belajar C memang terasa lebih menantang di awal. Tapi pemahaman yang
+kamu dapat akan terbawa ke bahasa apa pun yang kamu pelajari sesudahnya.$ksp$, array[$ksp$fakta$ksp$, $ksp$sejarah$ksp$, $ksp$bahasa-c$ksp$]::text[]),
+  ($ksp$n-06$ksp$, $ksp$bahaya-scanf-persen-s$ksp$, $ksp$Berhenti Menulis scanf Persen-s Tanpa Batas Lebar$ksp$, $ksp$2026-08-30$ksp$, $ksp$tutorial$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-scanf/1200/675$ksp$, $ksp$Satu baris yang sering muncul di program pemula, dan hampir selalu menyimpan masalah. Perbaikannya cuma satu angka, dan angkanya bukan yang kamu kira.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Ada satu baris yang sering sekali muncul di program pemula, dan hampir selalu
+menyimpan masalah:
 
 ```c
 char nama[32];
@@ -340,83 +454,37 @@ sebagian besar soal, hal itu perlu dibuang sendiri.
 
 Setiap kali kamu menulis `%s` di dalam `scanf`, berhenti sebentar dan tanyakan
 berapa ukuran tujuannya. Kalau kamu tidak bisa menjawabnya langsung, itu tanda
-bahwa batasnya memang belum kamu pikirkan.
+bahwa batasnya memang belum kamu pikirkan.$ksp$, array[$ksp$string$ksp$, $ksp$tutorial$ksp$, $ksp$keamanan$ksp$]::text[]),
+  ($ksp$n-01$ksp$, $ksp$pendaftaran-anggota-baru-2026$ksp$, $ksp$Pendaftaran Anggota Baru Semester Ganjil 2026/2027 Dibuka$ksp$, $ksp$2026-08-24$ksp$, $ksp$pengumuman$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-pendaftaran/1200/675$ksp$, $ksp$Terbuka untuk mahasiswa aktif UAJY semester 1 sebagai persiapan mata kuliah dasar pemrograman C, tanpa syarat kemampuan awal. Biaya Rp150.000 dengan cashback 70%.$ksp$, $ksp$Pengurus KSP$ksp$, $ksp$Pendaftaran anggota baru Kelompok Studi Pemrograman untuk semester ganjil
+2026/2027 dibuka mulai hari ini sampai 11 September 2026. Pendaftaran terbuka
+untuk mahasiswa aktif UAJY semester 1, tanpa syarat kemampuan awal.
 
-Mulai musim ini, submission yang memakai `%s` tanpa batas lebar akan dikembalikan
-untuk diperbaiki, meski keluarannya sudah benar.$ksp$, array[$ksp$string$ksp$, $ksp$tutorial$ksp$, $ksp$keamanan$ksp$]::text[]),
-  ($ksp$n-07$ksp$, $ksp$kompetisi-internal-akhir-semester$ksp$, $ksp$Kompetisi Internal: 34 Peserta, Satu Soal Tak Tersentuh$ksp$, $ksp$2025-12-01$ksp$, $ksp$liputan$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-kompetisi/1200/675$ksp$, $ksp$Tiga jam, delapan soal. Tujuh dari delapan submission untuk soal nomor tujuh sebenarnya sudah benar secara logika, dan yang hilang cuma satu hal.$ksp$, $ksp$Kevin Alexander Tanuwijaya$ksp$, $ksp$Kompetisi internal akhir semester ganjil digelar Jumat lalu di laboratorium FTI,
-diikuti 34 peserta dari seluruh angkatan. Formatnya tiga jam, delapan soal,
-penilaian berbasis jumlah soal terselesaikan dan waktu pengumpulan.
+## Persiapan untuk mata kuliah dasar pemrograman
 
-## Hasil akhir
+Kelas KSP disusun untuk mempersiapkanmu menghadapi mata kuliah dasar pemrograman
+berbahasa C. Materinya berjalan bertahap setiap minggu: dimulai dari flowchart,
+lalu tipe data, pemilihan, perulangan, prosedur, fungsi, array, sampai record.
 
-Peringkat pertama diraih Theresia Maharani Putri dari angkatan 2025, dengan enam
-soal terselesaikan dalam dua jam empat puluh menit. Ini pertama kalinya peserta
-angkatan pertama memenangi kompetisi internal.
+Belum pernah menulis satu baris kode pun? Tidak masalah. Kelasnya dimulai dari
+nol, dengan tentor yang mendampingi dari pertemuan pertama.
 
-Peringkat kedua dan ketiga masing-masing diraih Gilang Prasetyo Nugroho dan
-Damar Aji Setiawan, keduanya dengan enam soal, terpaut sembilan dan enam belas
-menit dari peringkat pertama.
+## Apa yang kamu dapat
 
-## Soal nomor tujuh
+- Kelas rutin setiap Senin dan Selasa, 19.00–21.00 WIB, di Lab Komputasi
+- Pendampingan dari tentor di setiap pertemuan
+- Challenge mingguan yang mengikuti materi kelas
+- Akses ke arsip modul dan soal latihan
+- Sertifikat keanggotaan di akhir tahun ajaran, bisa ditukar SPAMA tipe organisasi
 
-Dari delapan soal, hanya satu yang tidak terselesaikan oleh siapa pun: soal
-nomor tujuh, tentang penelusuran graf berarah dengan siklus.
+## Biaya
 
-Delapan peserta mengumpulkan jawaban dan seluruhnya kehabisan waktu. Setelah
-kompetisi, pembahasan menunjukkan bahwa tujuh dari delapan submission itu
-sebenarnya sudah benar secara logika. Yang hilang adalah penanda simpul yang
-sudah dikunjungi, sehingga penelusurannya berputar selamanya di dalam siklus.
+Biaya pendaftaran Rp150.000, dibayar sekali. Kalau presensimu memenuhi, 70%
+(Rp105.000) dikembalikan sebagai cashback. Tidak ada iuran bulanan.
 
-Soal itu kemudian dipakai ulang sebagai challenge minggu kedua belas musim ini,
-dengan batas waktu yang lebih longgar.
+## Cara mendaftar
 
-## Catatan panitia
-
-Dua hal yang dicatat panitia untuk kompetisi berikutnya.
-
-Pertama, waktu tiga jam terlalu pendek untuk delapan soal. Enam soal dalam tiga
-jam akan memberi ruang lebih untuk membaca soal dengan benar, yang ternyata jadi
-sumber kesalahan terbanyak.
-
-Kedua, sistem penilaian akan membekukan papan peringkat tiga puluh menit
-terakhir. Papan yang terus berubah sampai detik akhir memang seru untuk ditonton,
-tapi membuat sebagian peserta panik dan meninggalkan soal yang hampir selesai.$ksp$, array[$ksp$kompetisi$ksp$, $ksp$liputan$ksp$, $ksp$graf$ksp$]::text[]),
-  ($ksp$n-08$ksp$, $ksp$workshop-manajemen-memori$ksp$, $ksp$Catatan dari Workshop Manajemen Memori$ksp$, $ksp$2025-10-27$ksp$, $ksp$liputan$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-workshop/1200/675$ksp$, $ksp$Dibuka bukan dengan malloc, melainkan dengan menggambar. Dari 28 gambar, hanya 6 yang menempatkan pointer sebagai variabel yang punya alamatnya sendiri.$ksp$, $ksp$Salsabila Rahmawati$ksp$, $ksp$Workshop manajemen memori digelar Sabtu lalu selama tiga jam, diikuti 28 peserta.
-Materinya dibawakan Reza Maulana Hakim dan Bimo Santoso Aji, dengan format setengah
-penjelasan dan setengah praktik langsung.
-
-## Struktur sesi
-
-Sesi dibuka bukan dengan `malloc`, melainkan dengan menggambar. Setiap peserta
-diminta menggambar apa yang menurut mereka terjadi di memori ketika sebuah
-variabel dideklarasikan, lalu ketika sebuah pointer menunjuk ke variabel itu.
-
-Dari 28 gambar, 19 di antaranya menggambarkan pointer sebagai panah yang menunjuk
-ke sebuah nilai. Hanya 6 yang menggambarkan pointer sebagai variabel tersendiri
-yang menyimpan alamat, dan punya alamatnya sendiri.
-
-"Perbedaan itu kelihatan sepele sampai kamu perlu pointer ke pointer," kata Reza.
-"Kalau modelmu berupa panah, `int **p` jadi tidak masuk akal. Kalau modelmu berupa
-kotak beralamat, ia cuma kotak yang isinya alamat kotak lain."
-
-## Bagian praktik
-
-Peserta diberi satu program yang sudah jalan dan benar keluarannya, lalu diminta
-menemukan tiga kebocoran memori di dalamnya menggunakan `valgrind`.
-
-Rata-rata peserta menemukan dua dari tiga. Kebocoran ketiga sengaja ditaruh di
-jalur penanganan galat, yang hanya berjalan kalau alokasinya gagal. Tidak ada satu
-pun yang menemukannya lewat pengujian biasa, karena jalur itu tidak pernah dijalani.
-
-Pesan penutupnya diambil dari situ: jalur galat adalah bagian program yang paling
-jarang diuji dan paling sering salah.
-
-## Berkas dan rekaman
-
-Rekaman sesi, berkas latihan, dan kunci jawaban tersedia di arsip materi. Program
-berisi kebocoran memori yang dipakai dalam sesi praktik dibiarkan apa adanya,
-lengkap dengan ketiga kebocorannya, supaya bisa dipakai ulang untuk latihan mandiri.$ksp$, array[$ksp$workshop$ksp$, $ksp$memori$ksp$, $ksp$liputan$ksp$]::text[]);
+Isi formulir pendaftaran lewat tombol daftar di halaman gabung. Informasi lengkap
+tentang syarat, alur, dan pertanyaan yang sering diajukan ada di sana juga.$ksp$, array[$ksp$pendaftaran$ksp$, $ksp$anggota-baru$ksp$, $ksp$kelas$ksp$]::text[]);
 
 insert into public.challenges (id, slug, minggu, judul, tanggal_rilis, deadline, difficulty, topik, deskripsi_mdx, constraints, sample_io, hint_terkunci, total_peserta, tags) values
   ($ksp$c-03$ksp$, $ksp$durasi-praktikum$ksp$, 3, $ksp$Durasi Praktikum$ksp$, $ksp$2026-10-05$ksp$, $ksp$2026-10-11T23:59$ksp$, $ksp$MUDAH$ksp$, array[$ksp$tipe-data$ksp$]::text[], $ksp$Server praktikum mencatat lama setiap sesi dalam satuan detik. Angka seperti

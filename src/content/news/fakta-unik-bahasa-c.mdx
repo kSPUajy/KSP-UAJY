@@ -1,0 +1,59 @@
+Di balik kesannya yang serius, bahasa C punya banyak cerita dan keunikan kecil.
+Berikut tujuh di antaranya.
+
+## 1. Namanya diambil dari huruf sebelumnya
+
+C adalah penerus bahasa bernama **B**, buatan Ken Thompson di Bell Labs. B sendiri
+turunan dari bahasa BCPL. Jadi nama C bukan singkatan apa-apa, hanya huruf
+berikutnya setelah B.
+
+## 2. "Hello, world!" dipopulerkan oleh buku C
+
+Program pertama yang hampir semua orang tulis, yaitu mencetak `Hello, world!`,
+dipopulerkan oleh buku *The C Programming Language* karya Brian Kernighan dan
+Dennis Ritchie yang terbit tahun 1978. Sejak itu, hampir setiap tutorial bahasa
+pemrograman dimulai dengan cara yang sama.
+
+## 3. Kata kuncinya sedikit sekali
+
+Standar C yang pertama (C89) hanya punya **32 kata kunci**, seperti `int`, `if`,
+`for`, dan `return`. Bandingkan dengan bahasa modern yang bisa punya jauh lebih
+banyak. C memang sengaja dibuat kecil.
+
+## 4. `a[2]` sama dengan `2[a]`
+
+Ini keunikan yang sering bikin orang kaget. Coba jalankan:
+
+```c
+int a[3] = {10, 20, 30};
+printf("%d %d\n", a[2], 2[a]);
+```
+
+Keluarannya `30 30`. Di balik layar, C membaca `a[2]` sebagai "ambil nilai di
+posisi a ditambah 2", dan penjumlahan bisa dibalik urutannya. Tentu saja, jangan
+menulis seperti ini di tugasmu. Ini hanya fakta menarik.
+
+## 5. `sizeof` bukan fungsi
+
+`sizeof` terlihat seperti fungsi karena sering ditulis dengan kurung, tapi
+sebenarnya ia operator, sama seperti `+` atau `*`. Untuk variabel, kurungnya
+boleh tidak ditulis:
+
+```c
+int x = 5;
+int ukuran = sizeof x;
+printf("%d\n", ukuran);
+```
+
+## 6. C terus diperbarui
+
+C bukan bahasa yang berhenti di tahun 1970-an. Standarnya terus diperbarui:
+C89, C99, C11, C17, dan yang terbaru C23. Setiap versi menambahkan fitur baru
+sambil tetap menjaga kode lama supaya masih bisa berjalan.
+
+## 7. `return 0` di akhir `main` punya arti
+
+Angka yang dikembalikan `main` dikirim ke sistem operasi. Angka `0` berarti
+"program selesai dengan baik", sedangkan angka lain biasanya berarti ada masalah.
+Sejak C99, kalau `main` selesai tanpa `return`, C otomatis menganggapnya
+mengembalikan `0`.

@@ -1,0 +1,69 @@
+`printf` adalah fungsi pertama yang dipelajari hampir semua orang. Tapi banyak
+yang hanya memakai `%d` dan `%s`, padahal `printf` bisa melakukan jauh lebih
+banyak. Berikut beberapa trik yang berguna, terutama untuk soal yang meminta
+format keluaran tertentu.
+
+## Mengatur lebar kolom
+
+Angka di antara `%` dan huruf format menentukan lebar minimal:
+
+```c
+printf("[%5d]\n", 42);   // [   42]
+printf("[%-5d]\n", 42);  // [42   ]
+printf("[%05d]\n", 42);  // [00042]
+```
+
+- `%5d` menambah spasi di kiri sampai lebarnya 5 karakter.
+- `%-5d` sama, tapi rata kiri.
+- `%05d` mengisi dengan nol, cocok untuk nomor urut seperti `00042`.
+
+Trik ini sangat membantu saat membuat tabel yang kolomnya harus lurus.
+
+## Membatasi angka di belakang koma
+
+```c
+printf("[%.2f]\n", 3.14159);   // [3.14]
+printf("[%8.2f]\n", 3.14159);  // [    3.14]
+```
+
+`%.2f` mencetak tepat dua angka di belakang koma dan sudah membulatkan sendiri.
+Keduanya bisa digabung: `%8.2f` berarti lebar 8, dengan dua angka desimal.
+
+## Mencetak tanda persen
+
+Karena `%` punya arti khusus, untuk mencetak tanda persen yang sebenarnya, tulis
+dua kali:
+
+```c
+printf("diskon 50%%\n");  // diskon 50%
+```
+
+## Lebar kolom dari variabel
+
+Kalau lebarnya baru diketahui saat program berjalan, pakai `*`:
+
+```c
+int lebar = 6;
+printf("[%*d]\n", lebar, 42);  // [    42]
+```
+
+## Bonus: angka dalam bentuk lain
+
+```c
+printf("%x %o\n", 255, 8);  // ff 10
+printf("%c\n", 65);         // A
+```
+
+`%x` mencetak bilangan heksadesimal, `%o` oktal, dan `%c` mencetak karakter
+dari kode ASCII-nya. Ternyata huruf `A` di komputer disimpan sebagai angka 65.
+
+## `printf` juga mengembalikan nilai
+
+Jarang ada yang tahu bahwa `printf` mengembalikan jumlah karakter yang dicetak:
+
+```c
+int n = printf("halo\n");
+printf("%d\n", n);  // 5
+```
+
+Hasilnya 5: empat huruf ditambah satu karakter baris baru.

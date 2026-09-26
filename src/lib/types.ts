@@ -26,7 +26,7 @@ export type Topik = (typeof TOPIK)[number]
 export const DIVISI = ['inti', 'kominfo', 'usda'] as const
 export type Divisi = (typeof DIVISI)[number]
 
-export const KATEGORI_BERITA = ['pengumuman', 'liputan', 'tutorial', 'prestasi'] as const
+export const KATEGORI_BERITA = ['pengumuman', 'fakta', 'tips', 'tutorial', 'liputan', 'prestasi'] as const
 export type KategoriBerita = (typeof KATEGORI_BERITA)[number]
 
 export const KATEGORI_MASUKAN = ['kritik', 'saran', 'lainnya'] as const

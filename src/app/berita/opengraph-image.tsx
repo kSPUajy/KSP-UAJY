@@ -11,6 +11,6 @@ export default function Image() {
     command: 'git log --oneline berita/',
     eyebrow: 'berita',
     title: 'Kabar dari KSP',
-    subtitle: 'Pengumuman, cerita kegiatan, prestasi anggota, dan tips belajar.',
+    subtitle: 'Fakta menarik tentang bahasa C, tips dan trik untuk pemula, dan pengumuman.',
   })
 }
