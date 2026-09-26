@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { SectionTransition } from '@/components/motion/SectionTransition'
 import { AboutSection } from '@/components/sections/home/AboutSection'
 import { ChallengeSection } from '@/components/sections/home/ChallengeSection'
 import { FeedbackSection } from '@/components/sections/home/FeedbackSection'
@@ -90,19 +91,23 @@ export default async function HomePage() {
 
       <AboutSection index={1} pengurus={pengurus.filter((member) => member.divisi === 'inti')} />
 
-      <ChallengeSection
-        index={2}
-        current={current}
-        teaser={currentBody ? mdxExcerpt(currentBody.deskripsiMdx) : ''}
-        currentWinner={currentWinner}
-        lastWinner={
-          lastWinner && lastWinnerChallenge
-            ? { winner: lastWinner, challengeTitle: lastWinnerChallenge.judul }
-            : null
-        }
-      />
+      <SectionTransition kind="scan" accent="magenta">
+        <ChallengeSection
+          index={2}
+          current={current}
+          teaser={currentBody ? mdxExcerpt(currentBody.deskripsiMdx) : ''}
+          currentWinner={currentWinner}
+          lastWinner={
+            lastWinner && lastWinnerChallenge
+              ? { winner: lastWinner, challengeTitle: lastWinnerChallenge.judul }
+              : null
+          }
+        />
+      </SectionTransition>
       <LinkEvent index={3} />
-      <TentorTeaser index={4} tentors={tentors} schedule={schedule} />
+      <SectionTransition kind="print">
+        <TentorTeaser index={4} tentors={tentors} schedule={schedule} />
+      </SectionTransition>
       <NewsSection
         index={5}
         posts={posts}
@@ -113,7 +118,9 @@ export default async function HomePage() {
       />
       <GalleryStrip index={6} items={gallery.slice(0, GALLERY_FRAMES)} />
       <FeedbackSection index={7} />
-      <JoinCta index={8} info={joinInfo} registration={registration} />
+      <SectionTransition kind="crt">
+        <JoinCta index={8} info={joinInfo} registration={registration} />
+      </SectionTransition>
     </>
   )
 }

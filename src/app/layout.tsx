@@ -120,7 +120,7 @@ body{display:flex;flex-direction:column}
 body>footer{order:2}
 @layer theme{body>div[hidden][id^="S:"]{display:block!important;order:1}}
 template[id^="B:"]~*{display:none!important}
-[data-reveal],[data-seq]{opacity:1!important;transform:none!important}
+[data-reveal],[data-seq]{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
 [data-typewriter-mask],[data-raster]{display:none!important}
 [data-needs-js]{display:none!important}
 </style>`
