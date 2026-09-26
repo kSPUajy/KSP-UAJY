@@ -9,6 +9,7 @@ import { Hero } from '@/components/sections/home/Hero'
 import { JoinCta } from '@/components/sections/home/JoinCta'
 import { LinkEvent } from '@/components/sections/home/LinkEvent'
 import { NewsSection } from '@/components/sections/home/NewsSection'
+import { TracksSection } from '@/components/sections/home/TracksSection'
 import { TentorTeaser } from '@/components/sections/home/TentorTeaser'
 import { JsonLd, organizationLd } from '@/components/seo/JsonLd'
 import {
@@ -86,9 +87,10 @@ export default async function HomePage() {
       />
 
       <AboutSection index={1} pengurus={pengurus.filter((member) => member.divisi === 'inti')} />
+      <TracksSection index={2} />
 
       <ChallengeSection
-        index={2}
+        index={3}
         current={current}
         teaser={currentBody ? mdxExcerpt(currentBody.deskripsiMdx) : ''}
         currentWinner={currentWinner}
@@ -98,20 +100,20 @@ export default async function HomePage() {
             : null
         }
       />
-      <LinkEvent index={3} />
-      <TentorTeaser index={4} tentors={tentors} schedule={schedule} />
+      <LinkEvent index={4} />
+      <TentorTeaser index={5} tentors={tentors} schedule={schedule} />
       <NewsSection
-        index={5}
+        index={6}
         posts={posts}
         schedule={schedule}
         current={current}
         nextChallenge={nextChallenge}
         registration={registration}
       />
-      <GalleryStrip index={6} items={gallery.slice(0, GALLERY_FRAMES)} />
-      <FeedbackSection index={7} />
+      <GalleryStrip index={7} items={gallery.slice(0, GALLERY_FRAMES)} />
+      <FeedbackSection index={8} />
       <SectionTransition kind="crt">
-        <JoinCta index={8} info={joinInfo} registration={registration} />
+        <JoinCta index={9} info={joinInfo} registration={registration} />
       </SectionTransition>
     </>
   )

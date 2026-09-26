@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 
 /** Numbered sections on the home page. Update when one is added or removed. */
-export const HOME_SECTIONS = 8
+export const HOME_SECTIONS = 9
 
 type SectionMarkerProps = {
   /** 1-based position on the page. */
