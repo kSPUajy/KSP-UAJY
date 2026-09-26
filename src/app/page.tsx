@@ -5,6 +5,7 @@ import { ChallengeSection } from '@/components/sections/home/ChallengeSection'
 import { GalleryStrip } from '@/components/sections/home/GalleryStrip'
 import { Hero } from '@/components/sections/home/Hero'
 import { JoinCta } from '@/components/sections/home/JoinCta'
+import { LinkEvent } from '@/components/sections/home/LinkEvent'
 import { NewsSection } from '@/components/sections/home/NewsSection'
 import { TentorTeaser } from '@/components/sections/home/TentorTeaser'
 import { JsonLd, organizationLd } from '@/components/seo/JsonLd'
@@ -93,10 +94,11 @@ export default async function HomePage() {
             : null
         }
       />
-      <TentorTeaser index={3} tentors={tentors} schedule={schedule} />
-      <NewsSection index={4} posts={posts} />
-      <GalleryStrip index={5} items={gallery.slice(0, GALLERY_FRAMES)} />
-      <JoinCta index={6} info={joinInfo} registration={registration} />
+      <LinkEvent index={3} />
+      <TentorTeaser index={4} tentors={tentors} schedule={schedule} />
+      <NewsSection index={5} posts={posts} />
+      <GalleryStrip index={6} items={gallery.slice(0, GALLERY_FRAMES)} />
+      <JoinCta index={7} info={joinInfo} registration={registration} />
     </>
   )
 }

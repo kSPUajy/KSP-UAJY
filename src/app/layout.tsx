@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, JetBrains_Mono, Silkscreen } from 'next/font/google'
 
 import { Footer } from '@/components/layout/Footer'
 import { Nav } from '@/components/layout/Nav'
+import { SmoothScroll } from '@/components/motion/SmoothScroll'
 import { SkipLink } from '@/components/layout/SkipLink'
 import { THEME_INIT_SCRIPT, ThemeProvider } from '@/components/layout/ThemeProvider'
 import { CRT_INIT_SCRIPT, CrtPowerOn } from '@/components/overlays/CrtPowerOn'
@@ -137,6 +138,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CreatorEggs />
           <PageOverlays />
           <CrtPowerOn />
+          <SmoothScroll />
         </ThemeProvider>
       </body>
     </html>

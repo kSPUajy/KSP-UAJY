@@ -117,7 +117,7 @@ export function HeroSequence({
 
   return (
     <motion.div initial="hidden" animate={enterLabel(mode)} className="flex flex-1 flex-col">
-      <div className="relative grid flex-1 grid-cols-1 items-center gap-10 px-4 py-8 sm:px-8 sm:py-10 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-16 lg:py-12 lg:pr-10 lg:pl-8 xl:gap-32">
+      <div className="relative grid flex-1 grid-cols-1 items-center gap-10 px-4 py-8 sm:px-8 sm:py-10 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-16 lg:py-12 lg:pr-10 lg:pl-8 xl:gap-32 short:lg:py-6">
         {backdrop}
 
         <div className="relative flex min-w-0 flex-col justify-center">
@@ -132,9 +132,9 @@ export function HeroSequence({
             />
           </p>
 
-          <h1 id="hero-title" className="mt-8 sm:mt-12">
+          <h1 id="hero-title" className="mt-8 sm:mt-12 short:lg:mt-6">
             <span className="relative block w-fit">
-              <span className="block font-display text-[clamp(4.5rem,24vw,11rem)] lg:text-[clamp(11rem,14vw,16rem)] leading-[0.85] tracking-[0.02em] text-fg">
+              <span className="block font-display text-[clamp(4.5rem,24vw,11rem)] lg:text-[clamp(11rem,14vw,16rem)] short:lg:text-[clamp(7rem,10vw,11rem)] leading-[0.85] tracking-[0.02em] text-fg">
                 {wordmark}
               </span>
               {mode === 'reduced' ? null : <RasterMask delay={timeline.raster} />}
@@ -144,7 +144,7 @@ export function HeroSequence({
               data-seq
               custom={timeline.name}
               variants={beat}
-              className="mt-5 block font-display text-[clamp(0.6875rem,2.2vw,1.0625rem)] leading-relaxed tracking-[0.2em] text-accent-fg uppercase sm:mt-6"
+              className="mt-5 block font-display text-[clamp(0.6875rem,2.2vw,1.0625rem)] leading-relaxed tracking-[0.2em] text-accent-fg uppercase sm:mt-6 short:lg:mt-4"
             >
               {name}
             </motion.span>
@@ -154,7 +154,7 @@ export function HeroSequence({
             data-seq
             custom={timeline.tagline}
             variants={beat}
-            className="mt-6 max-w-xl text-sm leading-7 text-fg sm:text-base sm:leading-7"
+            className="mt-6 max-w-xl text-sm leading-7 text-fg sm:text-base sm:leading-7 short:lg:mt-3"
           >
             {tagline}
           </motion.p>
@@ -163,13 +163,13 @@ export function HeroSequence({
             data-seq
             custom={timeline.actions}
             variants={beat}
-            className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap"
+            className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap short:lg:mt-5"
           >
             {actions}
           </motion.div>
 
           {status ? (
-            <motion.div data-seq custom={timeline.status} variants={beat} className="mt-10">
+            <motion.div data-seq custom={timeline.status} variants={beat} className="mt-10 short:lg:mt-5">
               {status}
             </motion.div>
           ) : null}

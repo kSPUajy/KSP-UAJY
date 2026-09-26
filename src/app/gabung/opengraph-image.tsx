@@ -11,6 +11,6 @@ export default function Image() {
     command: './gabung --help',
     eyebrow: 'gabung',
     title: 'Belum bisa C? Justru itu alasannya.',
-    subtitle: 'Terbuka untuk semua mahasiswa aktif UAJY. Tanpa seleksi, tanpa biaya.',
+    subtitle: 'Persiapan dasar pemrograman C untuk mahasiswa UAJY semester 1. Rp150.000, cashback 70%.',
   })
 }

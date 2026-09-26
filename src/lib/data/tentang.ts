@@ -14,10 +14,10 @@ export const aboutInfo: AboutInfo = {
   ],
   prinsip: [
     {
-      id: 'baca-dulu',
-      judul: 'Baca sebelum menulis',
+      id: 'mulai-dari-nol',
+      judul: 'Mulai dari nol',
       deskripsi:
-        'Pertemuan pertama jalur dasar tidak dimulai dengan printf, tapi dengan membaca kode orang lain dan menebak keluarannya. Menulis datang setelah membaca.',
+        'Pertemuan pertama jalur dasar tidak menganggap kamu sudah tahu apa pun. Tidak ada materi yang dilompati, dan tidak ada pertanyaan yang terlalu dasar untuk ditanyakan.',
     },
     {
       id: 'tidak-ada-sihir',
@@ -35,7 +35,7 @@ export const aboutInfo: AboutInfo = {
       id: 'terbuka',
       judul: 'Pintu selalu terbuka',
       deskripsi:
-        'Tidak ada seleksi, tidak ada iuran, tidak ada syarat kemampuan awal. Challenge mingguan terbuka bahkan untuk yang belum mendaftar sebagai anggota.',
+        'Tidak ada seleksi, tidak ada iuran bulanan, tidak ada syarat kemampuan awal. Challenge mingguan terbuka bahkan untuk yang belum mendaftar sebagai anggota.',
     },
   ],
   sejarah: [
@@ -57,7 +57,7 @@ export const aboutInfo: AboutInfo = {
       periode: 'Okt 2025',
       judul: 'Workshop manajemen memori',
       deskripsi:
-        'Dibuka dengan menggambar, bukan dengan malloc. Rekamannya kini jadi materi wajib jalur lanjut.',
+        'Dibuka dengan menggambar, bukan dengan malloc. Modulnya kini jadi materi wajib jalur lanjut.',
     },
     {
       periode: 'Des 2025',

@@ -102,7 +102,7 @@ export function TentorTeaser({ index, tentors, schedule }: TentorTeaserProps) {
       ) : null}
 
       <Reveal>
-        <div data-surveil-avoid>
+        <div data-surveil-avoid="content">
           <SectionHeader
             index={index}
             eyebrow="tentor"

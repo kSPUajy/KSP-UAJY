@@ -6,7 +6,6 @@ import type { Variants } from 'motion/react'
 
 import { mech } from '@/components/motion/variants'
 import { AccountLink } from '@/components/layout/AccountLink'
-import { ButtonLink } from '@/components/ui/Button'
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 import { siteConfig } from '@/site.config'
@@ -113,13 +112,8 @@ export function MobileMenu({ open, onClose, isActive }: MobileMenuProps) {
               </ul>
             </nav>
 
-            <motion.div variants={line} className="mt-8" data-accent={siteConfig.cta.accent}>
-              <ButtonLink href={siteConfig.cta.href} onClick={onClose} size="lg" className="w-full">
-                gabung sekarang
-              </ButtonLink>
-              <div className="mt-4 sm:hidden">
-                <AccountLink size="lg" onNavigate={onClose} />
-              </div>
+            <motion.div variants={line} className="mt-8 sm:hidden">
+              <AccountLink size="lg" onNavigate={onClose} />
             </motion.div>
 
             <motion.p variants={line} className="mt-8 text-[11px] text-dim">

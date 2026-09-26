@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { animate, motion, useInView, useMotionValue, useTransform } from 'motion/react'
 
 import { EASE_MECH, REVEAL_VIEWPORT } from '@/components/motion/variants'
@@ -37,6 +37,9 @@ export function CountUp({ value, duration = 1.2, delay = 0, className }: CountUp
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, REVEAL_VIEWPORT)
   const mode = useMotionMode()
+  // The delay belongs to the page's entrance, not to the moment the number
+  // scrolls into view — on a short screen the hero's stats arrive late.
+  const [mountedAt] = useState(() => performance.now())
 
   const count = useMotionValue(value)
   const display = useTransform(count, (latest) => formatCount(Math.round(latest)))
@@ -50,9 +53,10 @@ export function CountUp({ value, duration = 1.2, delay = 0, className }: CountUp
       return
     }
     count.set(0)
-    const controls = animate(count, value, { duration, delay, ease: EASE_MECH })
+    const remaining = Math.max(0, delay - (performance.now() - mountedAt) / 1000)
+    const controls = animate(count, value, { duration, delay: remaining, ease: EASE_MECH })
     return () => controls.stop()
-  }, [inView, mode, value, duration, delay, count])
+  }, [inView, mode, value, duration, delay, count, mountedAt])
 
   return (
     <span ref={ref} className={cn('tabular-nums', className)}>

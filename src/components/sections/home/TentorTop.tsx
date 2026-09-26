@@ -72,8 +72,8 @@ const GHOST_CHILD: TopRow = {
   search: '',
 }
 
-/** Rows a phone shows before asking for a search. */
-const PHONE_ROWS = 8
+/** Rows a phone shows before asking for a search: the photo is the point there. */
+const PHONE_ROWS = 5
 
 /** Searches the idle prompt types for itself, to show the filter works. */
 const DEMO = ['array', 'M05', 'flowchart', 'prosedur', 'M12', 'fungsi']
@@ -125,6 +125,14 @@ function Row({
         href={row.slug ? `/tentor/${row.slug}` : '/tentang'}
         onPointerEnter={onHover}
         onFocus={onHover}
+        onClick={(event) => {
+          // No hover on a touch screen: the first tap picks the tentor and
+          // shows their photo, the second opens the profile.
+          if (!active && window.matchMedia('(hover: none)').matches) {
+            event.preventDefault()
+            onHover()
+          }
+        }}
         className={cn(
           'grid grid-cols-[2.75rem_minmax(0,1fr)_1.5rem] items-center gap-x-3 px-3 py-1.5 text-[12px] leading-5 transition-colors sm:grid-cols-[2.75rem_minmax(0,13rem)_1.5rem_7.5rem_minmax(0,1fr)] sm:text-[13px]',
           active ? 'bg-accent text-canvas' : running ? 'bg-accent/10 hover:bg-surface-2' : 'hover:bg-surface-2',
@@ -145,7 +153,7 @@ function Row({
           </span>
           <span className="w-8 text-right tabular-nums">{cpu < 1 ? cpu.toFixed(1) : cpu}</span>
         </span>
-        <span className={cn('col-span-3 truncate pl-[3.5rem] sm:col-span-1 sm:pl-0', active ? 'text-canvas' : 'text-muted')}>
+        <span className={cn('hidden truncate sm:block', active ? 'text-canvas' : 'text-muted')}>
           {row.command}
         </span>
       </Link>
@@ -300,11 +308,10 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
             </p>
             {/* Held at the full table's height, so filtering never resizes
                 the window — a terminal does not shrink when grep finds less,
-                and the sections below must not jump. Rows are 2rem from `sm`
-                up, two lines (3.5rem) on a phone. */}
+                and the sections below must not jump. Rows are 2rem, one line each. */}
             <ul
               aria-label="Tentor"
-              className="min-h-[calc(var(--phone-rows)*3.5rem+2.75rem)] py-1 sm:min-h-[calc(var(--rows)*2rem+0.5rem)]"
+              className="min-h-[calc(var(--phone-rows)*2rem+2.75rem)] py-1 sm:min-h-[calc(var(--rows)*2rem+0.5rem)]"
               style={{ '--rows': rows.length, '--phone-rows': Math.min(rows.length, PHONE_ROWS) } as React.CSSProperties}
             >
               <AnimatePresence initial={false} mode="popLayout">
@@ -333,8 +340,10 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
             </ul>
           </div>
 
-          {/* The hovered (or first running) tentor. */}
-          <aside aria-hidden className="hidden border-l-2 border-line-soft p-4 lg:block">
+          {/* The hovered, tapped (or first running) tentor. Beside the table
+              from `lg` up; above it on anything narrower, where the photo is
+              the point and the table is only the picker. */}
+          <aside aria-hidden className="order-first border-b-2 border-line-soft p-3 sm:p-4 lg:order-none lg:border-b-0 lg:border-l-2">
             {preview ? (
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
@@ -343,24 +352,33 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={live ? { opacity: 0, y: -6, transition: { duration: 0.1 } } : undefined}
                   transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                  className="sticky top-24 group/window"
+                  className="group/window flex items-center gap-4 lg:sticky lg:top-24 lg:block"
                 >
                   <DitherImage
                     src={preview.foto}
                     alt=""
                     width={PORTRAIT.width}
                     height={PORTRAIT.height}
-                    sizes="240px"
+                    sizes="(min-width: 1024px) 240px, 176px"
                     reveal
-                    className="aspect-[4/5] w-full"
+                    className="aspect-[4/5] w-32 shrink-0 sm:w-44 lg:w-full"
                   />
-                  <p className="mt-4 text-[10px] tracking-[0.14em] text-accent-fg uppercase">
-                    pid {preview.pid} · {STAT_TEXT[preview.stat]}
-                  </p>
-                  <p className="mt-1 text-base leading-6 font-bold text-fg">{preview.nama}</p>
-                  <ul className="mt-3 space-y-0.5 text-[12px] leading-5 text-muted">
-                    {preview.modul.length > 0 ? preview.modul.map((label) => <li key={label}>{label}</li>) : <li>belum ditugaskan ke modul</li>}
-                  </ul>
+                  <div className="min-w-0">
+                    <p className="text-[10px] tracking-[0.14em] text-accent-fg uppercase lg:mt-4">
+                      pid {preview.pid} · {STAT_TEXT[preview.stat]}
+                    </p>
+                    <p className="mt-1 text-base leading-6 font-bold text-fg">{preview.nama}</p>
+                    <ul className="mt-3 space-y-0.5 text-[12px] leading-5 text-muted">
+                      {preview.modul.length > 0 ? preview.modul.map((label) => <li key={label}>{label}</li>) : <li>belum ditugaskan ke modul</li>}
+                    </ul>
+                    {preview.slug ? (
+                      // The row itself is the accessible link; this is a
+                      // shortcut for thumbs, kept out of the tab order.
+                      <Link href={`/tentor/${preview.slug}`} tabIndex={-1} className="mt-3 inline-block text-xs text-accent-fg hover:underline lg:hidden">
+                        buka profil -&gt;
+                      </Link>
+                    ) : null}
+                  </div>
                 </motion.div>
               </AnimatePresence>
             ) : null}

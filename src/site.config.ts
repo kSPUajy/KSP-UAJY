@@ -71,7 +71,7 @@ export const siteConfig = {
     github: 'https://github.com/kSPUajy',
   },
 
-  /** Editor tab strip. `/gabung` is deliberately absent — it renders as the CTA. */
+  /** Editor tab strip. `/gabung` is deliberately absent — pages link to it from their own CTAs. */
   nav: [
     { label: '~', title: 'beranda', href: '/', path: '~/', accent: 'magenta' },
     { label: 'tentang', title: 'tentang', href: '/tentang', path: '~/tentang/README.md', accent: 'violet' },
@@ -85,6 +85,14 @@ export const siteConfig = {
   ],
 
   cta: { label: 'gabung', href: '/gabung', accent: 'lime' },
+
+  /** The yearly competition KSP runs at the end of the even semester. */
+  event: {
+    name: 'LINK',
+    expansion: 'Logic Information and Knowledge',
+    year: 2026,
+    url: 'https://link-2026-seven.vercel.app/login',
+  },
 } as const satisfies {
   name: string
   shortName: string
@@ -102,6 +110,7 @@ export const siteConfig = {
   socials: Record<string, string>
   nav: readonly NavItem[]
   cta: { label: string; href: string; accent: AccentName }
+  event: { name: string; expansion: string; year: number; url: string }
 }
 
 export type SiteConfig = typeof siteConfig

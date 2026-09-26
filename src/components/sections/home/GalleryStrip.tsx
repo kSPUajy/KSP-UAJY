@@ -23,9 +23,9 @@ export function GalleryStrip({ index, items }: GalleryStripProps) {
         <SectionHeader
           index={index}
           eyebrow="galeri"
-          title="Dari layar ke kertas"
+          title="Jejak kegiatan kami"
           headingId="galeri-title"
-          description="Kelas Senin dan Selasa, workshop, kompetisi, dan sesi-sesi malam sebelum deadline. Seret fotonya ke printer untuk mencetaknya ke meja."
+          description="Potret dari kelas Senin dan Selasa, workshop, dan kompetisi — momen belajar dan berkembang bersama."
           actions={
             items.length > 0 ? (
               <ButtonLink href="/galeri" variant="outline" size="sm">

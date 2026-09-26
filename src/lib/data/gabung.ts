@@ -9,11 +9,11 @@ import type { JoinInfo, RegistrationWindow } from '@/lib/types'
  */
 export const joinInfo: JoinInfo = {
   ringkasan:
-    'Kelas dibagi dua jalur. Satu untuk yang belum pernah menulis satu baris kode pun, dimulai dari membaca kode orang lain. Satu lagi untuk yang sudah lewat Algoritma dan Pemrograman dan ingin masuk ke manajemen memori, struktur data, dan pemrograman sistem.',
+    'Kelas untuk mahasiswa semester 1, disusun untuk mempersiapkan mata kuliah dasar pemrograman berbahasa C. Belum pernah menulis satu baris kode pun? Tidak masalah — kelasnya dimulai dari nol, dengan tentor yang mendampingi dari pertemuan pertama.',
   syarat: [
-    'Mahasiswa aktif UAJY, dari angkatan mana pun',
+    'Mahasiswa aktif UAJY semester 1',
     'Tidak ada syarat kemampuan awal',
-    'Gratis — tanpa biaya pendaftaran, tanpa iuran bulanan',
+    'Biaya pendaftaran Rp150.000 — cashback 70% kalau presensimu memenuhi',
   ],
   manfaat: [
     {
@@ -34,12 +34,12 @@ export const joinInfo: JoinInfo = {
     {
       id: 'arsip',
       judul: 'arsip materi',
-      deskripsi: 'Akses ke seluruh materi dan rekaman kelas.',
+      deskripsi: 'Akses ke seluruh modul dan soal latihan.',
     },
     {
       id: 'sertifikat',
       judul: 'sertifikat',
-      deskripsi: 'Sertifikat keanggotaan di akhir tahun ajaran.',
+      deskripsi: 'Sertifikat keanggotaan di akhir tahun ajaran, bisa ditukar SPAMA tipe organisasi.',
     },
   ],
   langkah: [
@@ -61,7 +61,7 @@ export const joinInfo: JoinInfo = {
       id: 'jalur',
       judul: 'Pilih jalur kelas',
       deskripsi:
-        'Jalur dasar untuk yang belum pernah memrogram, jalur lanjut untuk yang sudah lewat Algoritma dan Pemrograman. Tentor membantu memilih kalau kamu ragu.',
+        'Jalur dasar untuk yang belum pernah memrogram, jalur lanjut untuk yang sudah pernah menulis kode, misalnya waktu SMA. Tentor membantu memilih kalau kamu ragu.',
       kapan: 'di akhir sesi perkenalan',
     },
     {
@@ -83,13 +83,13 @@ export const joinInfo: JoinInfo = {
       id: 'bukan-informatika',
       pertanyaan: 'Saya bukan mahasiswa Informatika.',
       jawaban:
-        'Tidak masalah. Syaratnya hanya mahasiswa aktif UAJY. Anggota kami datang dari Sistem Informasi, Teknik Industri, bahkan Akuntansi.',
+        'Tidak masalah. Syaratnya hanya mahasiswa aktif UAJY semester 1. Anggota kami datang dari Sistem Informasi, Teknik Industri, bahkan Akuntansi.',
     },
     {
       id: 'biaya',
       pertanyaan: 'Berapa biayanya?',
       jawaban:
-        'Nol. Tidak ada biaya pendaftaran, tidak ada iuran bulanan, dan tidak ada buku yang harus dibeli. Semua materi ada di arsip anggota.',
+        'Biaya pendaftarannya Rp150.000, dibayar sekali. Kalau presensimu memenuhi, 70% — Rp105.000 — dikembalikan sebagai cashback. Tidak ada iuran bulanan dan tidak ada buku yang harus dibeli; semua materi ada di arsip anggota.',
     },
     {
       id: 'laptop',
@@ -107,7 +107,7 @@ export const joinInfo: JoinInfo = {
       id: 'bolos',
       pertanyaan: 'Bagaimana kalau saya tidak bisa datang di satu pertemuan?',
       jawaban:
-        'Rekaman dan materinya masuk arsip di hari yang sama, dan tentormu bisa ditanya lewat grup. Tidak ada presensi yang menentukan kamu tetap anggota atau tidak.',
+        'Modul dan soalnya masuk arsip di hari yang sama, dan tentormu bisa ditanya lewat grup. Satu-dua pertemuan terlewat tidak membuatmu keluar, tapi ingat presensi menentukan cashback 70% dari biaya pendaftaran.',
     },
     {
       id: 'tengah-semester',

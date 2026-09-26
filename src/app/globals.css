@@ -13,6 +13,10 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 @custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
 
+/* A laptop-height window (14" at 125–150% scaling): pair with `lg:` so the
+   full-screen hero tightens up instead of spilling its stats below the fold. */
+@custom-variant short (@media (max-height: 900px));
+
 /* ------------------------------------------------------------------ *
  * Static design tokens
  * ------------------------------------------------------------------ */
@@ -20,7 +24,7 @@
   /* raw palette */
   --color-void: #0b0d12;
   --color-panel: #141926;
-  --color-paper: #f5f1e4;
+  --color-paper: #efe6d1;
   --color-ink: #10121a;
 
   --color-amber: #ffb020;
@@ -146,42 +150,43 @@
   }
 
   /* ---------------------------------------------------------------- *
-   * Light — dot-matrix printout on cream paper.
-   * Worst-case contrast, against --canvas-alt (#EDE8D8), the darkest surface
-   * body text ever lands on: fg 15.2:1 / muted 7.6:1 / dim 5.2:1
+   * Light — dot-matrix printout on beige paper. Even the cards stay off
+   * white, so the page never flashes bright.
+   * Worst-case contrast, against --canvas-alt (#E8DEC6), the darkest surface
+   * body text ever lands on: fg 14.0:1 / muted 7.0:1 / dim 5.4:1
    *
-   * The bright accents only reach about 2.9:1 on cream, so the accent block
+   * The bright accents only reach about 2.7:1 on beige, so the accent block
    * below carries a deepened variant of each for this palette. Every one is
-   * verified at 4.8:1 or better.
+   * verified at 5.0:1 or better.
    * ---------------------------------------------------------------- */
   [data-palette="light"],
   :where([data-theme="dark"]) [data-palette="inverse"] {
     color-scheme: light;
 
-    --canvas: #f5f1e4;
-    --canvas-alt: #ede8d8;
-    --surface: #fffdf6;
-    --surface-2: #ede8d8;
+    --canvas: #efe6d1;
+    --canvas-alt: #e8dec6;
+    --surface: #f6f0e1;
+    --surface-2: #e8dec6;
 
     --fg: #10121a;
     --muted: #4a4738;
-    --dim: #63604f;
+    --dim: #5a5746;
 
     --line: #10121a;
     --line-soft: color-mix(in oklab, #10121a 20%, transparent);
 
     --accent-ink: #10121a;
     --accent: #ff3d8b;
-    --accent-fg: #c4005a;
+    --accent-fg: #b30052;
 
-    --code-bg: #ede8d8;
-    --syn-preproc: #5b2fd6;
-    --syn-keyword: #c4005a;
-    --syn-type: #00707a;
-    --syn-string: #17661a;
-    --syn-number: #b23a05;
-    --syn-func: #8a5200;
-    --syn-comment: #5c5949;
+    --code-bg: #e8dec6;
+    --syn-preproc: #5226c9;
+    --syn-keyword: #b30052;
+    --syn-type: #00656e;
+    --syn-string: #155c18;
+    --syn-number: #a13304;
+    --syn-func: #7d4a00;
+    --syn-comment: #57544a;
     --syn-punct: #4a4738;
     --syn-ident: #10121a;
 
@@ -209,12 +214,12 @@
    * `light-dark()` handles the two variants here because this declaration
    * always lands on, or inside, the element that set the palette.
    * ---------------------------------------------------------------- */
-  [data-accent="magenta"] { --accent: #ff3d8b; --accent-fg: light-dark(#c4005a, #ff3d8b); }
-  [data-accent="amber"]   { --accent: #ffb020; --accent-fg: light-dark(#8a5200, #ffb020); }
-  [data-accent="cyan"]    { --accent: #2fd8e0; --accent-fg: light-dark(#00707a, #2fd8e0); }
-  [data-accent="lime"]    { --accent: #67e06a; --accent-fg: light-dark(#17661a, #67e06a); }
-  [data-accent="violet"]  { --accent: #a98bff; --accent-fg: light-dark(#5b2fd6, #a98bff); }
-  [data-accent="orange"]  { --accent: #ff6b35; --accent-fg: light-dark(#b23a05, #ff6b35); }
+  [data-accent="magenta"] { --accent: #ff3d8b; --accent-fg: light-dark(#b30052, #ff3d8b); }
+  [data-accent="amber"]   { --accent: #ffb020; --accent-fg: light-dark(#7d4a00, #ffb020); }
+  [data-accent="cyan"]    { --accent: #2fd8e0; --accent-fg: light-dark(#00656e, #2fd8e0); }
+  [data-accent="lime"]    { --accent: #67e06a; --accent-fg: light-dark(#155c18, #67e06a); }
+  [data-accent="violet"]  { --accent: #a98bff; --accent-fg: light-dark(#5226c9, #a98bff); }
+  [data-accent="orange"]  { --accent: #ff6b35; --accent-fg: light-dark(#a13304, #ff6b35); }
 
   /* Hard borders are the form language, so every border defaults to the
      strong line colour instead of Tailwind's `currentColor`. */
@@ -227,6 +232,17 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+  }
+
+  /* Lenis drives the scroll position itself; native smoothing on top would
+     ease every frame twice. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  html.lenis-smooth {
+    scroll-behavior: auto;
   }
 
   body {

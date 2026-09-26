@@ -22,6 +22,9 @@ const STATUS_TEXT: Record<ModulStatus, string> = {
   terkunci: 'belum dibuka',
 }
 
+/** Rows the panel keeps on a short screen: last week, this week, five ahead. */
+const SHORT_WINDOW = 7
+
 /** `21 Sep 2026` -> `21 Sep`: the year is implied by the order. */
 const shortDate = (iso: string): string => formatTanggalPendek(iso).replace(/ \d{4}$/, '')
 
@@ -39,6 +42,12 @@ export function HeroModulPanel({ entries }: HeroModulPanelProps) {
   const done = modules.filter((entry) => entry.status === 'selesai').length
   const focusId = current?.id ?? upcoming?.id
 
+  // On a laptop-height screen the full list pushes the hero's stats off the
+  // first screen, so only a window of rows around the focus stays up there.
+  const focusIndex = Math.max(0, entries.findIndex((entry) => entry.id === focusId))
+  const windowStart = Math.max(0, Math.min(focusIndex - 1, entries.length - SHORT_WINDOW))
+  const inShortWindow = (index: number) => index >= windowStart && index < windowStart + SHORT_WINDOW
+
   const summary = current
     ? current.jenis === 'modul'
       ? `modul ${pad2(current.minggu)}/${pad2(modules.length)}`
@@ -55,13 +64,16 @@ export function HeroModulPanel({ entries }: HeroModulPanelProps) {
       </div>
 
       <ol aria-label="Timeline modul" className="py-1.5">
-        {entries.map((entry) => {
+        {entries.map((entry, index) => {
           const isCurrent = entry.status === 'berjalan'
           const locked = entry.status === 'terkunci'
           const sesi = entry.jenis === 'sesi'
 
           return (
-            <li key={entry.id} className={cn(entry.id !== focusId && 'hidden lg:block')}>
+            <li
+              key={entry.id}
+              className={cn(entry.id !== focusId && 'max-lg:hidden', !inShortWindow(index) && 'short:lg:hidden')}
+            >
               <Link
                 href={sesi ? `/modul#${entry.id}` : `/modul#minggu-${pad2(entry.minggu)}`}
                 aria-current={isCurrent ? 'step' : undefined}

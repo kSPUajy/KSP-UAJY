@@ -9,7 +9,6 @@ import { AccountLink } from '@/components/layout/AccountLink'
 import { Logo } from '@/components/layout/Logo'
 import { MobileMenu } from '@/components/layout/MobileMenu'
 import { ThemeRocker } from '@/components/layout/ThemeRocker'
-import { ButtonLink } from '@/components/ui/Button'
 import { INSTANT, mech } from '@/components/motion/variants'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 import { siteConfig } from '@/site.config'
@@ -106,12 +105,6 @@ export function Nav() {
             <AccountLink />
           </span>
           <ThemeRocker />
-
-          <div data-accent={siteConfig.cta.accent}>
-            <ButtonLink href={siteConfig.cta.href} size="sm">
-              {siteConfig.cta.label}
-            </ButtonLink>
-          </div>
 
           <button
             type="button"

@@ -17,8 +17,8 @@ const SIZES = {
 } as const
 
 /**
- * `masuk` for visitors, `dashboard` once signed in. The server renders
- * `masuk`; a signed-in browser swaps the label right after hydration.
+ * `login` for visitors, `dashboard` once signed in. The server renders
+ * `login`; a signed-in browser swaps the label right after hydration.
  */
 export function AccountLink({ size = 'sm', onNavigate }: AccountLinkProps) {
   const signedIn = useSignedIn()
@@ -35,7 +35,7 @@ export function AccountLink({ size = 'sm', onNavigate }: AccountLinkProps) {
       <span aria-hidden className="text-accent-fg">
         {signedIn ? '~' : '>'}
       </span>
-      {signedIn ? 'dashboard' : 'masuk'}
+      {signedIn ? 'dashboard' : 'login'}
     </Link>
   )
 }

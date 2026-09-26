@@ -19,7 +19,7 @@ export const newsSources: readonly NewsSource[] = [
     kategori: 'pengumuman',
     cover: cover('ksp-berita-pendaftaran'),
     excerpt:
-      'Terbuka untuk seluruh mahasiswa aktif UAJY, dari angkatan mana pun, tanpa syarat kemampuan awal. Semester lalu sembilan dari dua puluh tujuh anggota baru mendaftar tanpa pengalaman apa pun.',
+      'Terbuka untuk mahasiswa aktif UAJY semester 1 sebagai persiapan mata kuliah dasar pemrograman C, tanpa syarat kemampuan awal. Semester lalu sembilan dari dua puluh tujuh anggota baru mendaftar tanpa pengalaman apa pun.',
     penulis: 'Salsabila Rahmawati',
     tags: ['pendaftaran', 'anggota-baru', 'kelas'],
   },

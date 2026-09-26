@@ -357,13 +357,13 @@ export function Specimens() {
               id: 'syarat',
               title: 'Apa syarat gabung KSP?',
               meta: 'umum',
-              content: <p>Mahasiswa aktif, tidak harus sudah bisa C.</p>,
+              content: <p>Mahasiswa aktif semester 1, tidak harus sudah bisa C.</p>,
             },
             {
               id: 'biaya',
               title: 'Ada biaya pendaftaran?',
               meta: 'umum',
-              content: <p>Tidak ada. Semua kegiatan gratis untuk anggota.</p>,
+              content: <p>Ada, Rp150.000 sekali bayar, dengan cashback 70% kalau presensi memenuhi.</p>,
             },
           ]}
         />

@@ -42,7 +42,7 @@ export function Footer() {
 
           <div data-accent="cyan">
             <ColumnHeading>{'// navigasi'}</ColumnHeading>
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2">
               {siteConfig.nav.map((item) => (
                 <li key={item.href}>
                   <Link

@@ -59,7 +59,7 @@ export function Hero({ stats, driftTokens, registrationOpen, schedule }: HeroPro
     <section
       data-accent="magenta"
       aria-labelledby="hero-title"
-      className="relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden px-3 py-3 dot-grid sm:px-6 sm:py-6 lg:px-8 lg:py-8"
+      className="relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden px-3 py-3 dot-grid sm:px-6 sm:py-6 lg:px-8 lg:py-8 short:lg:py-4"
     >
       <CrtVignette />
 

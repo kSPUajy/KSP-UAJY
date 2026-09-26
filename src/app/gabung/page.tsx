@@ -16,7 +16,7 @@ import { siteConfig } from '@/site.config'
 
 export const metadata: Metadata = pageMetadata({
   title: 'Gabung',
-  description: `Cara bergabung dengan ${siteConfig.name} ${siteConfig.campus.short}: terbuka untuk semua mahasiswa aktif, tanpa syarat kemampuan awal, tanpa biaya.`,
+  description: `Cara bergabung dengan ${siteConfig.name} ${siteConfig.campus.short}: persiapan mata kuliah dasar pemrograman C untuk mahasiswa semester 1, tanpa syarat kemampuan awal, biaya pendaftaran Rp150.000 dengan cashback 70%.`,
   path: '/gabung',
 })
 
@@ -51,7 +51,7 @@ export default async function GabungPage() {
         description={info.ringkasan}
         facts={[
           { label: 'pendaftaran', value: STATUS_FACT[registration.status] },
-          { label: 'biaya', value: 'Rp0' },
+          { label: 'biaya', value: 'Rp150rb' },
           { label: 'seleksi', value: 'tidak_ada' },
           { label: 'anggota_aktif', value: stats.anggota },
         ]}

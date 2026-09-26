@@ -54,6 +54,12 @@ const GAP = 18
 const LABEL_H = 48
 /** Margin from the section's edges (and the scrollbar), px. */
 const EDGE = 36
+/** Smallest feed worth showing, px wide. */
+const MIN_W = 104
+/** Placements tried per spawn before giving up. */
+const ATTEMPTS = 90
+/** What `data-surveil-avoid="content"` keeps clear of. */
+const AVOID_CONTENT = 'p, h1, h2, h3, a, button'
 
 const overlaps = (a: Box, b: Box): boolean =>
   a.left < b.right + GAP && a.right + GAP > b.left && a.top < b.bottom + GAP && a.bottom + GAP > b.top
@@ -200,10 +206,17 @@ export function TentorSurveillance({ targets }: { targets: readonly Surveillance
       if (document.hidden) return
       const frame = field.getBoundingClientRect()
       setSize({ w: frame.width, h: frame.height })
-      const avoid: Box[] = [...section.querySelectorAll('[data-surveil-avoid]')].map((element) => {
-        const rect = element.getBoundingClientRect()
-        return { left: rect.left - frame.left, top: rect.top - frame.top, right: rect.right - frame.left, bottom: rect.bottom - frame.top }
-      })
+      // `data-surveil-avoid="content"` avoids only the text and controls
+      // inside — a heading's wrapper spans the full width, but the room
+      // beside its paragraph is the only free space a laptop screen has.
+      const avoid: Box[] = [...section.querySelectorAll<HTMLElement>('[data-surveil-avoid]')]
+        .flatMap((element) =>
+          element.dataset.surveilAvoid === 'content' ? [...element.querySelectorAll(AVOID_CONTENT)] : [element],
+        )
+        .map((element) => {
+          const rect = element.getBoundingClientRect()
+          return { left: rect.left - frame.left, top: rect.top - frame.top, right: rect.right - frame.left, bottom: rect.bottom - frame.top }
+        })
 
       // Decided out here, not inside a state updater: updaters must be pure
       // (React runs them twice in development), and this one moves refs.
@@ -220,8 +233,10 @@ export function TentorSurveillance({ targets }: { targets: readonly Surveillance
       const target = ghostDue ? GHOST_TARGET : (weighted[Math.floor(Math.random() * weighted.length)] ?? targets[0])
       if (!target) return
 
-      for (let attempt = 0; attempt < 60; attempt += 1) {
-        const w = Math.round(160 + Math.random() * 90)
+      for (let attempt = 0; attempt < ATTEMPTS; attempt += 1) {
+        // Big feeds first; each miss shrinks the next try, so a tight gap
+        // still gets a small one rather than none.
+        const w = Math.round(Math.max(MIN_W, 160 + Math.random() * 90 - attempt * 2))
         const h = Math.round(w * (PORTRAIT.height / PORTRAIT.width))
         // Clear of the edges by more than the brackets reach out (14px).
         const x = EDGE + Math.random() * (frame.width - w - 2 * EDGE)

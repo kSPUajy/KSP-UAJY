@@ -42,7 +42,7 @@ export function CompileStrip({ stats, countDelay = 0 }: CompileStripProps) {
           <div
             key={row.key}
             className={cn(
-              'flex flex-col-reverse justify-end gap-2 px-4 py-4 sm:px-8 sm:py-5 lg:px-12',
+              'flex flex-col-reverse justify-end gap-2 px-4 py-4 sm:px-8 sm:py-5 lg:px-12 short:lg:py-3',
               // Vertical rules between columns, horizontal between rows — only
               // where a neighbour actually exists at each breakpoint.
               index % 2 === 0 && 'border-r-2 border-line-soft',
