@@ -280,8 +280,9 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
   const filled = Math.round((progress.done / Math.max(progress.total, 1)) * meterCells)
 
   return (
-    // Follows the page theme, whatever the band behind it.
-    <div ref={rootRef} data-palette="page" data-accent="cyan">
+    // Follows the page theme, whatever the band behind it; on paper its
+    // fills print in ink rather than cyan.
+    <div ref={rootRef} data-palette="page" data-accent="cyan" className="ink-accent">
       <TerminalWindow title="~/tentor — htop" tone="code" bodyClassName="p-0">
         {/* Summary, as htop prints it. */}
         <div className="grid grid-cols-1 gap-x-8 gap-y-1 border-b-2 border-line-soft px-3 py-3 text-[12px] leading-5 sm:grid-cols-2">

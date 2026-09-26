@@ -37,6 +37,8 @@
   --font-display: var(--font-silkscreen), ui-monospace, SFMono-Regular, monospace;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
   --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-news: var(--font-newsreader), Georgia, 'Times New Roman', serif;
+  --font-blackletter: var(--font-unifraktur), var(--font-newsreader), Georgia, serif;
 
   /* Form language, enforced at build time: nothing here is round and
      nothing here is blurred. Clearing these namespaces makes `rounded-lg`,
@@ -224,6 +226,17 @@
   [data-accent="lime"]    { --accent: #67e06a; --accent-fg: light-dark(#155c18, #67e06a); }
   [data-accent="violet"]  { --accent: #a98bff; --accent-fg: light-dark(#5226c9, #a98bff); }
   [data-accent="orange"]  { --accent: #ff6b35; --accent-fg: light-dark(#a13304, #ff6b35); }
+
+  /* A bright fill reads as a highlighter on paper. On a light page, blocks
+     marked `ink-accent` print their fills in ink instead — the accent stays
+     for text only, where the deepened variant above already reads.
+     `newsprint` does the same in either theme, for a sheet that is always
+     paper. */
+  :where([data-theme="light"]) .ink-accent,
+  .newsprint {
+    --accent: var(--fg);
+    --accent-ink: var(--canvas);
+  }
 
   /* Hard borders are the form language, so every border defaults to the
      strong line colour instead of Tailwind's `currentColor`. */

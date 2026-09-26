@@ -7,10 +7,11 @@ import { DitherImage } from '@/components/ui/DitherImage'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { SectionShell } from '@/components/ui/SectionShell'
 import { isChallengeClosed } from '@/lib/data'
-import { formatTanggal, formatTanggalPendek, formatTanggalWaktu } from '@/lib/format'
+import { formatTanggal, formatTanggalPendek, formatTanggalWaktu, namaHari } from '@/lib/format'
 import { COVER, KATEGORI_BERITA } from '@/lib/types'
 import type { ChallengeMeta, NewsPostMeta, Registration, TimelineEntry } from '@/lib/types'
 import { pad2 } from '@/lib/utils'
+import { siteConfig } from '@/site.config'
 
 type NewsSectionProps = {
   index: number
@@ -143,7 +144,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
           <div
             data-palette="light"
             data-accent="amber"
-            className="relative overflow-hidden border-2 border-line bg-surface px-4 py-6 text-fg hard-shadow sm:px-8 sm:py-8"
+            className="newsprint relative overflow-hidden border-2 border-line bg-surface px-4 py-6 font-news text-fg hard-shadow sm:px-8 sm:py-8"
           >
             {/* The fold down the middle, where the paper was creased. */}
             <span
@@ -153,20 +154,20 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
 
             {/* Masthead. */}
             <header className="relative text-center">
-              <div className="flex items-center justify-between gap-3 border-b border-line pb-2 text-[10px] tracking-[0.08em] text-muted uppercase sm:text-[11px]">
-                <span>Yogyakarta</span>
-                <span className="hidden sm:inline">Edisi {formatTanggal(lead.tanggal)}</span>
-                <span>No. {posts.length}</span>
+              <div className="flex items-center justify-between gap-3 border-b border-line pb-2 text-[11px] tracking-[0.1em] text-muted uppercase sm:text-xs">
+                <span>Vol. I — No. {posts.length}</span>
+                <span className="hidden sm:inline">
+                  Yogyakarta, {namaHari(lead.tanggal)} {formatTanggal(lead.tanggal)}
+                </span>
+                <span>Edisi digital</span>
               </div>
-              <h2
-                id="berita-title"
-                className="py-4 font-display text-[clamp(2.25rem,9vw,5.5rem)] leading-none tracking-[0.06em] uppercase sm:py-5"
-              >
+              <h2 id="berita-title" className="pt-4 font-blackletter text-[clamp(3rem,11vw,7rem)] leading-none sm:pt-5">
                 Kabar KSP
               </h2>
+              <p className="pt-1 pb-3 text-sm text-muted italic">&ldquo;{siteConfig.tagline}&rdquo;</p>
               {/* The rubric line is the index: each desk, how many stories, and a way in. */}
               <nav aria-label="Rubrik berita" className="border-y-4 border-double border-line py-1.5">
-                <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] tracking-[0.14em] uppercase sm:text-[11px]">
+                <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-[11px] tracking-[0.14em] uppercase sm:text-xs">
                   {rubrik.map((item) => (
                     <li key={item.kategori}>
                       <Link
@@ -209,7 +210,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
               {/* Lead story. */}
               <article className="group relative lg:border-r lg:border-line lg:pr-8">
                 <Kicker>{lead.kategori}</Kicker>
-                <h3 className="mt-2 text-[clamp(1.5rem,3.4vw,2.5rem)] leading-[1.15] font-bold tracking-tight text-balance">
+                <h3 className="mt-2 text-[clamp(1.85rem,4.2vw,3.25rem)] leading-[1.02] font-extrabold tracking-[-0.01em] text-balance">
                   <Link
                     href={`/berita/${lead.slug}`}
                     className="decoration-accent decoration-4 underline-offset-4 group-hover:underline after:absolute after:inset-0 after:content-['']"
@@ -217,8 +218,8 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                     {lead.judul}
                   </Link>
                 </h3>
-                <p className="mt-3 text-[11px] tracking-[0.04em] text-muted">
-                  oleh <span className="font-bold text-fg">{lead.penulis}</span> ·{' '}
+                <p className="mt-4 border-y border-line py-1.5 text-[11px] tracking-[0.12em] text-muted uppercase">
+                  Oleh <span className="font-semibold text-fg">{lead.penulis}</span> —{' '}
                   <time dateTime={lead.tanggal}>{formatTanggal(lead.tanggal)}</time>
                 </p>
                 <DitherImage
@@ -229,23 +230,23 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                   sizes={LEAD_SIZES}
                   className="mt-5 aspect-video w-full"
                 />
-                <p className="mt-5 font-sans text-[15px] leading-7 text-fg first-letter:float-left first-letter:mr-2 first-letter:font-display first-letter:text-5xl first-letter:leading-[0.9] first-letter:text-accent-fg">
+                <p className="mt-5 text-[17px] leading-7 text-justify hyphens-auto text-fg first-letter:float-left first-letter:mt-1 first-letter:mr-2 first-letter:text-[4.25rem] first-letter:leading-[0.8] first-letter:font-extrabold">
                   {lead.excerpt}
                 </p>
-                <p className="mt-4 text-[12px] font-bold text-accent-fg">baca selengkapnya -&gt;</p>
+                <p className="mt-3 text-right text-sm text-muted italic">(bersambung ke halaman 2 &rarr;)</p>
               </article>
 
               <aside aria-label="Juga di edisi ini" className="lg:pl-8">
                 {side.length > 0 ? (
                   <>
-                    <p className="border-b-2 border-line pb-2 text-[11px] font-bold tracking-[0.14em] uppercase">
+                    <p className="border-b-4 border-double border-line pb-1.5 text-center text-sm font-extrabold tracking-[0.12em] uppercase">
                       Juga di edisi ini
                     </p>
                     <ul>
                       {side.map((post) => (
                         <li key={post.id} className="group relative border-b border-line-soft py-4 last:border-b-0">
                           <Kicker>{post.kategori}</Kicker>
-                          <h3 className="mt-1.5 text-base leading-snug font-bold text-balance">
+                          <h3 className="mt-1.5 text-xl leading-tight font-extrabold text-balance">
                             <Link
                               href={`/berita/${post.slug}`}
                               className="decoration-accent decoration-2 underline-offset-2 group-hover:underline after:absolute after:inset-0 after:content-['']"
@@ -253,7 +254,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                               {post.judul}
                             </Link>
                           </h3>
-                          <p className="mt-1.5 line-clamp-2 font-sans text-[13px] leading-6 text-muted">
+                          <p className="mt-1.5 line-clamp-3 text-[15px] leading-6 text-justify hyphens-auto text-muted">
                             {post.excerpt}
                           </p>
                           <time dateTime={post.tanggal} className="mt-2 block text-[11px] text-dim">
@@ -269,10 +270,10 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                 <section aria-labelledby="sekilas-title" className="mt-4 border-2 border-line bg-canvas p-4">
                   <p
                     id="sekilas-title"
-                    className="flex items-center justify-between text-[11px] font-bold tracking-[0.14em] uppercase"
+                    className="flex items-center justify-between text-sm font-extrabold tracking-[0.1em] uppercase"
                   >
                     Sekilas KSP
-                    <span className="font-normal tracking-normal text-dim normal-case">diperbarui otomatis</span>
+                    <span className="text-[11px] font-normal tracking-normal text-dim normal-case italic">diperbarui otomatis</span>
                   </p>
                   <dl className="mt-3 space-y-3">
                     {briefs(live).map((brief) => (
@@ -284,7 +285,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                         <dd className="mt-0.5">
                           <Link
                             href={brief.href}
-                            className="block text-sm leading-5 font-bold decoration-accent decoration-2 underline-offset-2 group-hover:underline after:absolute after:inset-0 after:content-['']"
+                            className="block text-base leading-5 font-extrabold decoration-accent decoration-2 underline-offset-2 group-hover:underline after:absolute after:inset-0 after:content-['']"
                           >
                             {brief.value}
                           </Link>
@@ -311,7 +312,7 @@ export function NewsSection({ index, posts, ...live }: NewsSectionProps) {
                       </time>
                       <Link
                         href={`/berita/${post.slug}`}
-                        className="mt-1 block text-[13px] leading-5 font-bold text-balance decoration-accent decoration-2 underline-offset-2 group-hover:underline"
+                        className="mt-1 block text-base leading-5 font-extrabold text-balance decoration-accent decoration-2 underline-offset-2 group-hover:underline"
                       >
                         {post.judul}
                       </Link>

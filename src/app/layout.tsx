@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { IBM_Plex_Sans, JetBrains_Mono, Silkscreen } from 'next/font/google'
+import { IBM_Plex_Sans, JetBrains_Mono, Newsreader, Silkscreen, UnifrakturMaguntia } from 'next/font/google'
 
 import { Footer } from '@/components/layout/Footer'
 import { Nav } from '@/components/layout/Nav'
@@ -35,6 +35,25 @@ const plexSans = IBM_Plex_Sans({
   style: ['normal', 'italic'],
   variable: '--font-plex',
   display: 'swap',
+})
+
+/** The home page's front page only: newspaper serif for headlines and body. */
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['400', '600', '800'],
+  style: ['normal', 'italic'],
+  variable: '--font-newsreader',
+  display: 'swap',
+  preload: false,
+})
+
+/** The front page's nameplate, and nothing else. */
+const blackletter = UnifrakturMaguntia({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-unifraktur',
+  display: 'swap',
+  preload: false,
 })
 
 export const metadata: Metadata = {
@@ -120,7 +139,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-palette="dark"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${silkscreen.variable} ${jetbrainsMono.variable} ${plexSans.variable}`}
+      className={`${silkscreen.variable} ${jetbrainsMono.variable} ${plexSans.variable} ${newsreader.variable} ${blackletter.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
