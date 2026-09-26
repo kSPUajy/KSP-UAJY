@@ -28,7 +28,10 @@ export function LinkEvent({ index }: { index: number }) {
 
   return (
     <SectionShell accent="orange" scanlines labelledBy="link-title">
-      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:gap-16">
+      {/* Mirrored: the box sits left here, so the split sections on the page
+          alternate instead of all leaning the same way. Text still comes
+          first in the markup, and first on a phone. */}
+      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-16">
         <Reveal>
           <SectionMarker index={index} label="event tahunan" />
 
@@ -61,7 +64,7 @@ export function LinkEvent({ index }: { index: number }) {
           </div>
         </Reveal>
 
-        <Reveal delay={0.1}>
+        <Reveal delay={0.1} className="lg:order-first">
           <TerminalWindow title={`~/event/${event.name.toLowerCase()}-${event.year}`} tone="code">
             <p className="text-[12px] leading-6 text-muted">
               <span aria-hidden className="text-accent-fg">
