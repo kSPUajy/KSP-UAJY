@@ -11,7 +11,6 @@ import { LinkEvent } from '@/components/sections/home/LinkEvent'
 import { NewsSection } from '@/components/sections/home/NewsSection'
 import { TentorTeaser } from '@/components/sections/home/TentorTeaser'
 import { JsonLd, organizationLd } from '@/components/seo/JsonLd'
-import { Marquee } from '@/components/ui/Marquee'
 import {
   getAllChallenges,
   getChallengeById,
@@ -27,7 +26,6 @@ import {
   getRegistration,
   getStats,
   getTentors,
-  getTickerTokens,
   getWinnerById,
   isChallengeReleased,
 } from '@/lib/data'
@@ -52,11 +50,10 @@ export const revalidate = 3600
 const GALLERY_FRAMES = 30
 
 export default async function HomePage() {
-  const [stats, driftTokens, tickerTokens, current, tentors, posts, gallery, joinInfo, lastWinner, registration, schedule, pengurus] =
+  const [stats, driftTokens, current, tentors, posts, gallery, joinInfo, lastWinner, registration, schedule, pengurus] =
     await Promise.all([
       getStats(),
       getDriftTokens(),
-      getTickerTokens(),
       getCurrentChallenge(),
       getTentors(),
       getNewsPosts(),
@@ -87,7 +84,6 @@ export default async function HomePage() {
         registrationOpen={registration.status === 'buka'}
         schedule={schedule}
       />
-      <Marquee items={tickerTokens} accent="magenta" />
 
       <AboutSection index={1} pengurus={pengurus.filter((member) => member.divisi === 'inti')} />
 
