@@ -410,7 +410,9 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
                     width={PORTRAIT.width}
                     height={PORTRAIT.height}
                     sizes="(min-width: 1024px) 240px, 176px"
-                    reveal
+                    // Real photos, in their own colours: the one place the
+                    // table shows a face, so it should look like the person.
+                    treatment="none"
                     className="aspect-[4/5] w-32 shrink-0 sm:w-44 lg:w-full"
                   />
                   <div className="min-w-0">
