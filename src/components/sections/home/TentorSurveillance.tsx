@@ -123,10 +123,9 @@ function SightingView({ sighting, fieldW, fieldH }: { sighting: Sighting; fieldW
           <Brackets />
           {/* The feed opens top to bottom in bands. */}
           <motion.div
+            // A black-and-white CCTV monitor: dark palette, fills in its ink.
             data-palette="dark"
-            // Pinning a palette resets the accent; restate the section's.
-            data-accent="cyan"
-            className="absolute inset-0 border-2 border-line bg-code-bg"
+            className="newsprint absolute inset-0 border-2 border-line bg-code-bg"
             initial={{ clipPath: 'inset(0 0 100% 0)' }}
             animate={{ clipPath: 'inset(0 0 0% 0)' }}
             transition={{ duration: 0.5, delay: 0.55, ease: (t: number) => Math.floor(t * 8) / 8 }}
@@ -141,8 +140,8 @@ function SightingView({ sighting, fieldW, fieldH }: { sighting: Sighting; fieldW
               className={target.ghost ? 'ghost-feed h-full w-full' : 'h-full w-full'}
             />
             <span className="absolute inset-0 scanlines opacity-50" />
-            <span className="absolute top-2 left-2 flex items-center gap-1.5 text-[11px] leading-none text-accent-fg">
-              <span className="rec-blink inline-block h-2 w-2 bg-accent" /> LIVE
+            <span className="absolute top-2 left-2 flex items-center gap-1.5 text-[11px] leading-none text-fg">
+              <span className="rec-blink inline-block h-2 w-2 bg-[#ff3b3b]" /> LIVE
             </span>
           </motion.div>
         </div>
@@ -274,7 +273,8 @@ export function TentorSurveillance({ targets }: { targets: readonly Surveillance
     <div
       ref={fieldRef}
       aria-hidden
-      className="pointer-events-none absolute inset-y-0 left-1/2 w-screen -translate-x-1/2 overflow-hidden"
+      // The band is always paper, so the tracking prints in ink, not cyan.
+      className="newsprint pointer-events-none absolute inset-y-0 left-1/2 w-screen -translate-x-1/2 overflow-hidden"
     >
       <AnimatePresence>
         {running
