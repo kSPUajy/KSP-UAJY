@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, JetBrains_Mono, Newsreader, Permanent_Marker, Silkscreen
 
 import { BackToTop } from '@/components/layout/BackToTop'
 import { Footer } from '@/components/layout/Footer'
+import { OnlinePresence } from '@/components/layout/OnlinePresence'
 import { Nav } from '@/components/layout/Nav'
 import { SmoothScroll } from '@/components/motion/SmoothScroll'
 import { SkipLink } from '@/components/layout/SkipLink'
@@ -177,6 +178,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CrtPowerOn />
           <SmoothScroll />
           <BackToTop />
+          <OnlinePresence />
         </ThemeProvider>
       </body>
     </html>

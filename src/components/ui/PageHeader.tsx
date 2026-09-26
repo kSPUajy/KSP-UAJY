@@ -5,7 +5,8 @@ import { cn } from '@/lib/utils'
 
 export type PageFact = {
   label: string
-  value: string | number
+  /** Usually a number or short string; a live client component also works. */
+  value: React.ReactNode
 }
 
 type PageHeaderProps = {

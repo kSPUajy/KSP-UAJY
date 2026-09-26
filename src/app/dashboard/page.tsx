@@ -6,6 +6,7 @@ import { modulRange } from '@/components/sections/modul/modul-format'
 import { StateBadge, TugasPanel } from '@/components/sections/tugas/TugasPanel'
 import { TugasList } from '@/components/sections/tugas/TugasList'
 import { ButtonLink } from '@/components/ui/Button'
+import { OnlineCount } from '@/components/layout/OnlinePresence'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SectionShell } from '@/components/ui/SectionShell'
@@ -53,6 +54,7 @@ export default async function DashboardPage() {
           { label: 'terkumpul', value: `${handedIn}/${released.length}` },
           { label: 'dinilai', value: grades.length },
           ...(average !== null ? [{ label: 'rata_rata', value: average }] : []),
+          { label: 'online', value: <OnlineCount /> },
         ]}
       />
 
