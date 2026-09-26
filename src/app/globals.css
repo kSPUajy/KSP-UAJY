@@ -479,6 +479,20 @@
   animation: ksp-rec 1.2s steps(1) infinite;
 }
 
+/* Level-select cartridges on the home page. A locked one's padlock shakes
+   when the cartridge is hovered: you can look, you cannot play yet. */
+.group:hover .lock-shake {
+  animation: ksp-lock-shake 0.45s steps(6) 1;
+}
+
+@keyframes ksp-lock-shake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20%      { transform: translateX(-3px) rotate(-8deg); }
+  40%      { transform: translateX(3px) rotate(8deg); }
+  60%      { transform: translateX(-2px) rotate(-5deg); }
+  80%      { transform: translateX(2px) rotate(5deg); }
+}
+
 @keyframes ksp-rec {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0; }
@@ -761,6 +775,7 @@ html[data-crt="on"] .crt-flicker-beam {
   .tv-static,
   .tv-roll::after,
   .rec-blink,
+  .group:hover .lock-shake,
   .drift-field > span,
   .crt-flicker,
   .crt-flicker-beam,
