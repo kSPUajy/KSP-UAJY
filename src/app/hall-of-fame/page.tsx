@@ -130,8 +130,8 @@ export default async function HallOfFamePage() {
             accent="orange"
             command="top -o menang"
             output="0 proses"
-            title="Belum ada juara"
-            description="Juara pertama musim ini diumumkan Selasa setelah deadline challenge minggu pertama."
+            title="Belum ada nama"
+            description="Nama juara pertama akan tercatat di sini, diumumkan Selasa setelah deadline challenge pertama."
             action={
               <ButtonLink href="/challenge" variant="outline" size="sm">
                 lihat challenge

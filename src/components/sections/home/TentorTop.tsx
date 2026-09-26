@@ -75,8 +75,33 @@ const GHOST_CHILD: TopRow = {
 /** Rows a phone shows before asking for a search: the photo is the point there. */
 const PHONE_ROWS = 5
 
-/** Searches the idle prompt types for itself, to show the filter works. */
-const DEMO = ['array', 'M05', 'flowchart', 'prosedur', 'M12', 'fungsi']
+/**
+ * The shortest search that finds only this tentor: their first name, with
+ * more of the name added while it still matches someone else.
+ */
+function uniqueTerm(row: TopRow, rows: readonly TopRow[]): string {
+  const words = row.nama.toLowerCase().split(/\s+/)
+  for (let count = 1; count <= words.length; count += 1) {
+    const term = words.slice(0, count).join(' ')
+    if (rows.filter((other) => other.search.includes(term)).length === 1) return term
+  }
+  return row.nama.toLowerCase()
+}
+
+/**
+ * Who the idle prompt greps for, in order: every tentor once, with this
+ * week's teachers dealt in between them — other, teaching, other, teaching —
+ * so the ones on duty keep coming back round.
+ */
+function demoOrder(rows: readonly TopRow[]): { id: string; term: string }[] {
+  const running = rows.filter((row) => row.stat === 'R')
+  const others = rows.filter((row) => row.stat !== 'R')
+  const order =
+    running.length === 0 || others.length === 0
+      ? [...running, ...others]
+      : others.flatMap((row, index) => [row, running[index % running.length] as TopRow])
+  return order.map((row) => ({ id: row.id, term: uniqueTerm(row, rows) }))
+}
 
 /** A CPU reading for a row: busy while teaching, idle otherwise. */
 function useCpu(stat: TopStat, live: boolean, ghost = false): number {
@@ -123,7 +148,11 @@ function Row({
     >
       <Link
         href={row.slug ? `/tentor/${row.slug}` : '/tentang'}
-        onPointerEnter={onHover}
+        // Mouse only: a finger scrolling past a row fires this too, and would
+        // pin the preview to whichever row the scroll started on.
+        onPointerEnter={(event) => {
+          if (event.pointerType === 'mouse') onHover()
+        }}
         onFocus={onHover}
         onClick={(event) => {
           // No hover on a touch screen: the first tap picks the tentor and
@@ -135,25 +164,25 @@ function Row({
         }}
         className={cn(
           'grid grid-cols-[2.75rem_minmax(0,1fr)_1.5rem] items-center gap-x-3 px-3 py-1.5 text-[12px] leading-5 transition-colors sm:grid-cols-[2.75rem_minmax(0,13rem)_1.5rem_7.5rem_minmax(0,1fr)] sm:text-[13px]',
-          active ? 'bg-accent text-canvas' : running ? 'bg-accent/10 hover:bg-surface-2' : 'hover:bg-surface-2',
+          active ? 'bg-accent text-accent-ink' : running ? 'bg-accent/10 hover:bg-surface-2' : 'hover:bg-surface-2',
         )}
       >
-        <span className={cn('tabular-nums', active ? 'text-canvas' : 'text-dim')}>{row.pid}</span>
+        <span className={cn('tabular-nums', active ? 'text-accent-ink' : 'text-dim')}>{row.pid}</span>
         <span className={cn('truncate', active ? 'font-bold' : running ? 'font-bold text-fg' : 'text-fg')}>{row.nama}</span>
-        <span className={cn('font-bold', active ? 'text-canvas' : running ? 'text-accent-fg' : row.stat === 'Z' ? 'text-dim' : 'text-muted')}>
+        <span className={cn('font-bold', active ? 'text-accent-ink' : running ? 'text-accent-fg' : row.stat === 'Z' ? 'text-dim' : 'text-muted')}>
           {row.stat}
           <span className="sr-only"> — {STAT_TEXT[row.stat]}</span>
         </span>
         <span aria-hidden className="hidden items-center gap-2 sm:flex">
-          <span className={cn('relative h-2.5 flex-1 border', active ? 'border-canvas/60' : 'border-line-soft')}>
+          <span className={cn('relative h-2.5 flex-1 border', active ? 'border-accent-ink/60' : 'border-line-soft')}>
             <span
-              className={cn('absolute inset-y-0 left-0 transition-[width] ease-out', row.id === 'ghost' ? 'duration-75' : 'duration-500', active ? 'bg-canvas' : 'bg-accent')}
+              className={cn('absolute inset-y-0 left-0 transition-[width] ease-out', row.id === 'ghost' ? 'duration-75' : 'duration-500', active ? 'bg-accent-ink' : 'bg-accent')}
               style={{ width: `${Math.min(cpu, 100)}%` }}
             />
           </span>
           <span className="w-8 text-right tabular-nums">{cpu < 1 ? cpu.toFixed(1) : cpu}</span>
         </span>
-        <span className={cn('hidden truncate sm:block', active ? 'text-canvas' : 'text-muted')}>
+        <span className={cn('hidden truncate sm:block', active ? 'text-accent-ink' : 'text-muted')}>
           {row.command}
         </span>
       </Link>
@@ -168,8 +197,9 @@ function Row({
  * already exited (`Z`). It re-sorts itself every Monday with no one editing it.
  *
  * The prompt above the table is `grep`: type to filter by name, module or
- * skill. Left alone, it types example searches itself (stopping the moment
- * anyone focuses it). Hovering a row shows that tentor beside the table.
+ * skill. Left alone, it greps each tentor by name in turn, this week's
+ * teachers alternating with everyone else, and the photo beside the table
+ * follows (stopping the moment anyone focuses it). Hovering a row shows that tentor beside the table.
  * Under reduced motion there is no self-typing and no jitter.
  */
 export function TentorTop({ rows, load, progress }: TentorTopProps) {
@@ -181,10 +211,15 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
   const [query, setQuery] = useState('')
   const [focused, setFocused] = useState(false)
   const [demo, setDemo] = useState('')
+  /** The tentor the finished demo search landed on. */
+  const [demoId, setDemoId] = useState<string | null>(null)
   const [hoverId, setHoverId] = useState<string | null>(null)
+  /** A mouse over the table pauses the demo so it never fights the reader. */
+  const [mouseInside, setMouseInside] = useState(false)
+  const queue = useMemo(() => demoOrder(rows), [rows])
 
   // The idle prompt types, holds, and erases example searches in a loop.
-  const demoOn = live && inView && !focused && query === ''
+  const demoOn = live && inView && !focused && !mouseInside && query === ''
   useEffect(() => {
     if (!demoOn) return
     let cancelled = false
@@ -193,13 +228,19 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
     void (async () => {
       setDemo('')
       await sleep(1200)
-      while (!cancelled) {
-        const target = DEMO[word % DEMO.length] ?? ''
+      while (!cancelled && queue.length > 0) {
+        const entry = queue[word % queue.length]
+        const target = entry?.term ?? ''
         for (let i = 1; i <= target.length && !cancelled; i += 1) {
           setDemo(target.slice(0, i))
-          await sleep(110)
+          await sleep(90)
         }
-        await sleep(2200)
+        if (!cancelled && entry) {
+          setDemoId(entry.id)
+          // A tapped tentor holds until the demo lands on the next one.
+          setHoverId(null)
+        }
+        await sleep(2600)
         for (let i = target.length - 1; i >= 0 && !cancelled; i -= 1) {
           setDemo(target.slice(0, i))
           await sleep(45)
@@ -211,7 +252,7 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
     return () => {
       cancelled = true
     }
-  }, [demoOn])
+  }, [demoOn, queue])
 
   // What the visitor types filters the table, like grep. The demo only
   // highlights: rows that do not match fade, so the table never jumps.
@@ -232,15 +273,15 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
 
   const preview =
     shown.find((row) => row.id === hoverId && row.foto) ??
-    (demoNeedle ? shown.find(demoMatch) : undefined) ??
+    (demoOn && demoId ? shown.find((row) => row.id === demoId) : undefined) ??
     shown.find((row) => row.stat === 'R') ??
     shown[0]
   const meterCells = 24
   const filled = Math.round((progress.done / Math.max(progress.total, 1)) * meterCells)
 
   return (
-    // Always a dark terminal, whatever the band behind it.
-    <div ref={rootRef} data-palette="dark" data-accent="cyan">
+    // Follows the page theme, whatever the band behind it.
+    <div ref={rootRef} data-palette="page" data-accent="cyan">
       <TerminalWindow title="~/tentor — htop" tone="code" bodyClassName="p-0">
         {/* Summary, as htop prints it. */}
         <div className="grid grid-cols-1 gap-x-8 gap-y-1 border-b-2 border-line-soft px-3 py-3 text-[12px] leading-5 sm:grid-cols-2">
@@ -298,7 +339,7 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
             {/* Header row, htop's inverse bar. */}
             <p
               aria-hidden
-              className="grid grid-cols-[2.75rem_minmax(0,1fr)_1.5rem] gap-x-3 bg-accent px-3 py-1 text-[11px] leading-5 font-bold tracking-[0.06em] text-canvas uppercase sm:grid-cols-[2.75rem_minmax(0,13rem)_1.5rem_7.5rem_minmax(0,1fr)]"
+              className="grid grid-cols-[2.75rem_minmax(0,1fr)_1.5rem] gap-x-3 bg-accent px-3 py-1 text-[11px] leading-5 font-bold tracking-[0.06em] text-accent-ink uppercase sm:grid-cols-[2.75rem_minmax(0,13rem)_1.5rem_7.5rem_minmax(0,1fr)]"
             >
               <span>pid</span>
               <span>user</span>
@@ -311,6 +352,14 @@ export function TentorTop({ rows, load, progress }: TentorTopProps) {
                 and the sections below must not jump. Rows are 2rem, one line each. */}
             <ul
               aria-label="Tentor"
+              onPointerEnter={(event) => {
+                if (event.pointerType === 'mouse') setMouseInside(true)
+              }}
+              onPointerLeave={(event) => {
+                if (event.pointerType !== 'mouse') return
+                setMouseInside(false)
+                setHoverId(null)
+              }}
               className="min-h-[calc(var(--phone-rows)*2rem+2.75rem)] py-1 sm:min-h-[calc(var(--rows)*2rem+0.5rem)]"
               style={{ '--rows': rows.length, '--phone-rows': Math.min(rows.length, PHONE_ROWS) } as React.CSSProperties}
             >

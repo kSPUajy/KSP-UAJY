@@ -4,7 +4,7 @@ import { aboutInfo } from '@/lib/data/tentang'
 import { joinInfo } from '@/lib/data/gabung'
 import { members } from '@/lib/data/members'
 import { driftTokens, tickerTokens } from '@/lib/data/motifs'
-import { addDays, deadlineToMs, slugify } from '@/lib/format'
+import { addDays, deadlineToMs, releaseToMs, slugify } from '@/lib/format'
 import { pixelPortrait } from '@/lib/pixel-portrait'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { TAGS, publicDb } from '@/lib/supabase/public'
@@ -182,8 +182,15 @@ export async function getTentorBySlug(slug: string): Promise<Tentor | null> {
 
 // -------------------------------------------------------------- challenge ---
 
-/** Newest week first. */
-export async function getChallenges(): Promise<ChallengeMeta[]> {
+export function isChallengeReleased(challenge: Pick<ChallengeMeta, 'tanggalRilis'>, now = Date.now()): boolean {
+  return releaseToMs(challenge.tanggalRilis) <= now
+}
+
+/**
+ * Every challenge, scheduled ones included, newest week first. For the admin
+ * panel — public pages use `getChallenges`, which hides what is not out yet.
+ */
+export async function getAllChallenges(): Promise<ChallengeMeta[]> {
   const { data, error } = await publicDb(TAGS.challenge)
     .from('challenges')
     .select(CHALLENGE_META_COLUMNS)
@@ -192,14 +199,25 @@ export async function getChallenges(): Promise<ChallengeMeta[]> {
   return data.map(toChallengeMeta)
 }
 
-export async function getChallengeBySlug(slug: string): Promise<Challenge | null> {
+/**
+ * Released challenges, newest week first. The season is entered ahead of
+ * time, one per module, so a problem stays hidden until its Monday.
+ */
+export async function getChallenges(now = Date.now()): Promise<ChallengeMeta[]> {
+  return (await getAllChallenges()).filter((challenge) => isChallengeReleased(challenge, now))
+}
+
+/** Null for a challenge that is not out yet, exactly as for one that does not exist. */
+export async function getChallengeBySlug(slug: string, now = Date.now()): Promise<Challenge | null> {
   const { data, error } = await publicDb(TAGS.challenge)
     .from('challenges')
     .select('*, winners(id)')
     .eq('slug', slug)
     .maybeSingle()
   if (error) throw new Error(`Gagal membaca challenge ${slug}: ${error.message}`)
-  return data ? toChallenge(data) : null
+  if (!data) return null
+  const challenge = toChallenge(data)
+  return isChallengeReleased(challenge, now) ? challenge : null
 }
 
 export async function getChallengeById(id: string): Promise<ChallengeMeta | null> {

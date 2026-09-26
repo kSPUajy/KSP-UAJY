@@ -1,0 +1,35 @@
+Kelas kita menabung untuk acara akhir semester. Setiap minggu bendahara
+mencatat berapa yang masuk ke kas, dan setiap minggu pula ada yang bertanya:
+"Sudah cukup belum?"
+
+Tugasmu menulis program yang menjumlahkan semua setoran dan memberi tahu di
+minggu ke berapa target pertama kali tercapai.
+
+## Format masukan
+
+Baris pertama berisi dua bilangan bulat: `N`, banyaknya minggu, dan `T`, target
+tabungan.
+Baris kedua berisi `N` bilangan bulat, setoran tiap minggu secara berurutan.
+
+## Format keluaran
+
+Baris pertama:
+
+```
+total: X
+```
+
+Baris kedua, kalau total pernah mencapai `T` atau lebih:
+
+```
+target tercapai di minggu ke-K
+```
+
+dengan `K` adalah minggu pertama saat total sementara sudah mencapai `T`.
+Kalau sampai minggu terakhir target tidak tercapai:
+
+```
+target belum tercapai, kurang S
+```
+
+dengan `S` adalah selisih antara target dan total.

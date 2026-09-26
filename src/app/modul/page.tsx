@@ -43,7 +43,7 @@ export default async function ModulPage() {
         title="Modul mingguan"
         description={
           modules.length > 0
-            ? 'Dari flowchart sampai array of record, dua pertemuan untuk tiap modul — Senin dan Selasa. Halaman ini berpindah sendiri ke minggu yang sedang berjalan, termasuk sesi tanpa modul seperti Games dan Review Materi.'
+            ? 'Dari flowchart sampai array of record, dua pertemuan untuk tiap modul — Senin dan Selasa. Setiap modul dilengkapi materi dan tugas guided yang didampingi tentor.'
             : undefined
         }
         facts={

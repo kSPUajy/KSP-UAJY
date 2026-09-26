@@ -95,6 +95,8 @@
    * become a full-bleed cream band inside a dark page (or the reverse)
    * without a single duplicated token.
    *
+   * `page` resolves to the page theme's own palette — for a block that
+   * should follow the theme even inside a band that fixed its palette.
    * `inverse` resolves to whichever palette the page theme is not. Its
    * selectors are wrapped in `:where()` so they weigh exactly what
    * `[data-palette="dark"]` does — any heavier and they would outrank the
@@ -111,7 +113,8 @@
    * ---------------------------------------------------------------- */
   :root:not([data-palette]),
   [data-palette="dark"],
-  :where([data-theme="light"]) [data-palette="inverse"] {
+  :where([data-theme="light"]) [data-palette="inverse"],
+  :where([data-theme="dark"]) [data-palette="page"] {
     color-scheme: dark;
 
     --canvas: #0b0d12;
@@ -160,7 +163,8 @@
    * verified at 5.0:1 or better.
    * ---------------------------------------------------------------- */
   [data-palette="light"],
-  :where([data-theme="dark"]) [data-palette="inverse"] {
+  :where([data-theme="dark"]) [data-palette="inverse"],
+  :where([data-theme="light"]) [data-palette="page"] {
     color-scheme: light;
 
     --canvas: #efe6d1;

@@ -29,8 +29,8 @@ const fail = (message) => problems.push(message)
 /** Expected record counts, so a broken pattern can never pass silently. */
 const EXPECTED = {
   members: 15,
-  challenges: 12,
-  winners: 11,
+  challenges: 10,
+  winners: 0,
   news: 8,
 }
 
@@ -139,20 +139,16 @@ async function main() {
   if (roots !== 1) fail(`members.ts: ada ${roots} anggota tanpa parentId, seharusnya tepat 1`)
 
   // Every resolved challenge must point back at the winner that claims it.
+  // The seed starts the season with no winners, so an unresolved week is fine.
   const winnerByChallenge = new Map()
   winnerChallengeIds.forEach((challengeId, index) => {
     winnerByChallenge.set(challengeId, winnerIds[index])
   })
-  challengeIds.forEach((challengeId, index) => {
+  challengeIds.forEach((challengeId) => {
     const declared = pemenangIds.includes(winnerByChallenge.get(challengeId))
     const claimed = winnerByChallenge.get(challengeId)
     if (claimed && !declared) {
       fail(`challenges.ts: ${challengeId} tidak menunjuk balik ke pemenangnya (${claimed})`)
-    }
-    if (!claimed && index < challengeIds.length - 1) {
-      // Only the newest week is allowed to be unresolved.
-      const slug = challengeSlugs[index]
-      fail(`challenges.ts: ${challengeId} (${slug}) sudah lewat tapi tidak punya pemenang`)
     }
   })
 

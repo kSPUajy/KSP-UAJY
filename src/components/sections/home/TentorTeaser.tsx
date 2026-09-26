@@ -88,7 +88,7 @@ export function TentorTeaser({ index, tentors, schedule }: TentorTeaserProps) {
     : 'jeda — tidak ada kelas minggu ini'
 
   return (
-    <SectionShell accent="cyan" tone="inverse" labelledBy="tentor-title">
+    <SectionShell accent="cyan" tone="paper" labelledBy="tentor-title">
       {tentors.length > 0 ? (
         <TentorSurveillance
           targets={rows.map((row) => ({

@@ -14,6 +14,7 @@ export const ADMIN_SECTIONS = [
   { href: '/admin/challenge', label: 'challenge' },
   { href: '/admin/galeri', label: 'galeri' },
   { href: '/admin/pendaftaran', label: 'pendaftaran' },
+  { href: '/admin/masukan', label: 'masukan' },
   { href: '/penilaian', label: 'penilaian' },
 ] as const
 

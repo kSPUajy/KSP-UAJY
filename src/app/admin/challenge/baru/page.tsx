@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { AdminHeading } from '@/components/admin/AdminHeading'
 import { ChallengeForm } from '@/components/admin/challenge/ChallengeForm'
 import { requireProfile } from '@/lib/auth/session'
-import { getChallenges } from '@/lib/data'
+import { getAllChallenges } from '@/lib/data'
 import { addDays } from '@/lib/format'
 import { pageMetadata } from '@/lib/metadata'
 
@@ -18,7 +18,7 @@ export const metadata: Metadata = pageMetadata({
 /** Suggests the next week: released the Monday after the last one, due that Sunday 23.59. */
 export default async function AdminChallengeBaruPage() {
   await requireProfile('/admin/challenge/baru', ['admin'])
-  const [latest] = await getChallenges()
+  const [latest] = await getAllChallenges()
   const rilis = latest ? addDays(latest.tanggalRilis, 7) : undefined
 
   return (

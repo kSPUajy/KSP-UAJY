@@ -77,7 +77,7 @@ export const joinInfo: JoinInfo = {
       id: 'belum-bisa',
       pertanyaan: 'Saya belum pernah memrogram sama sekali. Masih boleh daftar?',
       jawaban:
-        'Justru jalur dasar dibuat untukmu. Semester lalu sembilan dari dua puluh tujuh anggota baru mendaftar tanpa pengalaman apa pun, dan empat di antaranya sekarang ada di papan peringkat challenge.',
+        'Justru jalur dasar dibuat untukmu. Kelasnya dimulai dari flowchart sebelum menyentuh C, jadi tidak ada yang tertinggal di pertemuan pertama.',
     },
     {
       id: 'bukan-informatika',

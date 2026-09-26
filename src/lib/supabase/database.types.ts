@@ -65,6 +65,33 @@ export type Database = {
         }
         Relationships: []
       }
+      feedback: {
+        Row: {
+          created_at: string
+          dibaca: boolean
+          id: string
+          kategori: string
+          nama: string | null
+          pesan: string
+        }
+        Insert: {
+          created_at?: string
+          dibaca?: boolean
+          id?: string
+          kategori: string
+          nama?: string | null
+          pesan: string
+        }
+        Update: {
+          created_at?: string
+          dibaca?: boolean
+          id?: string
+          kategori?: string
+          nama?: string | null
+          pesan?: string
+        }
+        Relationships: []
+      }
       gallery_items: {
         Row: {
           alt: string

@@ -77,9 +77,9 @@ export function ChallengeSection({
         <SectionHeader
           index={index}
           eyebrow="challenge minggu ini"
-          title="Satu soal tiap Senin"
+          title="Satu soal tiap modul"
           headingId="challenge-title"
-          description="Kerjakan sebelum Minggu pukul 23.59. Pemenang dan pembahasannya terbit Selasa berikutnya, lengkap dengan kodenya."
+          description="Soalnya mengikuti modul minggu itu dan terbit Senin pukul 08.00. Kerjakan sebelum Minggu pukul 23.59 — pemenang dan pembahasannya terbit Selasa berikutnya."
           actions={
             <ButtonLink href="/hall-of-fame" variant="outline" size="sm">
               hall of fame
@@ -96,10 +96,10 @@ export function ChallengeSection({
             command="ls ~/challenge"
             output="0 soal terbit"
             title="Belum ada soal minggu ini"
-            description="Soal baru terbit setiap Senin pukul 08.00. Jadwal dan pengumuman musim berikutnya selalu masuk ke berita lebih dulu."
+            description="Challenge dimulai bersama modul Tipe Data, saat kelas mulai menulis C. Setelah itu, satu soal terbit setiap Senin modul berjalan."
             action={
-              <ButtonLink href="/berita" variant="outline" size="sm">
-                buka berita
+              <ButtonLink href="/modul" variant="outline" size="sm">
+                lihat jadwal modul
               </ButtonLink>
             }
           />

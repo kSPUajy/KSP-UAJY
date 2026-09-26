@@ -3,7 +3,7 @@ nama, satu untuk nilai. Sistemnya bertahan sampai seseorang perlu mengurutkan
 data itu, dan menyadari kedua array harus digeser bersamaan supaya indeksnya
 tetap sejajar. Satu kali lupa, dan nilai orang lain menempel di namamu.
 
-Tugasmu menyusun papan peringkat memakai `struct`, lalu mengurutkannya.
+Tugasmu menyusun papan peringkat memakai array of record, lalu mengurutkannya.
 
 ## Format masukan
 
@@ -24,9 +24,8 @@ Peringkat dimulai dari 1 dan selalu bertambah satu, termasuk saat nilainya sama.
 
 ## Catatan
 
-`qsort` dari `stdlib.h` menerima fungsi pembanding yang mengembalikan bilangan
-negatif, nol, atau positif. Fungsi itu menerima dua `const void *`, jadi kamu
-harus mengubahnya sendiri ke tipe yang benar sebelum membaca isinya.
+Saat menukar dua elemen, tukar struct-nya utuh — nama dan nilai ikut pindah
+bersama. Itulah keuntungan record dibanding dua array terpisah.
 
-Hati-hati dengan pembanding yang mengembalikan selisih dua bilangan bulat besar:
-selisihnya bisa meluap. Untuk nilai 0 sampai 100 di soal ini hal itu aman.
+Untuk membandingkan dua nama, pakai `strcmp` dari `string.h`. Operator `<`
+pada dua array karakter membandingkan alamatnya, bukan isinya.

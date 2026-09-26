@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import { AboutSection } from '@/components/sections/home/AboutSection'
 import { ChallengeSection } from '@/components/sections/home/ChallengeSection'
+import { FeedbackSection } from '@/components/sections/home/FeedbackSection'
 import { GalleryStrip } from '@/components/sections/home/GalleryStrip'
 import { Hero } from '@/components/sections/home/Hero'
 import { JoinCta } from '@/components/sections/home/JoinCta'
@@ -98,7 +99,8 @@ export default async function HomePage() {
       <TentorTeaser index={4} tentors={tentors} schedule={schedule} />
       <NewsSection index={5} posts={posts} />
       <GalleryStrip index={6} items={gallery.slice(0, GALLERY_FRAMES)} />
-      <JoinCta index={7} info={joinInfo} registration={registration} />
+      <FeedbackSection index={7} />
+      <JoinCta index={8} info={joinInfo} registration={registration} />
     </>
   )
 }

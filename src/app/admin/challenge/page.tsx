@@ -5,7 +5,7 @@ import { AdminHeading } from '@/components/admin/AdminHeading'
 import { DifficultyBadge } from '@/components/ui/Badge'
 import { ButtonLink } from '@/components/ui/Button'
 import { requireProfile } from '@/lib/auth/session'
-import { getChallenges, getWinners, isChallengeClosed } from '@/lib/data'
+import { getAllChallenges, getWinners, isChallengeClosed, isChallengeReleased } from '@/lib/data'
 import { formatTanggalPendek } from '@/lib/format'
 import { pageMetadata } from '@/lib/metadata'
 import { pad2 } from '@/lib/utils'
@@ -19,7 +19,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function AdminChallengePage() {
   await requireProfile('/admin/challenge', ['admin'])
-  const [challenges, winners] = await Promise.all([getChallenges(), getWinners()])
+  const [challenges, winners] = await Promise.all([getAllChallenges(), getWinners()])
   const winnerByChallenge = new Map(winners.map((winner) => [winner.challengeId, winner]))
 
   return (
@@ -38,6 +38,7 @@ export default async function AdminChallengePage() {
         {challenges.map((challenge) => {
           const winner = winnerByChallenge.get(challenge.id)
           const closed = isChallengeClosed(challenge)
+          const released = isChallengeReleased(challenge)
           return (
             <li key={challenge.id} className="border-b-2 border-line">
               <Link
@@ -57,8 +58,10 @@ export default async function AdminChallengePage() {
                     <span className="text-muted">juara: {winner.nama}</span>
                   ) : closed ? (
                     <span className="text-accent-fg">perlu diumumkan</span>
-                  ) : (
+                  ) : released ? (
                     <span className="text-dim">masih berjalan</span>
+                  ) : (
+                    <span className="text-dim">terjadwal · rilis {formatTanggalPendek(challenge.tanggalRilis)}</span>
                   )}
                 </span>
               </Link>

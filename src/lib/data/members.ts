@@ -4,11 +4,9 @@ import { pixelPortrait } from '@/lib/pixel-portrait'
 import type { Member } from '@/lib/types'
 
 /**
- * Until a real photo is uploaded, each person gets a pixel portrait of their
- * initials. Swap the call for a photo URL — any 4:5 image — and nothing else
- * changes.
+ * Photos live in `public/pengurus/<slug>.jpg`, cropped 4:5 at 640 × 800.
+ * Anyone without one yet gets a pixel portrait of their initials.
  */
-const portrait = pixelPortrait
 
 /** Seats whose names are not announced yet: replace with `nama`, `slug`, `foto`, `bio`. */
 const PLACEHOLDER = {
@@ -34,7 +32,7 @@ export const members: readonly Member[] = [
     jabatan: 'Ketua',
     divisi: 'inti',
     angkatan: 2025,
-    foto: portrait('Benedictus Richard Gunawan'),
+    foto: '/pengurus/benedictus-richard-gunawan.jpg',
     bio: 'Memimpin kepengurusan harian KSP: menjaga arah kegiatan dan memastikan tentoring, sharing session, dan workshop berjalan sesuai rencana.',
     socials: {},
   },
@@ -45,7 +43,7 @@ export const members: readonly Member[] = [
     jabatan: 'Koordinator Tentor',
     divisi: 'inti',
     angkatan: 2025,
-    foto: portrait('Klemens Valois'),
+    foto: '/pengurus/klemens-valois.jpg',
     bio: 'Mengoordinasikan para tentor: membagi tentor penanggung jawab tiap modul, menyelaraskan materi mingguan, dan menjadi tempat bertanya para tentor.',
     socials: {},
     parentId: 'ph-ketua',
@@ -57,7 +55,7 @@ export const members: readonly Member[] = [
     jabatan: 'Sekretaris 1',
     divisi: 'inti',
     angkatan: 2025,
-    foto: portrait('Alexandria Audrey Deitra Wijaya'),
+    foto: '/pengurus/alexandria-audrey-deitra-wijaya.jpg',
     bio: 'Mengurus administrasi dan surat-menyurat KSP, sekaligus narahubung sekretariat untuk anggota maupun pihak kampus.',
     socials: {},
     parentId: 'ph-ketua',
@@ -69,7 +67,7 @@ export const members: readonly Member[] = [
     jabatan: 'Sekretaris 2',
     divisi: 'inti',
     angkatan: 2025,
-    foto: portrait('Veronika Rena Yuliastuti'),
+    foto: '/pengurus/veronika-rena-yuliastuti.jpg',
     bio: 'Mendampingi pengelolaan administrasi KSP: pencatatan kegiatan, arsip, dan kebutuhan kesekretariatan lainnya.',
     socials: {},
     parentId: 'ph-ketua',
@@ -81,7 +79,7 @@ export const members: readonly Member[] = [
     jabatan: 'Bendahara',
     divisi: 'inti',
     angkatan: 2025,
-    foto: portrait('Michelle Valencia Susanto Njo'),
+    foto: '/pengurus/michelle-valencia-susanto-njo.jpg',
     bio: 'Mengelola keuangan KSP, dari anggaran kegiatan hingga laporan pertanggungjawaban.',
     socials: {},
     parentId: 'ph-ketua',
@@ -93,7 +91,7 @@ export const members: readonly Member[] = [
     jabatan: 'Koordinator Kominfo',
     divisi: 'kominfo',
     angkatan: 2025,
-    foto: portrait('Graciano Marcel Christianto'),
+    foto: '/pengurus/graciano-marcel-christianto.jpg',
     bio: 'Memimpin divisi komunikasi dan informasi: publikasi kegiatan, media sosial, dan dokumentasi KSP.',
     socials: {},
     parentId: 'ph-ketua',
@@ -105,7 +103,7 @@ export const members: readonly Member[] = [
     jabatan: 'Staf Kominfo',
     divisi: 'kominfo',
     angkatan: 2025,
-    foto: portrait('Dwi Enzelica Sipayung'),
+    foto: '/pengurus/dwi-enzelica-sipayung.jpg',
     bio: 'Membantu publikasi, desain konten, dan dokumentasi kegiatan KSP.',
     socials: {},
     parentId: 'kominfo-koordinator',
@@ -117,7 +115,7 @@ export const members: readonly Member[] = [
     jabatan: 'Staf Kominfo',
     divisi: 'kominfo',
     angkatan: 2025,
-    foto: portrait('Michael Gamaliel Bellarmino'),
+    foto: '/pengurus/michael-gamaliel-bellarmino.jpg',
     bio: 'Membantu publikasi, desain konten, dan dokumentasi kegiatan KSP.',
     socials: {},
     parentId: 'kominfo-koordinator',
@@ -129,7 +127,7 @@ export const members: readonly Member[] = [
     jabatan: 'Staf Kominfo',
     divisi: 'kominfo',
     angkatan: 2025,
-    foto: portrait('Andreas Clein Jatmika'),
+    foto: '/pengurus/andreas-clein-jatmika.jpg',
     bio: 'Membantu publikasi, desain konten, dan dokumentasi kegiatan KSP.',
     socials: {},
     parentId: 'kominfo-koordinator',
@@ -141,7 +139,7 @@ export const members: readonly Member[] = [
     jabatan: 'Staf Kominfo',
     divisi: 'kominfo',
     angkatan: 2025,
-    foto: portrait('Jonathan Evquarel Pebrian'),
+    foto: '/pengurus/jonathan-evquarel-pebrian.jpg',
     bio: 'Membantu publikasi, desain konten, dan dokumentasi kegiatan KSP.',
     socials: {},
     parentId: 'kominfo-koordinator',
@@ -153,7 +151,7 @@ export const members: readonly Member[] = [
     jabatan: 'Staf Kominfo',
     divisi: 'kominfo',
     angkatan: 2025,
-    foto: portrait('Jonathan Wilbert Andyna'),
+    foto: '/pengurus/jonathan-wilbert-andyna.jpg',
     bio: 'Membantu publikasi, desain konten, dan dokumentasi kegiatan KSP.',
     socials: {},
     parentId: 'kominfo-koordinator',

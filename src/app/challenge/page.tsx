@@ -72,7 +72,7 @@ export default async function ChallengeArchivePage() {
         title="Arsip challenge mingguan"
         description={
           challenges.length > 0
-            ? 'Satu soal tiap Senin, dari MUDAH sampai SEGFAULT. Saring berdasarkan tingkat kesulitan atau topik, lalu buka soalnya — solusi pemenang terbit setelah deadline, lengkap dengan cerita di baliknya.'
+            ? 'Satu soal untuk setiap modul, terbit Senin saat modulnya dimulai — jadi soalnya tidak pernah mendahului materi kelas. Saring berdasarkan tingkat kesulitan atau topik, lalu buka soalnya — solusi pemenang terbit setelah deadline, lengkap dengan cerita di baliknya.'
             : undefined
         }
         facts={
@@ -112,11 +112,11 @@ export default async function ChallengeArchivePage() {
             <EmptyState
               command="ls ~/challenge"
               output="0 soal"
-              title="Musim baru belum dimulai"
-              description="Soal pertama terbit Senin pukul 08.00. Pengumuman jadwal musim berikutnya selalu masuk ke berita lebih dulu."
+              title="Challenge segera dimulai"
+              description="Challenge dimulai bersama modul Tipe Data, saat kelas mulai menulis C. Soal pertama terbit Senin pukul 08.00 di minggu modul itu."
               action={
-                <ButtonLink href="/berita" variant="outline" size="sm">
-                  buka berita
+                <ButtonLink href="/modul" variant="outline" size="sm">
+                  lihat jadwal modul
                 </ButtonLink>
               }
             />

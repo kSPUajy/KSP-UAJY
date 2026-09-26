@@ -79,6 +79,11 @@ export function deadlineToMs(deadline: string): number {
   return Date.parse(`${deadline}:00+07:00`)
 }
 
+/** A challenge goes public at 08.00 WIB on its release date. */
+export function releaseToMs(tanggalRilis: string): number {
+  return Date.parse(`${tanggalRilis}T08:00:00+07:00`)
+}
+
 /**
  * A real instant (`2026-09-24T09:15:02.123Z`, as Postgres `timestamptz`
  * returns it) as a WIB wall-clock string, `2026-09-24T16:15`, ready for the

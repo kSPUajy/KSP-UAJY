@@ -20,3 +20,6 @@ AGENTS.md
 
 # One-time passwords exported for handing out (never commit)
 .akun/
+
+# Raw photo dumps; the cropped copies are what ship
+src/assets/tentor/*.zip

@@ -1,0 +1,37 @@
+Di akhir semester, setiap dosen menghitung nilai akhir dari tiga komponen:
+tugas, UTS, dan UAS. Bobotnya 30%, 30%, dan 40%. Setelah itu nilai akhir
+diubah menjadi nilai huruf.
+
+Tugasmu menulis program yang melakukan keduanya — sekaligus menolak nilai yang
+jelas salah ketik.
+
+## Format masukan
+
+Satu baris berisi tiga bilangan bulat: nilai tugas, UTS, dan UAS.
+
+## Format keluaran
+
+Kalau salah satu nilai di bawah 0 atau di atas 100, cetak:
+
+```
+nilai tidak valid
+```
+
+Kalau semua valid, cetak dua baris:
+
+```
+nilai akhir: X.XX
+huruf: H
+```
+
+Nilai akhir dihitung sebagai `(3 × tugas + 3 × UTS + 4 × UAS) / 10`.
+
+## Tabel huruf
+
+| Nilai akhir | Huruf |
+| --- | --- |
+| 85 ke atas | A |
+| 70 sampai di bawah 85 | B |
+| 55 sampai di bawah 70 | C |
+| 40 sampai di bawah 55 | D |
+| di bawah 40 | E |

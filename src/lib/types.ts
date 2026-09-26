@@ -10,17 +10,16 @@
 export const DIFFICULTIES = ['MUDAH', 'SEDANG', 'SULIT', 'SEGFAULT'] as const
 export type Difficulty = (typeof DIFFICULTIES)[number]
 
+/** One per class module from Tipe Data on, so challenges filter by module. */
 export const TOPIK = [
+  'tipe-data',
+  'pemilihan',
+  'perulangan',
+  'prosedur',
   'pointer',
+  'fungsi',
   'array',
-  'string',
-  'rekursi',
-  'struct',
-  'linked-list',
-  'memori-dinamis',
-  'file-io',
-  'bitwise',
-  'algoritma',
+  'record',
 ] as const
 export type Topik = (typeof TOPIK)[number]
 
@@ -29,6 +28,9 @@ export type Divisi = (typeof DIVISI)[number]
 
 export const KATEGORI_BERITA = ['pengumuman', 'liputan', 'tutorial', 'prestasi'] as const
 export type KategoriBerita = (typeof KATEGORI_BERITA)[number]
+
+export const KATEGORI_MASUKAN = ['kritik', 'saran', 'lainnya'] as const
+export type KategoriMasukan = (typeof KATEGORI_MASUKAN)[number]
 
 export const KATEGORI_GALERI = ['workshop', 'kelas', 'kompetisi', 'gathering', 'lainnya'] as const
 export type KategoriGaleri = (typeof KATEGORI_GALERI)[number]

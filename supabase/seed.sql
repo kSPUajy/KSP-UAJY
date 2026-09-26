@@ -21,21 +21,20 @@ insert into public.sesi (id, judul, rilis, pj, ringkasan) values
   ($ksp$sesi-review$ksp$, $ksp$Review Materi$ksp$, $ksp$2027-02-22$ksp$, $ksp$PH$ksp$, $ksp$Mengulang materi semester ganjil sebelum lanjut ke prosedur dan fungsi. Tanpa modul dan tanpa tugas.$ksp$);
 
 insert into public.news_posts (id, slug, judul, tanggal, kategori, cover, excerpt, penulis, body_mdx, tags) values
-  ($ksp$n-01$ksp$, $ksp$pendaftaran-anggota-baru-2026$ksp$, $ksp$Pendaftaran Anggota Baru Semester Ganjil 2026/2027 Dibuka$ksp$, $ksp$2026-08-24$ksp$, $ksp$pengumuman$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-pendaftaran/1200/675$ksp$, $ksp$Terbuka untuk seluruh mahasiswa aktif UAJY, dari angkatan mana pun, tanpa syarat kemampuan awal. Semester lalu sembilan dari dua puluh tujuh anggota baru mendaftar tanpa pengalaman apa pun.$ksp$, $ksp$Salsabila Rahmawati$ksp$, $ksp$Pendaftaran anggota baru Kelompok Studi Pemrograman untuk semester ganjil
+  ($ksp$n-01$ksp$, $ksp$pendaftaran-anggota-baru-2026$ksp$, $ksp$Pendaftaran Anggota Baru Semester Ganjil 2026/2027 Dibuka$ksp$, $ksp$2026-08-24$ksp$, $ksp$pengumuman$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-pendaftaran/1200/675$ksp$, $ksp$Terbuka untuk mahasiswa aktif UAJY semester 1 sebagai persiapan mata kuliah dasar pemrograman C, tanpa syarat kemampuan awal. Semester lalu sembilan dari dua puluh tujuh anggota baru mendaftar tanpa pengalaman apa pun.$ksp$, $ksp$Salsabila Rahmawati$ksp$, $ksp$Pendaftaran anggota baru Kelompok Studi Pemrograman untuk semester ganjil
 2026/2027 resmi dibuka mulai hari ini sampai 11 September 2026. Pendaftaran
-terbuka untuk seluruh mahasiswa aktif UAJY, dari angkatan mana pun, dan tidak
-ada syarat kemampuan awal.
+terbuka untuk mahasiswa aktif UAJY semester 1, dan tidak ada syarat kemampuan
+awal. Kelasnya disusun untuk mempersiapkanmu menghadapi mata kuliah dasar
+pemrograman berbahasa C.
 
 ## Tidak perlu bisa C dulu
 
 Ini pertanyaan yang paling sering masuk ke kotak masuk kami, jadi mari
 diselesaikan di awal: **kamu tidak perlu sudah bisa memrogram untuk mendaftar.**
 
-Kelas dibagi menjadi dua jalur. Jalur pertama untuk yang belum pernah menulis
-satu baris kode pun, dimulai dari cara membaca kode orang lain sebelum menulis
-kode sendiri. Jalur kedua untuk yang sudah lewat mata kuliah Algoritma dan
-Pemrograman dan ingin masuk ke manajemen memori, struktur data, dan pemrograman
-sistem.
+Kelasnya dimulai dari nol. Kalau kamu belum pernah menulis satu baris kode pun,
+tentor akan mendampingimu dari pertemuan pertama. Kalau sudah pernah, kelas ini
+jadi tempat merapikan dasar sebelum kuliahnya dimulai.
 
 Semester lalu, sembilan dari dua puluh tujuh anggota baru mendaftar tanpa
 pengalaman apa pun. Empat di antaranya sekarang mengisi papan peringkat
@@ -46,10 +45,11 @@ challenge mingguan.
 - Kelas rutin setiap Jumat sore, 90 menit, di ruang FTI 3.2
 - Pendampingan satu tentor untuk empat peserta
 - Challenge mingguan dengan pembahasan solusi terbuka
-- Akses ke arsip materi dan rekaman kelas
-- Sertifikat keanggotaan di akhir tahun ajaran
+- Akses ke arsip modul dan soal latihan
+- Sertifikat keanggotaan di akhir tahun ajaran, bisa ditukar SPAMA tipe organisasi
 
-Seluruh kegiatan gratis. Tidak ada biaya pendaftaran dan tidak ada iuran bulanan.
+Biaya pendaftaran Rp150.000, dibayar sekali. Kalau presensimu memenuhi, 70%
+(Rp105.000) dikembalikan sebagai cashback. Tidak ada iuran bulanan.
 
 ## Alur pendaftaran
 
@@ -419,7 +419,213 @@ berisi kebocoran memori yang dipakai dalam sesi praktik dibiarkan apa adanya,
 lengkap dengan ketiga kebocorannya, supaya bisa dipakai ulang untuk latihan mandiri.$ksp$, array[$ksp$workshop$ksp$, $ksp$memori$ksp$, $ksp$liputan$ksp$]::text[]);
 
 insert into public.challenges (id, slug, minggu, judul, tanggal_rilis, deadline, difficulty, topik, deskripsi_mdx, constraints, sample_io, hint_terkunci, total_peserta, tags) values
-  ($ksp$c-01$ksp$, $ksp$suhu-rata-rata-laboratorium$ksp$, 1, $ksp$Suhu Rata-Rata Laboratorium$ksp$, $ksp$2026-07-06$ksp$, $ksp$2026-07-12T23:59$ksp$, $ksp$MUDAH$ksp$, array[$ksp$array$ksp$, $ksp$algoritma$ksp$]::text[], $ksp$Laboratorium FTI memasang termometer digital di empat sudut ruang server. Setiap
+  ($ksp$c-03$ksp$, $ksp$durasi-praktikum$ksp$, 3, $ksp$Durasi Praktikum$ksp$, $ksp$2026-10-05$ksp$, $ksp$2026-10-11T23:59$ksp$, $ksp$MUDAH$ksp$, array[$ksp$tipe-data$ksp$]::text[], $ksp$Server praktikum mencatat lama setiap sesi dalam satuan detik. Angka seperti
+`7384` memang tepat, tapi tidak ada yang bisa membacanya sekilas. Koordinator
+lab ingin angka itu ditampilkan dalam jam, menit, dan detik.
+
+Tugasmu menulis program yang membaca lama sesi dalam detik, lalu mencetaknya
+dalam format yang mudah dibaca.
+
+## Format masukan
+
+Satu bilangan bulat `N`, lama sesi dalam detik.
+
+## Format keluaran
+
+Satu baris dengan format persis seperti ini:
+
+```
+J jam M menit D detik
+```
+
+`M` dan `D` selalu di antara 0 dan 59. `J` boleh lebih dari 23.
+
+## Catatan
+
+Soal ini cukup diselesaikan dengan variabel, `scanf`, `printf`, dan operator
+aritmetika. Tidak perlu `if` ataupun perulangan.$ksp$, array[$ksp$0 <= N <= 1000000$ksp$, $ksp$Keluaran persis satu baris$ksp$, $ksp$Batas waktu 1 detik, batas memori 64 MB$ksp$]::text[], $ksp$[{"input":"7384","output":"2 jam 3 menit 4 detik","penjelasan":"7384 detik = 2 × 3600 + 3 × 60 + 4."},{"input":"59","output":"0 jam 0 menit 59 detik","penjelasan":"Kurang dari satu menit, jam dan menitnya tetap dicetak sebagai 0."},{"input":"86400","output":"24 jam 0 menit 0 detik","penjelasan":"Satu hari penuh. Jam tidak dibatasi sampai 23."}]$ksp$::jsonb, array[$ksp$Satu jam sama dengan 3600 detik, satu menit 60 detik.$ksp$, $ksp$Operator / pada dua bilangan bulat membuang sisanya. Operator % justru mengambil sisanya.$ksp$, $ksp$Setelah jam diambil, sisa detiknya adalah N % 3600. Dari sisa itu baru hitung menitnya.$ksp$]::text[], 0, array[$ksp$pemanasan$ksp$, $ksp$aritmetika$ksp$]::text[]),
+  ($ksp$c-04$ksp$, $ksp$nilai-akhir-semester$ksp$, 4, $ksp$Nilai Akhir Semester$ksp$, $ksp$2026-11-02$ksp$, $ksp$2026-11-08T23:59$ksp$, $ksp$MUDAH$ksp$, array[$ksp$pemilihan$ksp$]::text[], $ksp$Di akhir semester, setiap dosen menghitung nilai akhir dari tiga komponen:
+tugas, UTS, dan UAS. Bobotnya 30%, 30%, dan 40%. Setelah itu nilai akhir
+diubah menjadi nilai huruf.
+
+Tugasmu menulis program yang melakukan keduanya — sekaligus menolak nilai yang
+jelas salah ketik.
+
+## Format masukan
+
+Satu baris berisi tiga bilangan bulat: nilai tugas, UTS, dan UAS.
+
+## Format keluaran
+
+Kalau salah satu nilai di bawah 0 atau di atas 100, cetak:
+
+```
+nilai tidak valid
+```
+
+Kalau semua valid, cetak dua baris:
+
+```
+nilai akhir: X.XX
+huruf: H
+```
+
+Nilai akhir dihitung sebagai `(3 × tugas + 3 × UTS + 4 × UAS) / 10`.
+
+## Tabel huruf
+
+| Nilai akhir | Huruf |
+| --- | --- |
+| 85 ke atas | A |
+| 70 sampai di bawah 85 | B |
+| 55 sampai di bawah 70 | C |
+| 40 sampai di bawah 55 | D |
+| di bawah 40 | E |$ksp$, array[$ksp$Ketiga nilai berupa bilangan bulat$ksp$, $ksp$Nilai di luar 0 sampai 100 dianggap tidak valid$ksp$, $ksp$Nilai akhir dicetak dengan tepat dua angka di belakang koma$ksp$]::text[], $ksp$[{"input":"80 75 90","output":"nilai akhir: 82.50\nhuruf: B","penjelasan":"(3 × 80 + 3 × 75 + 4 × 90) / 10 = 82.5, masuk rentang B."},{"input":"85 85 85","output":"nilai akhir: 85.00\nhuruf: A","penjelasan":"Tepat di batas bawah A tetap mendapat A."},{"input":"100 101 90","output":"nilai tidak valid","penjelasan":"Nilai UTS 101 di luar rentang, jadi tidak ada yang dihitung."}]$ksp$::jsonb, array[$ksp$Periksa validitas dulu. Kalau satu saja tidak valid, cetak pesannya dan selesai.$ksp$, $ksp$Urutkan pemeriksaan huruf dari batas tertinggi ke terendah dengan if – else if.$ksp$, $ksp$Bandingkan 3 × tugas + 3 × UTS + 4 × UAS dengan 850, 700, dan seterusnya supaya batasnya tidak meleset karena pecahan.$ksp$]::text[], 0, array[$ksp$if-else$ksp$, $ksp$nilai$ksp$]::text[]),
+  ($ksp$c-05$ksp$, $ksp$tabungan-kas-kelas$ksp$, 5, $ksp$Tabungan Kas Kelas$ksp$, $ksp$2026-11-09$ksp$, $ksp$2026-11-15T23:59$ksp$, $ksp$MUDAH$ksp$, array[$ksp$perulangan$ksp$]::text[], $ksp$Kelas kita menabung untuk acara akhir semester. Setiap minggu bendahara
+mencatat berapa yang masuk ke kas, dan setiap minggu pula ada yang bertanya:
+"Sudah cukup belum?"
+
+Tugasmu menulis program yang menjumlahkan semua setoran dan memberi tahu di
+minggu ke berapa target pertama kali tercapai.
+
+## Format masukan
+
+Baris pertama berisi dua bilangan bulat: `N`, banyaknya minggu, dan `T`, target
+tabungan.
+Baris kedua berisi `N` bilangan bulat, setoran tiap minggu secara berurutan.
+
+## Format keluaran
+
+Baris pertama:
+
+```
+total: X
+```
+
+Baris kedua, kalau total pernah mencapai `T` atau lebih:
+
+```
+target tercapai di minggu ke-K
+```
+
+dengan `K` adalah minggu pertama saat total sementara sudah mencapai `T`.
+Kalau sampai minggu terakhir target tidak tercapai:
+
+```
+target belum tercapai, kurang S
+```
+
+dengan `S` adalah selisih antara target dan total.$ksp$, array[$ksp$1 <= N <= 100$ksp$, $ksp$0 <= T <= 10000000$ksp$, $ksp$0 <= setoran <= 100000$ksp$]::text[], $ksp$[{"input":"5 100000\n20000 15000 30000 25000 10000","output":"total: 100000\ntarget tercapai di minggu ke-5","penjelasan":"Total baru menyentuh 100000 setelah setoran kelima."},{"input":"3 50000\n10000 5000 20000","output":"total: 35000\ntarget belum tercapai, kurang 15000","penjelasan":"Sampai minggu terakhir totalnya 35000, masih kurang 15000."},{"input":"1 0\n0","output":"total: 0\ntarget tercapai di minggu ke-1","penjelasan":"Target 0 sudah tercapai begitu minggu pertama dicatat."}]$ksp$::jsonb, array[$ksp$Tidak perlu menyimpan semua setoran. Cukup tambahkan ke total setiap kali dibaca.$ksp$, $ksp$Simpan minggu tercapainya di variabel tersendiri, dan isi hanya sekali — saat pertama kali total >= T.$ksp$, $ksp$Setoran tetap harus dibaca sampai habis walaupun target sudah tercapai lebih awal.$ksp$]::text[], 0, array[$ksp$for$ksp$, $ksp$akumulasi$ksp$]::text[]),
+  ($ksp$c-06$ksp$, $ksp$segitiga-angka$ksp$, 6, $ksp$Segitiga Angka$ksp$, $ksp$2026-11-16$ksp$, $ksp$2026-11-22T23:59$ksp$, $ksp$SEDANG$ksp$, array[$ksp$perulangan$ksp$]::text[], $ksp$Papan pengumuman lab butuh hiasan untuk acara ulang tahun KSP, dan seseorang
+mengusulkan segitiga dari angka. Menggambarnya dengan tangan butuh waktu lama.
+Mencetaknya dengan program cukup beberapa baris.
+
+Tugasmu mencetak segitiga angka setinggi `N`.
+
+## Format masukan
+
+Satu bilangan bulat `N`.
+
+## Format keluaran
+
+`N` baris. Baris ke-`i` (dimulai dari 1) berisi:
+
+1. `N − i` spasi,
+2. angka `1` sampai `i` secara menaik,
+3. angka `i − 1` sampai `1` secara menurun.
+
+Contoh untuk `N = 4`:
+
+```
+   1
+  121
+ 12321
+1234321
+```
+
+Jangan mencetak spasi di akhir baris.$ksp$, array[$ksp$1 <= N <= 9$ksp$, $ksp$Tidak ada spasi di akhir baris$ksp$]::text[], $ksp$[{"input":"3","output":"  1\n 121\n12321","penjelasan":"Baris ke-i diawali N − i spasi, naik dari 1 sampai i, lalu turun lagi ke 1."},{"input":"1","output":"1","penjelasan":"Satu baris, tanpa spasi di depan."},{"input":"5","output":"    1\n   121\n  12321\n 1234321\n123454321","penjelasan":"Baris terakhir selalu rata kiri."}]$ksp$::jsonb, array[$ksp$Satu perulangan luar untuk baris, lalu tiga perulangan dalam: spasi, angka naik, angka turun.$ksp$, $ksp$Banyaknya spasi di baris ke-i adalah N − i.$ksp$, $ksp$Angka turun dimulai dari i − 1, bukan dari i, supaya puncaknya tidak tercetak dua kali.$ksp$]::text[], 0, array[$ksp$nested-loop$ksp$, $ksp$pola$ksp$]::text[]),
+  ($ksp$c-07$ksp$, $ksp$bingkai-papan-nama$ksp$, 7, $ksp$Bingkai Papan Nama$ksp$, $ksp$2026-11-23$ksp$, $ksp$2026-11-29T23:59$ksp$, $ksp$SEDANG$ksp$, array[$ksp$prosedur$ksp$, $ksp$perulangan$ksp$]::text[], $ksp$Panitia pameran proyek butuh bingkai papan nama untuk setiap meja. Ukurannya
+berbeda-beda, tapi bentuknya selalu sama: tepi dari `#`, bagian dalam dari
+titik.
+
+Tugasmu mencetak beberapa bingkai sekaligus. Kodenya akan jauh lebih pendek
+kalau bagian yang berulang dipindahkan ke prosedur sendiri.
+
+## Format masukan
+
+Baris pertama berisi `K`, banyaknya bingkai.
+`K` baris berikutnya masing-masing berisi dua bilangan bulat: lebar dan tinggi.
+
+## Format keluaran
+
+Setiap bingkai dicetak dalam `tinggi` baris dengan `lebar` karakter per baris.
+Baris pertama dan terakhir seluruhnya `#`. Baris di antaranya diawali dan
+diakhiri `#`, dengan titik di tengahnya.
+
+Contoh untuk lebar 6 dan tinggi 4:
+
+```
+######
+#....#
+#....#
+######
+```
+
+Antar bingkai dipisahkan tepat satu baris kosong.$ksp$, array[$ksp$1 <= K <= 10$ksp$, $ksp$1 <= lebar, tinggi <= 50$ksp$, $ksp$Antar bingkai dipisahkan tepat satu baris kosong$ksp$]::text[], $ksp$[{"input":"1\n5 3","output":"#####\n#...#\n#####","penjelasan":"Tepi berupa #, bagian dalam berupa titik."},{"input":"2\n3 3\n1 1","output":"###\n#.#\n###\n\n#","penjelasan":"Dua bingkai, dipisahkan satu baris kosong. Bingkai 1 × 1 hanya satu #."},{"input":"1\n4 1","output":"####","penjelasan":"Tinggi 1 berarti hanya ada satu baris tepi."}]$ksp$::jsonb, array[$ksp$Buat satu prosedur yang mencetak satu baris: karakter tepi, isi sebanyak lebar − 2, lalu tepi lagi.$ksp$, $ksp$Bingkai = baris atas, tinggi − 2 baris tengah, baris bawah. Semuanya memanggil prosedur yang sama.$ksp$, $ksp$Hati-hati dengan lebar atau tinggi 1: tepi kanan dan baris bawah tidak boleh tercetak dua kali.$ksp$]::text[], 0, array[$ksp$prosedur$ksp$, $ksp$pola$ksp$]::text[]),
+  ($ksp$c-08$ksp$, $ksp$tiga-angka-berurutan$ksp$, 8, $ksp$Tiga Angka Berurutan$ksp$, $ksp$2027-03-01$ksp$, $ksp$2027-03-07T23:59$ksp$, $ksp$SEDANG$ksp$, array[$ksp$prosedur$ksp$, $ksp$pointer$ksp$]::text[], $ksp$Prosedur yang kamu tulis minggu lalu bisa mencetak, tapi belum bisa mengubah
+variabel milik `main`. Minggu ini kita perbaiki itu.
+
+Tugasmu mengurutkan tiga bilangan dari kecil ke besar dengan sebuah prosedur,
+dan menghitung berapa kali pertukaran terjadi.
+
+## Aturan pengurutan
+
+Pengurutan dilakukan dengan tiga perbandingan, persis dalam urutan ini:
+
+1. bandingkan `a` dan `b`, tukar kalau `a > b`,
+2. bandingkan `b` dan `c`, tukar kalau `b > c`,
+3. bandingkan `a` dan `b` sekali lagi, tukar kalau `a > b`.
+
+Setiap pertukaran dihitung satu. Dua bilangan yang sama tidak ditukar.
+
+## Format masukan
+
+Baris pertama berisi `T`, banyaknya kasus.
+`T` baris berikutnya masing-masing berisi tiga bilangan bulat `a`, `b`, dan `c`.
+
+## Format keluaran
+
+Satu baris untuk setiap kasus:
+
+```
+a b c (J tukar)
+```
+
+dengan `a b c` sudah terurut menaik dan `J` banyaknya pertukaran.$ksp$, array[$ksp$1 <= T <= 100$ksp$, $ksp$-1000 <= a, b, c <= 1000$ksp$, $ksp$Pertukaran dihitung sesuai urutan perbandingan di soal$ksp$]::text[], $ksp$[{"input":"3\n3 1 2\n1 2 3\n9 5 1","output":"1 2 3 (2 tukar)\n1 2 3 (0 tukar)\n1 5 9 (3 tukar)","penjelasan":"Data yang sudah urut tidak butuh pertukaran. 9 5 1 butuh ketiganya."},{"input":"1\n4 4 2","output":"2 4 4 (2 tukar)","penjelasan":"Dua angka yang sama tidak ditukar, karena yang kiri tidak lebih besar."}]$ksp$::jsonb, array[$ksp$Prosedur tukar(int a, int b) tidak mengubah apa pun di main. Kirimkan alamatnya: tukar(&a, &b).$ksp$, $ksp$Di dalam prosedur, *a adalah isi variabel yang ditunjuk, bukan alamatnya.$ksp$, $ksp$Jumlah pertukaran juga bisa dikembalikan lewat parameter keluaran, sama seperti angkanya.$ksp$]::text[], 0, array[$ksp$parameter-keluaran$ksp$, $ksp$tukar$ksp$]::text[]),
+  ($ksp$c-09$ksp$, $ksp$prima-di-rentang$ksp$, 9, $ksp$Prima di Rentang$ksp$, $ksp$2027-03-15$ksp$, $ksp$2027-03-21T23:59$ksp$, $ksp$SEDANG$ksp$, array[$ksp$fungsi$ksp$, $ksp$perulangan$ksp$]::text[], $ksp$Bilangan prima adalah bilangan lebih dari 1 yang hanya habis dibagi 1 dan
+dirinya sendiri. Memeriksa satu bilangan itu mudah. Memeriksa ribuan bilangan
+dengan kode yang sama berulang-ulang di dalam `main` itulah yang melelahkan.
+
+Tugasmu mencetak semua bilangan prima di antara `A` dan `B`. Pisahkan
+pemeriksaan prima ke dalam sebuah fungsi yang mengembalikan nilai.
+
+## Format masukan
+
+Satu baris berisi dua bilangan bulat `A` dan `B`.
+
+## Format keluaran
+
+Baris pertama berisi semua bilangan prima `p` dengan `A <= p <= B`, terurut
+menaik dan dipisahkan satu spasi. Kalau tidak ada satu pun, cetak `-`.
+
+Baris kedua:
+
+```
+jumlah: K
+```
+
+dengan `K` banyaknya bilangan prima yang ditemukan.$ksp$, array[$ksp$1 <= A <= B <= 100000$ksp$, $ksp$Bilangan prima dicetak menaik, dipisahkan satu spasi$ksp$, $ksp$Batas waktu 1 detik, batas memori 64 MB$ksp$]::text[], $ksp$[{"input":"10 30","output":"11 13 17 19 23 29\njumlah: 6","penjelasan":"Enam bilangan prima di antara 10 dan 30."},{"input":"1 10","output":"2 3 5 7\njumlah: 4","penjelasan":"1 bukan bilangan prima."},{"input":"24 28","output":"-\njumlah: 0","penjelasan":"Tidak ada prima di rentang ini, jadi baris pertama berisi tanda minus."}]$ksp$::jsonb, array[$ksp$Tulis fungsi int prima(int n) yang mengembalikan 1 kalau prima dan 0 kalau bukan.$ksp$, $ksp$Cukup coba pembagi dari 2 selama d × d <= n. Kalau tidak ada yang habis membagi, n prima.$ksp$, $ksp$Cetak spasi sebelum setiap bilangan kecuali yang pertama, supaya tidak ada spasi berlebih.$ksp$]::text[], 0, array[$ksp$fungsi$ksp$, $ksp$prima$ksp$]::text[]),
+  ($ksp$c-10$ksp$, $ksp$suhu-rata-rata-laboratorium$ksp$, 10, $ksp$Suhu Rata-Rata Laboratorium$ksp$, $ksp$2027-04-26$ksp$, $ksp$2027-05-02T23:59$ksp$, $ksp$MUDAH$ksp$, array[$ksp$array$ksp$]::text[], $ksp$Laboratorium FTI memasang termometer digital di empat sudut ruang server. Setiap
 jam, angkanya dicatat ke dalam satu berkas. Bagian kelistrikan ingin ringkasan
 harian yang bisa dibaca sekilas, bukan deretan angka mentah.
 
@@ -443,86 +649,35 @@ terendah: Z
 
 Rata-rata dicetak dengan dua angka di belakang koma. Perhatikan bahwa pembagian
 antar bilangan bulat di C membuang sisanya — `7 / 2` bernilai `3`, bukan `3.5`.
-Kamu harus mengubah tipenya lebih dulu.$ksp$, array[$ksp$1 <= N <= 1000$ksp$, $ksp$-50 <= suhu <= 100$ksp$, $ksp$Rata-rata dicetak dengan tepat dua angka di belakang koma$ksp$, $ksp$Batas waktu 1 detik, batas memori 64 MB$ksp$]::text[], $ksp$[{"input":"5\n21 24 23 27 20","output":"rata-rata: 23.00\ntertinggi: 27\nterendah: 20","penjelasan":"Jumlah seluruh suhu 115, dibagi 5 menghasilkan tepat 23."},{"input":"1\n30","output":"rata-rata: 30.00\ntertinggi: 30\nterendah: 30","penjelasan":"Dengan satu data, ketiganya bernilai sama."},{"input":"4\n-3 -1 0 4","output":"rata-rata: 0.00\ntertinggi: 4\nterendah: -3","penjelasan":"Suhu negatif tetap dihitung. Totalnya nol, jadi rata-ratanya nol."}]$ksp$::jsonb, array[$ksp$Nilai awal untuk tertinggi dan terendah sebaiknya diambil dari elemen pertama, bukan dari 0.$ksp$, $ksp$total / n memakai pembagian bulat. Ubah salah satu operandnya ke double sebelum membagi.$ksp$, $ksp$printf("%.2f", x) mencetak dua angka di belakang koma dan sudah membulatkan sendiri.$ksp$]::text[], 38, array[$ksp$pemanasan$ksp$, $ksp$aritmetika$ksp$]::text[]),
-  ($ksp$c-02$ksp$, $ksp$jalan-pintas-pointer$ksp$, 2, $ksp$Jalan Pintas Pointer$ksp$, $ksp$2026-07-13$ksp$, $ksp$2026-07-19T23:59$ksp$, $ksp$MUDAH$ksp$, array[$ksp$pointer$ksp$, $ksp$array$ksp$]::text[], $ksp$Ada satu aturan tambahan di soal ini: **jangan gunakan tanda kurung siku sama
-sekali**. Tidak ada `data[i]`. Semua akses ke elemen array harus lewat aritmetika
-pointer.
+Kamu harus mengubah tipenya lebih dulu.$ksp$, array[$ksp$1 <= N <= 1000$ksp$, $ksp$-50 <= suhu <= 100$ksp$, $ksp$Rata-rata dicetak dengan tepat dua angka di belakang koma$ksp$, $ksp$Batas waktu 1 detik, batas memori 64 MB$ksp$]::text[], $ksp$[{"input":"5\n21 24 23 27 20","output":"rata-rata: 23.00\ntertinggi: 27\nterendah: 20","penjelasan":"Jumlah seluruh suhu 115, dibagi 5 menghasilkan tepat 23."},{"input":"1\n30","output":"rata-rata: 30.00\ntertinggi: 30\nterendah: 30","penjelasan":"Dengan satu data, ketiganya bernilai sama."},{"input":"4\n-3 -1 0 4","output":"rata-rata: 0.00\ntertinggi: 4\nterendah: -3","penjelasan":"Suhu negatif tetap dihitung. Totalnya nol, jadi rata-ratanya nol."}]$ksp$::jsonb, array[$ksp$Nilai awal untuk tertinggi dan terendah sebaiknya diambil dari elemen pertama, bukan dari 0.$ksp$, $ksp$total / n memakai pembagian bulat. Ubah salah satu operandnya ke double sebelum membagi.$ksp$, $ksp$printf("%.2f", x) mencetak dua angka di belakang koma dan sudah membulatkan sendiri.$ksp$]::text[], 0, array[$ksp$array$ksp$, $ksp$min-max$ksp$]::text[]),
+  ($ksp$c-11$ksp$, $ksp$ipk-tertinggi-angkatan$ksp$, 11, $ksp$IPK Tertinggi Angkatan$ksp$, $ksp$2027-05-03$ksp$, $ksp$2027-05-09T23:59$ksp$, $ksp$SEDANG$ksp$, array[$ksp$record$ksp$]::text[], $ksp$Bagian akademik ingin memberi penghargaan untuk mahasiswa dengan IPK tertinggi
+di angkatannya. Datanya ada: nama, NPM, dan IPK setiap mahasiswa. Ketiganya
+milik orang yang sama, jadi sebaiknya disimpan bersama juga.
 
-Aturannya terdengar menyebalkan, dan memang sengaja. `data[i]` di C hanyalah cara
-penulisan lain untuk `*(data + i)` — keduanya benar-benar sama bagi kompilator.
-Menulis bentuk panjangnya sekali dua kali membuat hubungan itu berhenti terasa
-seperti hafalan.
-
-Tugasmu mencetak elemen array pada posisi `0`, `k`, `2k`, `3k`, dan seterusnya,
-selama posisinya masih di dalam array.
+Tugasmu mencari mahasiswa dengan IPK tertinggi memakai `struct`.
 
 ## Format masukan
 
-Baris pertama berisi dua bilangan bulat `N` dan `k`.
-Baris kedua berisi `N` bilangan bulat.
+Baris pertama berisi bilangan bulat `N`.
+`N` baris berikutnya masing-masing berisi nama tanpa spasi, NPM, dan IPK,
+dipisahkan satu spasi.
 
 ## Format keluaran
 
-Satu baris berisi elemen-elemen terpilih, dipisahkan satu spasi, diakhiri
-baris baru. Tidak ada spasi di akhir baris.
+Satu baris:
 
-## Catatan
+```
+<nama> (<npm>) <ipk>
+```
 
-Menambahkan bilangan bulat ke sebuah pointer tidak menggeser alamatnya sebanyak
-itu dalam byte — pergeserannya sebanyak itu dikali ukuran tipe yang ditunjuk.
-Pada `int *p`, `p + 1` melompat empat byte di kebanyakan mesin, bukan satu.$ksp$, array[$ksp$1 <= N <= 100000$ksp$, $ksp$1 <= k <= N$ksp$, $ksp$Dilarang memakai tanda kurung siku sama sekali di seluruh berkas$ksp$, $ksp$Batas waktu 1 detik, batas memori 64 MB$ksp$]::text[], $ksp$[{"input":"8 3\n5 1 9 4 7 2 8 6","output":"5 4 8","penjelasan":"Posisi yang diambil adalah 0, 3, dan 6. Posisi 9 sudah di luar array."},{"input":"5 1\n10 20 30 40 50","output":"10 20 30 40 50","penjelasan":"Dengan k bernilai 1, semua elemen terpilih."},{"input":"4 5\n1 2 3 4","output":"1","penjelasan":"Lompatan pertama sudah melewati ujung array, jadi hanya elemen nol yang tercetak."}]$ksp$::jsonb, array[$ksp$data[i] hanyalah cara penulisan lain untuk *(data + i). Pakai bentuk panjangnya.$ksp$, $ksp$Menambahkan k ke sebuah int* menggeser alamatnya sebanyak k * sizeof(int) byte, bukan k byte.$ksp$, $ksp$Simpan pointer ke satu elemen sesudah elemen terakhir sebagai penanda berhenti, lalu bandingkan dengan p < akhir.$ksp$]::text[], 41, array[$ksp$pointer$ksp$, $ksp$aritmetika-alamat$ksp$]::text[]),
-  ($ksp$c-03$ksp$, $ksp$palindrom-nama-laboratorium$ksp$, 3, $ksp$Palindrom Nama Laboratorium$ksp$, $ksp$2026-07-20$ksp$, $ksp$2026-07-26T23:59$ksp$, $ksp$MUDAH$ksp$, array[$ksp$string$ksp$, $ksp$array$ksp$]::text[], $ksp$Panitia kompetisi internal ingin membuat sandi ruangan dari kalimat yang terbaca
-sama dari depan dan belakang. Spasi dan besar-kecil huruf diabaikan, tanda baca
-dibuang.
-
-Tugasmu memeriksa apakah sebuah kalimat adalah palindrom setelah semua karakter
-selain huruf dan angka dibuang, dan semua huruf diseragamkan jadi huruf kecil.
-
-## Format masukan
-
-Satu baris berisi kalimat, panjangnya paling banyak 200 karakter. Kalimat bisa
-memuat spasi, tanda baca, huruf besar, dan angka.
-
-## Format keluaran
-
-Satu baris: `palindrom` atau `bukan palindrom`.
-
-## Catatan
-
-String di C adalah array karakter yang diakhiri satu byte bernilai nol. Fungsi
-seperti `strlen` bekerja dengan mencari byte nol itu, jadi kalau kamu menimpanya
-tanpa sengaja, semua fungsi string sesudahnya akan membaca melewati ujung array.
-
-`fgets` menyimpan karakter baris baru ke dalam buffer kalau muat. Kalimat
-`kasur ini rusak\n` bukan palindrom — tapi `kasur ini rusak` adalah.$ksp$, array[$ksp$Panjang kalimat <= 200 karakter$ksp$, $ksp$Kalimat bisa memuat huruf besar, huruf kecil, angka, spasi, dan tanda baca$ksp$, $ksp$Hanya huruf dan angka yang diperhitungkan$ksp$, $ksp$Batas waktu 1 detik, batas memori 64 MB$ksp$]::text[], $ksp$[{"input":"Kasur Ini Rusak","output":"palindrom","penjelasan":"Setelah spasi dibuang dan huruf diseragamkan, terbaca kasurinirusak dari dua arah."},{"input":"Kelompok Studi","output":"bukan palindrom","penjelasan":"kelompokstudi dibaca dari belakang menjadi idutskopmolek."},{"input":"Ibu Ratna antar ubi","output":"palindrom","penjelasan":"iburatnaantarubi punya 16 karakter dan simetris di titik tengahnya."}]$ksp$::jsonb, array[$ksp$isalnum dan tolower dari ctype.h mengharapkan argumen bertipe unsigned char. Ubah dulu tipenya.$ksp$, $ksp$fgets ikut menyimpan karakter baris baru. Saringan huruf dan angka otomatis membuangnya.$ksp$, $ksp$Menyalin karakter yang lolos ke buffer baru jauh lebih mudah dibaca daripada melompati tanda baca di dua arah sekaligus.$ksp$]::text[], 36, array[$ksp$string$ksp$, $ksp$karakter$ksp$]::text[]),
-  ($ksp$c-04$ksp$, $ksp$faktorial-panjang$ksp$, 4, $ksp$Faktorial Panjang$ksp$, $ksp$2026-07-27$ksp$, $ksp$2026-08-02T23:59$ksp$, $ksp$SEDANG$ksp$, array[$ksp$array$ksp$, $ksp$algoritma$ksp$]::text[], $ksp$`20!` masih muat di dalam `unsigned long long`. `21!` sudah tidak. Padahal soal
-kombinatorika di kelas Analisis dan Desain Algoritma rutin memakai angka jauh di
-atas itu.
-
-Tugasmu menghitung `N!` untuk `N` sampai 100 dan mencetak seluruh digitnya.
-
-## Format masukan
-
-Satu bilangan bulat `N`.
-
-## Format keluaran
-
-Satu baris berisi `N!` tanpa pemisah ribuan dan tanpa nol di depan.
-
-## Catatan
-
-Cara yang lazim: simpan hasilnya sebagai array digit, satu digit per elemen,
-dengan digit paling tidak signifikan di indeks nol. Untuk mengalikan seluruh
-array dengan sebuah bilangan, kalikan setiap digit lalu rambatkan sisa
-penyimpanan ke elemen berikutnya — persis seperti perkalian bersusun di kertas.
-
-`100!` punya 158 digit. Pastikan arraymu cukup besar sebelum menulis ke dalamnya.$ksp$, array[$ksp$0 <= N <= 100$ksp$, $ksp$Keluaran tanpa pemisah ribuan dan tanpa nol di depan$ksp$, $ksp$0! bernilai 1$ksp$, $ksp$Batas waktu 1 detik, batas memori 64 MB$ksp$]::text[], $ksp$[{"input":"20","output":"2432902008176640000","penjelasan":"Nilai terbesar yang masih muat di unsigned long long. Satu langkah lagi dan cara biasa gagal."},{"input":"0","output":"1","penjelasan":"Faktorial nol didefinisikan bernilai satu."},{"input":"25","output":"15511210043330985984000000","penjelasan":"Dua puluh enam digit, jauh melampaui tipe bilangan bulat mana pun di C."}]$ksp$::jsonb, array[$ksp$Simpan hasilnya sebagai array digit dengan digit satuan di indeks nol.$ksp$, $ksp$Mengalikan array dengan sebuah bilangan sama persis dengan perkalian bersusun: kalikan digitnya, lalu rambatkan sisa penyimpanan.$ksp$, $ksp$Sisa penyimpanan bisa lebih dari satu digit. Habiskan dengan while, bukan dengan satu if.$ksp$]::text[], 29, array[$ksp$bignum$ksp$, $ksp$aritmetika$ksp$]::text[]),
-  ($ksp$c-05$ksp$, $ksp$papan-peringkat-kelas$ksp$, 5, $ksp$Papan Peringkat Kelas$ksp$, $ksp$2026-08-03$ksp$, $ksp$2026-08-09T23:59$ksp$, $ksp$SEDANG$ksp$, array[$ksp$struct$ksp$, $ksp$algoritma$ksp$]::text[], $ksp$Rekap nilai kelas selama ini disimpan sebagai dua array terpisah: satu untuk
+IPK dicetak dengan dua angka di belakang koma. Kalau ada beberapa mahasiswa
+dengan IPK tertinggi yang sama, cetak yang paling dulu muncul di masukan.$ksp$, array[$ksp$1 <= N <= 1000$ksp$, $ksp$Nama tanpa spasi, panjang <= 32 karakter$ksp$, $ksp$NPM berupa 9 digit$ksp$, $ksp$0.00 <= IPK <= 4.00, dengan dua angka di belakang koma$ksp$]::text[], $ksp$[{"input":"3\nAlya 240711001 3.72\nBimo 240711002 3.85\nCitra 240711003 3.85","output":"Bimo (240711002) 3.85","penjelasan":"Bimo dan Citra seri. Yang dicetak adalah yang lebih dulu muncul."},{"input":"1\nDamar 240711010 2.50","output":"Damar (240711010) 2.50","penjelasan":"Satu mahasiswa otomatis menjadi yang tertinggi."}]$ksp$::jsonb, array[$ksp$Satu struct Mahasiswa berisi nama, NPM, dan IPK. NPM lebih aman disimpan sebagai teks.$ksp$, $ksp$Tidak perlu menyimpan semua data. Cukup dua variabel struct: yang sedang dibaca dan yang terbaik sejauh ini.$ksp$, $ksp$Struct bisa disalin utuh dengan satu penugasan: terbaik = sekarang;$ksp$]::text[], 0, array[$ksp$struct$ksp$, $ksp$maksimum$ksp$]::text[]),
+  ($ksp$c-12$ksp$, $ksp$papan-peringkat-kelas$ksp$, 12, $ksp$Papan Peringkat Kelas$ksp$, $ksp$2027-05-18$ksp$, $ksp$2027-05-23T23:59$ksp$, $ksp$SULIT$ksp$, array[$ksp$array$ksp$, $ksp$record$ksp$]::text[], $ksp$Rekap nilai kelas selama ini disimpan sebagai dua array terpisah: satu untuk
 nama, satu untuk nilai. Sistemnya bertahan sampai seseorang perlu mengurutkan
 data itu, dan menyadari kedua array harus digeser bersamaan supaya indeksnya
 tetap sejajar. Satu kali lupa, dan nilai orang lain menempel di namamu.
 
-Tugasmu menyusun papan peringkat memakai `struct`, lalu mengurutkannya.
+Tugasmu menyusun papan peringkat memakai array of record, lalu mengurutkannya.
 
 ## Format masukan
 
@@ -543,765 +698,11 @@ Peringkat dimulai dari 1 dan selalu bertambah satu, termasuk saat nilainya sama.
 
 ## Catatan
 
-`qsort` dari `stdlib.h` menerima fungsi pembanding yang mengembalikan bilangan
-negatif, nol, atau positif. Fungsi itu menerima dua `const void *`, jadi kamu
-harus mengubahnya sendiri ke tipe yang benar sebelum membaca isinya.
-
-Hati-hati dengan pembanding yang mengembalikan selisih dua bilangan bulat besar:
-selisihnya bisa meluap. Untuk nilai 0 sampai 100 di soal ini hal itu aman.$ksp$, array[$ksp$1 <= N <= 5000$ksp$, $ksp$Nama tanpa spasi, panjang <= 32 karakter$ksp$, $ksp$0 <= nilai <= 100$ksp$, $ksp$Urutan: nilai menurun, lalu nama menaik bila seri$ksp$]::text[], $ksp$[{"input":"4\nNadia 92\nGilang 95\nRangga 92\nIvana 88","output":"1. Gilang 95\n2. Nadia 92\n3. Rangga 92\n4. Ivana 88","penjelasan":"Nadia dan Rangga sama-sama 92, jadi urutannya ditentukan secara alfabetis."},{"input":"2\nBimo 70\nAlya 70","output":"1. Alya 70\n2. Bimo 70","penjelasan":"Nilainya identik, sehingga seluruh urutan ditentukan oleh nama."},{"input":"1\nDamar 100","output":"1. Damar 100","penjelasan":"Satu peserta tetap harus dicetak dengan format peringkat yang sama."}]$ksp$::jsonb, array[$ksp$Satu struct berisi nama dan nilai jauh lebih aman daripada dua array yang harus dijaga sejajar.$ksp$, $ksp$Fungsi pembanding qsort menerima dua const void*. Ubah dulu ke tipe struct-mu sebelum membaca isinya.$ksp$, $ksp$Untuk kunci kedua, strcmp sudah mengembalikan nilai dengan tanda yang tepat. Kembalikan hasilnya apa adanya.$ksp$]::text[], 33, array[$ksp$struct$ksp$, $ksp$qsort$ksp$]::text[]),
-  ($ksp$c-06$ksp$, $ksp$riwayat-peminjaman-buku$ksp$, 6, $ksp$Riwayat Peminjaman Buku$ksp$, $ksp$2026-08-10$ksp$, $ksp$2026-08-16T23:59$ksp$, $ksp$SEDANG$ksp$, array[$ksp$linked-list$ksp$, $ksp$memori-dinamis$ksp$]::text[], $ksp$Perpustakaan kecil di sekretariat KSP mencatat peminjaman di selembar kertas.
-Buku yang baru dipinjam ditulis paling atas, dan yang dikembalikan diambil dari
-atas juga. Kertas itu, tanpa disadari siapa pun, adalah sebuah stack yang
-diimplementasikan sebagai linked list.
-
-Tugasmu membangun linked list dinamis dan menjalankan urutan perintah.
-
-## Format masukan
-
-Baris pertama berisi bilangan bulat `N`, banyaknya perintah.
-`N` baris berikutnya masing-masing berisi satu perintah:
-
-- `T <judul>` — tambahkan judul ke bagian depan daftar. Tidak mencetak apa pun.
-- `A` — ambil judul paling depan, hapus dari daftar, lalu cetak judulnya.
-- `L` — cetak seluruh daftar dari depan ke belakang, dipisahkan ` -> `.
-
-Untuk `A` dan `L`, kalau daftarnya kosong, cetak `kosong`.
-
-## Format keluaran
-
-Satu baris untuk setiap perintah `A` dan `L`, sesuai urutan perintahnya.
-
-## Catatan
-
-Setiap simpul dialokasikan dengan `malloc` dan harus dibebaskan dengan `free`.
-Saat menghapus simpul depan, simpan dulu pointer ke simpul berikutnya sebelum
-membebaskan yang sekarang — begitu memori dibebaskan, membaca `simpul->next`
-adalah perilaku tak terdefinisi, meski sering kali kelihatan berhasil.
-
-Jangan lupa membebaskan sisa daftar sebelum program berakhir.$ksp$, array[$ksp$1 <= N <= 10000$ksp$, $ksp$Judul tanpa spasi, panjang <= 64 karakter$ksp$, $ksp$Setiap simpul wajib dialokasikan dengan malloc dan dibebaskan dengan free$ksp$, $ksp$Program tidak boleh menyisakan memori yang belum dibebaskan$ksp$]::text[], $ksp$[{"input":"6\nT algoritma\nT struktur-data\nT sistem-operasi\nA\nL\nA","output":"sistem-operasi\nstruktur-data -> algoritma\nstruktur-data","penjelasan":"Judul terakhir yang ditambahkan berada paling depan, jadi itulah yang pertama diambil."},{"input":"3\nA\nT basis-data\nL","output":"kosong\nbasis-data","penjelasan":"Mengambil dari daftar kosong harus dijawab, bukan membuat program berhenti."},{"input":"4\nT c-lanjut\nT jaringan\nL\nA","output":"jaringan -> c-lanjut\njaringan","penjelasan":"Pemisah antar judul adalah spasi, tanda minus, tanda lebih besar, lalu spasi."}]$ksp$::jsonb, array[$ksp$Menambah ke depan hanya butuh dua langkah: sambungkan simpul baru ke kepala lama, lalu pindahkan kepalanya.$ksp$, $ksp$Sebelum free(depan), simpan depan->next ke variabel lain. Setelah dibebaskan, membacanya sudah tidak sah.$ksp$, $ksp$Sisa daftar harus dibebaskan sebelum program berakhir, bukan hanya simpul yang sempat diambil.$ksp$]::text[], 27, array[$ksp$linked-list$ksp$, $ksp$malloc$ksp$]::text[]),
-  ($ksp$c-07$ksp$, $ksp$matriks-spiral$ksp$, 7, $ksp$Matriks Spiral$ksp$, $ksp$2026-08-17$ksp$, $ksp$2026-08-23T23:59$ksp$, $ksp$SEDANG$ksp$, array[$ksp$array$ksp$, $ksp$algoritma$ksp$]::text[], $ksp$Modul kamera di proyek akhir salah satu anggota membaca sensor sebagai matriks,
-tetapi mengirimkannya lewat kabel serial satu nilai demi satu, memutar dari tepi
-ke dalam. Untuk mencocokkan keluarannya, kamu perlu membaca matriks dengan urutan
-yang sama.
-
-Tugasmu mencetak isi matriks dengan urutan spiral searah jarum jam, dimulai dari
-sudut kiri atas.
-
-## Format masukan
-
-Baris pertama berisi dua bilangan bulat `R` dan `C`.
-`R` baris berikutnya masing-masing berisi `C` bilangan bulat.
-
-## Format keluaran
-
-Satu baris berisi seluruh `R * C` nilai dengan urutan spiral, dipisahkan satu
-spasi, tanpa spasi di akhir.
-
-## Catatan
-
-Cara yang rapi adalah menjaga empat batas — atas, bawah, kiri, kanan — lalu
-mengecilkannya satu per satu setiap kali satu sisi selesai dilalui. Berhenti
-begitu batas atas melewati batas bawah, atau batas kiri melewati batas kanan.
-
-Kasus yang paling sering meleset adalah matriks satu baris atau satu kolom.
-Ujilah keduanya sebelum mengumpulkan.$ksp$, array[$ksp$1 <= R, C <= 500$ksp$, $ksp$-1000000 <= nilai <= 1000000$ksp$, $ksp$Keluaran dalam satu baris, dipisahkan satu spasi, tanpa spasi di akhir$ksp$, $ksp$Batas waktu 1 detik, batas memori 64 MB$ksp$]::text[], $ksp$[{"input":"3 4\n1 2 3 4\n5 6 7 8\n9 10 11 12","output":"1 2 3 4 8 12 11 10 9 5 6 7","penjelasan":"Tepi luar dilalui searah jarum jam, lalu tersisa baris tengah 6 dan 7."},{"input":"1 5\n3 1 4 1 5","output":"3 1 4 1 5","penjelasan":"Matriks satu baris hanya punya satu sisi. Tanpa penjagaan batas, sebagian elemen akan tercetak dua kali."},{"input":"3 3\n1 2 3\n4 5 6\n7 8 9","output":"1 2 3 6 9 8 7 4 5","penjelasan":"Elemen tengah menjadi yang terakhir karena semua tepinya sudah habis lebih dulu."}]$ksp$::jsonb, array[$ksp$Jaga empat batas: atas, bawah, kiri, kanan. Kecilkan satu per satu setiap kali sebuah sisi selesai.$ksp$, $ksp$Sebelum melintasi sisi bawah, periksa lagi atas <= bawah. Sebelum sisi kiri, periksa lagi kiri <= kanan.$ksp$, $ksp$Matriks satu baris dan satu kolom adalah dua kasus yang paling sering meleset. Uji keduanya.$ksp$]::text[], 31, array[$ksp$matriks$ksp$, $ksp$simulasi$ksp$]::text[]),
-  ($ksp$c-08$ksp$, $ksp$rekap-durasi-belajar$ksp$, 8, $ksp$Rekap Durasi Belajar$ksp$, $ksp$2026-08-24$ksp$, $ksp$2026-08-30T23:59$ksp$, $ksp$SULIT$ksp$, array[$ksp$file-io$ksp$, $ksp$string$ksp$, $ksp$struct$ksp$]::text[], $ksp$Aplikasi pencatat jam belajar di sekretariat menulis satu baris log setiap kali
-seseorang selesai memakai ruangan. Di akhir minggu, log itu perlu diringkas per
-orang. Karena laporannya juga diminta dalam bentuk berkas, ringkasannya ditulis
-ke disk lebih dulu, baru dicetak ke layar dari berkas itu.
-
-Alurnya sengaja dibuat begitu: kamu wajib benar-benar menulis dan membaca
-kembali sebuah berkas, bukan sekadar menyimpan semuanya di memori.
-
-## Tugas
-
-1. Baca seluruh log dari masukan standar.
-2. Jumlahkan durasi per nama.
-3. Tulis hasilnya ke berkas bernama `rekap.txt`, satu baris per nama, terurut
-   alfabetis menaik, dengan format `<nama> <total>`.
-4. Buka kembali `rekap.txt`, baca isinya baris demi baris, dan cetak ke layar
-   apa adanya.
-
-## Format masukan
-
-Baris pertama berisi bilangan bulat `N`.
-`N` baris berikutnya berformat `<nama>;<durasi>` tanpa spasi, dengan `durasi`
-dalam menit.
-
-## Format keluaran
-
-Isi `rekap.txt`, dicetak baris demi baris.
-
-## Catatan
-
-`fopen` mengembalikan `NULL` kalau gagal, dan alasan paling umum bukan berkasnya
-tidak ada, melainkan izin tulis yang tidak dimiliki. Periksa nilai kembaliannya
-sebelum dipakai — program yang langsung menulis ke `NULL` akan berhenti dengan
-segmentation fault tanpa memberi tahu apa yang salah.
-
-Tutup berkas tulis dengan `fclose` sebelum membukanya untuk dibaca. Data yang
-masih tertahan di buffer belum tentu sudah sampai ke disk.$ksp$, array[$ksp$1 <= N <= 10000$ksp$, $ksp$Nama tanpa spasi, panjang <= 32 karakter$ksp$, $ksp$1 <= durasi <= 1440$ksp$, $ksp$Program wajib benar-benar menulis dan membaca kembali berkas rekap.txt$ksp$, $ksp$Keluaran terurut alfabetis menaik berdasarkan nama$ksp$]::text[], $ksp$[{"input":"5\nnadia;30\ngilang;45\nnadia;20\nivana;15\ngilang;10","output":"gilang 55\nivana 15\nnadia 50","penjelasan":"Durasi milik nama yang sama dijumlahkan, lalu seluruh hasilnya diurutkan alfabetis."},{"input":"1\ndamar;60","output":"damar 60","penjelasan":"Satu baris log tetap harus melewati berkas sebelum dicetak."},{"input":"3\na;1\nb;2\na;3","output":"a 4\nb 2","penjelasan":"Nama a muncul dua kali dan totalnya 4, tetap berada di depan b."}]$ksp$::jsonb, array[$ksp$strchr menemukan posisi titik koma. Menimpanya dengan karakter nol langsung memotong string itu jadi dua.$ksp$, $ksp$fclose setelah menulis bukan formalitas: data yang masih tertahan di buffer belum tentu sudah sampai ke disk.$ksp$, $ksp$Periksa nilai kembalian fopen. Menulis ke FILE* yang bernilai NULL berakhir dengan segmentation fault.$ksp$]::text[], 22, array[$ksp$berkas$ksp$, $ksp$agregasi$ksp$]::text[]),
-  ($ksp$c-09$ksp$, $ksp$buffer-yang-tumbuh-sendiri$ksp$, 9, $ksp$Buffer yang Tumbuh Sendiri$ksp$, $ksp$2026-08-31$ksp$, $ksp$2026-09-06T23:59$ksp$, $ksp$SULIT$ksp$, array[$ksp$memori-dinamis$ksp$, $ksp$pointer$ksp$]::text[], $ksp$Soal-soal sebelumnya selalu memberitahu banyaknya data di baris pertama. Di dunia
-nyata hal itu jarang terjadi. Kamu menerima aliran data dan baru tahu panjangnya
-setelah datanya habis.
-
-Tugasmu membaca bilangan bulat dari masukan standar sampai habis, menyimpannya
-dalam array yang tumbuh sendiri, lalu melaporkan isinya.
-
-## Format masukan
-
-Sederet bilangan bulat yang dipisahkan spasi atau baris baru, sampai akhir
-masukan. Banyaknya tidak diberitahukan.
-
-## Format keluaran
-
-Tiga baris:
-
-```
-jumlah elemen: N
-total: S
-terbalik: aN ... a2 a1
-```
-
-`terbalik` berisi seluruh elemen dengan urutan dibalik, dipisahkan satu spasi,
-tanpa spasi di akhir.
-
-## Catatan
-
-Pola yang biasa dipakai: mulai dengan kapasitas kecil, dan setiap kali penuh,
-gandakan kapasitasnya dengan `realloc`. Menggandakan, bukan menambah satu —
-menambah satu membuat biaya totalnya kuadratik.
-
-Ada satu jebakan yang memakan banyak orang:
-
-```c
-data = realloc(data, kapasitas * sizeof *data);
-```
-
-Kalau `realloc` gagal, ia mengembalikan `NULL` **tanpa** membebaskan blok lama.
-Menimpa `data` dengan `NULL` berarti kamu baru saja kehilangan satu-satunya
-pointer ke memori itu. Tampung dulu hasilnya di variabel sementara.$ksp$, array[$ksp$Banyaknya bilangan tidak diberitahukan dan bisa mencapai 1000000$ksp$, $ksp$-1000000 <= nilai <= 1000000$ksp$, $ksp$Kapasitas awal bebas, tetapi harus tumbuh dengan cara menggandakan$ksp$, $ksp$Seluruh memori yang dialokasikan wajib dibebaskan sebelum program berakhir$ksp$]::text[], $ksp$[{"input":"3 1 4 1 5 9 2 6","output":"jumlah elemen: 8\ntotal: 31\nterbalik: 6 2 9 5 1 4 1 3","penjelasan":"Delapan bilangan masuk tanpa pernah diberitahukan jumlahnya lebih dulu."},{"input":"42","output":"jumlah elemen: 1\ntotal: 42\nterbalik: 42","penjelasan":"Satu elemen belum memicu realokasi sama sekali."},{"input":"-5 5 -5 5","output":"jumlah elemen: 4\ntotal: 0\nterbalik: 5 -5 5 -5","penjelasan":"Totalnya nol, tetapi jumlah elemennya tetap empat."}]$ksp$::jsonb, array[$ksp$scanf mengembalikan banyaknya item yang berhasil dibaca. Perulangan berhenti saat nilainya bukan 1.$ksp$, $ksp$Menggandakan kapasitas membuat biaya total linear. Menambah satu setiap kali membuatnya kuadratik.$ksp$, $ksp$Tampung hasil realloc di variabel sementara. Kalau gagal, blok lama belum dibebaskan dan kamu masih memerlukan pointer-nya.$ksp$]::text[], 24, array[$ksp$realloc$ksp$, $ksp$buffer$ksp$]::text[]),
-  ($ksp$c-10$ksp$, $ksp$jejak-menara-hanoi$ksp$, 10, $ksp$Jejak Menara Hanoi$ksp$, $ksp$2026-09-07$ksp$, $ksp$2026-09-13T23:59$ksp$, $ksp$SULIT$ksp$, array[$ksp$rekursi$ksp$, $ksp$algoritma$ksp$]::text[], $ksp$Menara Hanoi selalu muncul di kelas rekursi, biasanya berhenti di "pindahkan
-semua cakram". Kali ini kamu harus mencetak jejaknya: setiap langkah, bernomor,
-dengan urutan yang persis.
-
-Tugasmu memindahkan `N` cakram dari tiang `A` ke tiang `C` dengan bantuan tiang
-`B`, mencetak banyaknya langkah lalu setiap langkahnya.
-
-## Aturan permainan
-
-- Hanya satu cakram boleh dipindahkan dalam satu langkah.
-- Cakram hanya boleh diletakkan di tiang kosong, atau di atas cakram yang lebih
-  besar.
-- Semua cakram mulai bertumpuk di tiang `A`, terbesar di bawah.
-
-## Format masukan
-
-Satu bilangan bulat `N`.
-
-## Format keluaran
-
-Baris pertama: `<banyak langkah> langkah`.
-Lalu satu baris untuk setiap langkah, berformat `<nomor>: <asal>-><tujuan>`.
-
-## Catatan
-
-Banyaknya langkah minimum adalah `2^N - 1`. Untuk `N = 20` itu sudah lebih dari
-satu juta baris, jadi pastikan pencetakannya tidak melakukan pekerjaan berlebih
-per baris.
-
-Tulis kasus dasarnya lebih dulu. Rekursi tanpa kasus dasar bukan rekursi — itu
-cara panjang untuk menghabiskan stack.$ksp$, array[$ksp$1 <= N <= 20$ksp$, $ksp$Banyaknya langkah harus tepat 2^N - 1$ksp$, $ksp$Urutan langkah harus persis sama dengan penyelesaian rekursif baku$ksp$, $ksp$Batas waktu 2 detik, batas memori 64 MB$ksp$]::text[], $ksp$[{"input":"3","output":"7 langkah\n1: A->C\n2: A->B\n3: C->B\n4: A->C\n5: B->A\n6: B->C\n7: A->C","penjelasan":"Langkah keempat memindahkan cakram terbesar, tepat di tengah seluruh urutan."},{"input":"1","output":"1 langkah\n1: A->C","penjelasan":"Kasus terkecil: satu cakram langsung pindah ke tujuan."},{"input":"2","output":"3 langkah\n1: A->B\n2: A->C\n3: B->C","penjelasan":"Tiang bantu dipakai sekali, lalu dikosongkan lagi."}]$ksp$::jsonb, array[$ksp$Tulis kasus dasarnya lebih dulu. Tanpa itu, rekursi ini hanya cara panjang untuk menghabiskan stack.$ksp$, $ksp$Pola rekursifnya: pindahkan N-1 cakram ke tiang bantu, pindahkan cakram terbesar, lalu pindahkan N-1 itu ke tujuan.$ksp$, $ksp$Peran ketiga tiang bertukar di setiap pemanggilan. Perhatikan urutan argumennya, bukan namanya.$ksp$]::text[], 26, array[$ksp$rekursi$ksp$, $ksp$klasik$ksp$]::text[]),
-  ($ksp$c-11$ksp$, $ksp$status-terkompresi$ksp$, 11, $ksp$Status Terkompresi$ksp$, $ksp$2026-09-14$ksp$, $ksp$2026-09-20T23:59$ksp$, $ksp$SEGFAULT$ksp$, array[$ksp$bitwise$ksp$, $ksp$struct$ksp$]::text[], $ksp$Kartu anggota berbasis RFID di sekretariat hanya punya ruang 32 bit untuk
-menyimpan status seorang anggota. Empat keterangan harus muat di sana sekaligus,
-dan tidak ada ruang untuk satu `struct` yang longgar.
-
-Tugasmu mengelola satu bilangan bulat 32 bit sebagai wadah empat medan.
-
-## Tata letak bit
-
-| Medan      | Bit     | Lebar  | Rentang nilai |
-| ---------- | ------- | ------ | ------------- |
-| `hadir`    | 0–7     | 8 bit  | 0–255         |
-| `nilai`    | 8–15    | 8 bit  | 0–100         |
-| `lunas`    | 16      | 1 bit  | 0–1           |
-| `angkatan` | 17–20   | 4 bit  | 0–15          |
-
-Bit 21 sampai 31 selalu nol. Semua medan bermula bernilai nol.
-
-## Format masukan
-
-Baris pertama berisi bilangan bulat `N`, banyaknya perintah.
-`N` baris berikutnya masing-masing berisi salah satu dari:
-
-- `SET <medan> <nilai>` — tulis nilai ke medan itu. Tidak mencetak apa pun.
-- `GET <medan>` — cetak nilai medan itu sebagai bilangan desimal.
-- `RAW` — cetak seluruh 32 bit sebagai heksadesimal huruf besar, tepat delapan
-  digit, dengan nol di depan bila perlu.
-
-## Format keluaran
-
-Satu baris untuk setiap perintah `GET` dan `RAW`.
-
-## Catatan
-
-Menulis sebuah medan berarti dua langkah: bersihkan dulu bit lama dengan masker
-yang dibalik, baru pasang nilai barunya.
-
-```c
-nilai_baru = (nilai_baru & ~(masker << geser)) | ((baru & masker) << geser);
-```
-
-Gunakan `unsigned int`, bukan `int`. Pergeseran ke kiri pada bilangan bertanda
-yang meluap adalah perilaku tak terdefinisi, dan pergeseran ke kanan pada
-bilangan negatif bergantung pada implementasi.$ksp$, array[$ksp$1 <= N <= 100000$ksp$, $ksp$Nilai yang diberikan selalu berada di dalam rentang medannya$ksp$, $ksp$Bit 21 sampai 31 harus selalu bernilai nol$ksp$, $ksp$RAW dicetak sebagai delapan digit heksadesimal huruf besar$ksp$]::text[], $ksp$[{"input":"6\nSET hadir 12\nSET nilai 88\nSET lunas 1\nSET angkatan 5\nGET nilai\nRAW","output":"88\n000B580C","penjelasan":"hadir 12 mengisi 0x0C, nilai 88 mengisi 0x5800, lunas mengisi 0x10000, angkatan 5 mengisi 0xA0000."},{"input":"4\nSET hadir 255\nSET angkatan 15\nGET hadir\nRAW","output":"255\n001E00FF","penjelasan":"Kedua medan terisi penuh tanpa saling menimpa, karena maskernya tidak beririsan."},{"input":"3\nSET nilai 100\nGET lunas\nRAW","output":"0\n00006400","penjelasan":"Medan yang belum pernah ditulis tetap bernilai nol."}]$ksp$::jsonb, array[$ksp$Menulis medan butuh dua langkah: bersihkan bit lama dengan masker terbalik, baru pasang nilai barunya.$ksp$, $ksp$Gunakan unsigned int. Pergeseran kiri pada bilangan bertanda yang meluap adalah perilaku tak terdefinisi.$ksp$, $ksp$Sebuah tabel berisi nama, pergeseran, dan lebar masker membuat SET dan GET cukup ditulis sekali saja.$ksp$]::text[], 18, array[$ksp$bitwise$ksp$, $ksp$masker$ksp$]::text[]),
-  ($ksp$c-12$ksp$, $ksp$peta-rantai-pointer$ksp$, 12, $ksp$Peta Rantai Pointer$ksp$, $ksp$2026-09-21$ksp$, $ksp$2026-09-27T23:59$ksp$, $ksp$SEGFAULT$ksp$, array[$ksp$pointer$ksp$, $ksp$memori-dinamis$ksp$, $ksp$struct$ksp$, $ksp$rekursi$ksp$]::text[], $ksp$Prasyarat antar mata kuliah membentuk graf berarah: Struktur Data mensyaratkan
-Algoritma dan Pemrograman, Analisis Algoritma mensyaratkan Struktur Data, dan
-seterusnya. Pertanyaan yang selalu muncul saat penyusunan KRS: kalau saya ambil
-mata kuliah ini, apa saja yang jadi terbuka setelahnya?
-
-Tugasmu membangun graf berarah dengan simpul yang dialokasikan dinamis, lalu
-menjawab pertanyaan keterjangkauan.
-
-## Format masukan
-
-Baris pertama berisi dua bilangan bulat `N` dan `M` — banyaknya simpul dan
-busur. Simpul bernomor `1` sampai `N`.
-
-`M` baris berikutnya masing-masing berisi dua bilangan `a` dan `b`, menyatakan
-busur berarah dari `a` ke `b`.
-
-Baris berikutnya berisi bilangan bulat `Q`, banyaknya pertanyaan.
-`Q` baris berikutnya masing-masing berisi dua bilangan `x` dan `y`.
-
-## Format keluaran
-
-Satu baris untuk setiap pertanyaan: `ya` kalau `y` terjangkau dari `x`, `tidak`
-kalau tidak. Setiap simpul selalu terjangkau dari dirinya sendiri, jadi `x == y`
-selalu menjawab `ya`.
-
-## Catatan
-
-Graf ini bisa memuat siklus. Penelusuran tanpa penanda simpul yang sudah
-dikunjungi akan berputar selamanya.
-
-Daftar ketetanggaan dibangun dari simpul yang dialokasikan dengan `malloc`, satu
-per busur. Bebaskan semuanya sebelum program berakhir — kebocoran memori tidak
-membuat program ini salah jawab, tapi soal ini bertingkat SEGFAULT dan penilaian
-membaca keduanya.
-
-Hati-hati dengan pointer yang menunjuk ke elemen array yang kemudian di-`realloc`.
-Setelah realokasi, alamat lamanya tidak lagi berlaku.$ksp$, array[$ksp$1 <= N <= 100000$ksp$, $ksp$0 <= M <= 200000$ksp$, $ksp$1 <= Q <= 1000$ksp$, $ksp$Graf boleh memuat siklus dan busur ganda$ksp$, $ksp$Seluruh simpul yang dialokasikan wajib dibebaskan sebelum program berakhir$ksp$]::text[], $ksp$[{"input":"5 5\n1 2\n2 3\n3 4\n4 2\n1 5\n3\n1 4\n5 1\n2 4","output":"ya\ntidak\nya","penjelasan":"Simpul 2, 3, dan 4 membentuk siklus. Penelusuran tanpa penanda kunjungan akan berputar selamanya di sana."},{"input":"2 1\n1 2\n2\n2 1\n1 2","output":"tidak\nya","penjelasan":"Busurnya berarah. Terjangkau dari 1 ke 2 tidak berarti sebaliknya."},{"input":"3 1\n1 2\n2\n1 1\n1 3","output":"ya\ntidak","penjelasan":"Setiap simpul selalu terjangkau dari dirinya sendiri, meski tidak punya busur ke mana pun."}]$ksp$::jsonb, array[$ksp$Daftar ketetanggaan cukup berupa array kepala sepanjang N, masing-masing menunjuk ke rantai simpul busur.$ksp$, $ksp$Tanpa penanda simpul yang sudah dikunjungi, siklus pada contoh pertama membuat penelusuran tidak pernah berhenti.$ksp$, $ksp$Kedalaman rekursi bisa mencapai N. Untuk N sebesar 100000, penelusuran berbasis stack sendiri lebih aman daripada rekursi.$ksp$]::text[], 14, array[$ksp$graf$ksp$, $ksp$penelusuran$ksp$]::text[]);
-
-insert into public.winners (id, slug, nama, foto, angkatan, challenge_id, minggu, waktu_submit, runtime_ms, pendekatan, kode_solusi, quote, total_menang) values
-  ($ksp$w-01$ksp$, $ksp$nadia-puspita-ramadhani$ksp$, $ksp$Nadia Puspita Ramadhani$ksp$, $ksp$https://picsum.photos/seed/ksp-member-nadia/640/800$ksp$, 2024, $ksp$c-01$ksp$, 1, $ksp$2026-07-06T20:14$ksp$, 2, $ksp$Satu lintasan saja sudah cukup. Nilai awal untuk tertinggi dan terendah saya ambil dari elemen pertama, bukan dari nol — kalau semua suhunya negatif, memulai dari nol membuat tertinggi selamanya salah. Total saya simpan sebagai long supaya seribu pembacaan bersuhu 100 pun tidak mendekati batas. Bagian yang paling banyak menjatuhkan orang bukan logikanya, melainkan pembagian bulat di baris terakhir.$ksp$, $ksp$#include <stdio.h>
-
-int main(void) {
-    int n;
-    if (scanf("%d", &n) != 1 || n <= 0) return 1;
-
-    long total = 0;
-    int tertinggi = 0;
-    int terendah = 0;
-
-    for (int i = 0; i < n; i++) {
-        int suhu;
-        if (scanf("%d", &suhu) != 1) return 1;
-
-        total += suhu;
-        if (i == 0 || suhu > tertinggi) tertinggi = suhu;
-        if (i == 0 || suhu < terendah) terendah = suhu;
-    }
-
-    /* Pembagian harus dipaksa jadi pecahan dulu. total / n memakai
-       pembagian bulat dan membuang sisanya sebelum sempat dicetak. */
-    printf("rata-rata: %.2f\n", (double)total / (double)n);
-    printf("tertinggi: %d\n", tertinggi);
-    printf("terendah: %d\n", terendah);
-
-    return 0;
-}$ksp$, $ksp$Soal pemanasan yang ternyata punya satu jebakan. Saya submit dua kali.$ksp$, 6),
-  ($ksp$w-02$ksp$, $ksp$rangga-dwi-saputra$ksp$, $ksp$Rangga Dwi Saputra$ksp$, $ksp$https://picsum.photos/seed/ksp-member-rangga/640/800$ksp$, 2025, $ksp$c-02$ksp$, 2, $ksp$2026-07-15T22:47$ksp$, 4, $ksp$Larangan memakai kurung siku memaksa saya berhenti menganggap array dan pointer sebagai dua hal berbeda. Saya simpan satu pointer ke elemen pertama dan satu ke posisi tepat setelah elemen terakhir, lalu maju k langkah setiap putaran. Perbandingannya p < akhir, bukan menghitung indeks — jadi tidak ada satu pun perkalian dalam perulangannya.$ksp$, $ksp$#include <stdio.h>
-#include <stdlib.h>
-
-/* Tidak ada satu pun tanda kurung siku di berkas ini. Setiap akses
-   ke elemen array ditulis sebagai aritmetika pointer. */
-int main(void) {
-    int n;
-    int k;
-    if (scanf("%d %d", &n, &k) != 2 || n <= 0 || k <= 0) return 1;
-
-    int *data = malloc((size_t)n * sizeof *data);
-    if (data == NULL) return 1;
-
-    for (int i = 0; i < n; i++) {
-        if (scanf("%d", data + i) != 1) {
-            free(data);
-            return 1;
-        }
-    }
-
-    const int *p = data;
-    const int *akhir = data + n;
-    int pertama = 1;
-
-    while (p < akhir) {
-        if (!pertama) putchar(' ');
-        printf("%d", *p);
-        pertama = 0;
-        p += k;
-    }
-    putchar('\n');
-
-    free(data);
-    return 0;
-}$ksp$, $ksp$Ternyata selama ini saya menulis *(data + i) terus, cuma tidak sadar.$ksp$, 2),
-  ($ksp$w-03$ksp$, $ksp$theresia-maharani-putri$ksp$, $ksp$Theresia Maharani Putri$ksp$, $ksp$https://picsum.photos/seed/ksp-member-theresia/640/800$ksp$, 2025, $ksp$c-03$ksp$, 3, $ksp$2026-07-20T19:05$ksp$, 1, $ksp$Saya coba dulu membandingkan langsung sambil melompati spasi dan tanda baca dari dua arah, dan langsung berantakan di kalimat yang punya tanda baca beruntun. Menyalin karakter yang lolos saringan ke buffer baru memakai memori ekstra, tapi seluruh logikanya jadi muat dalam satu while yang bisa saya baca sekali jalan. Untuk 200 karakter, memori bukan masalah.$ksp$, $ksp$#include <ctype.h>
-#include <stdio.h>
-
-int main(void) {
-    char baris[256];
-    if (fgets(baris, (int)sizeof baris, stdin) == NULL) return 1;
-
-    /* Saring dulu jadi huruf kecil dan angka saja. Membandingkan
-       sambil melompati tanda baca di dua arah sekaligus jauh lebih
-       mudah salah daripada menyalinnya sekali. */
-    char bersih[256];
-    int n = 0;
-    for (int i = 0; baris[i] != '\0'; i++) {
-        unsigned char c = (unsigned char)baris[i];
-        if (isalnum(c)) {
-            bersih[n] = (char)tolower(c);
-            n++;
-        }
-    }
-
-    int kiri = 0;
-    int kanan = n - 1;
-    int palindrom = 1;
-
-    while (kiri < kanan) {
-        if (bersih[kiri] != bersih[kanan]) {
-            palindrom = 0;
-            break;
-        }
-        kiri++;
-        kanan--;
-    }
-
-    puts(palindrom ? "palindrom" : "bukan palindrom");
-    return 0;
-}$ksp$, $ksp$Pelajarannya: kode yang lebih pendek belum tentu kode yang lebih benar.$ksp$, 9),
-  ($ksp$w-04$ksp$, $ksp$theresia-maharani-putri$ksp$, $ksp$Theresia Maharani Putri$ksp$, $ksp$https://picsum.photos/seed/ksp-member-theresia/640/800$ksp$, 2025, $ksp$c-04$ksp$, 4, $ksp$2026-07-27T21:32$ksp$, 3, $ksp$Kuncinya menyimpan digit satuan di indeks nol. Dengan urutan itu, sisa penyimpanan merambat maju ke indeks yang lebih besar dan array-nya tumbuh ke arah yang sama — tidak ada penggeseran sama sekali. Kesalahan saya yang pertama: menghabiskan sisa penyimpanan dengan satu if. Untuk faktor dua digit, sisanya bisa lebih dari sembilan dan harus dihabiskan dengan while.$ksp$, $ksp$#include <stdio.h>
-
-/* 100! punya 158 digit. 200 elemen memberi ruang lebih dari cukup. */
-#define MAKS_DIGIT 200
-
-int main(void) {
-    int n;
-    if (scanf("%d", &n) != 1 || n < 0) return 1;
-
-    /* Digit paling tidak signifikan di indeks nol, supaya perambatan
-       sisa penyimpanan bergerak maju, bukan mundur. */
-    int digit[MAKS_DIGIT] = {0};
-    int panjang = 1;
-    digit[0] = 1;
-
-    for (int faktor = 2; faktor <= n; faktor++) {
-        int simpan = 0;
-
-        for (int i = 0; i < panjang; i++) {
-            int hasil = digit[i] * faktor + simpan;
-            digit[i] = hasil % 10;
-            simpan = hasil / 10;
-        }
-
-        while (simpan > 0) {
-            digit[panjang] = simpan % 10;
-            panjang++;
-            simpan /= 10;
-        }
-    }
-
-    for (int i = panjang - 1; i >= 0; i--) {
-        putchar('0' + digit[i]);
-    }
-    putchar('\n');
-
-    return 0;
-}$ksp$, $ksp$Perkalian bersusun yang diajarkan di SD ternyata algoritma yang benar-benar dipakai.$ksp$, 9),
-  ($ksp$w-05$ksp$, $ksp$gilang-prasetyo-nugroho$ksp$, $ksp$Gilang Prasetyo Nugroho$ksp$, $ksp$https://picsum.photos/seed/ksp-member-gilang/640/800$ksp$, 2024, $ksp$c-05$ksp$, 5, $ksp$2026-08-03T18:22$ksp$, 6, $ksp$Struct-nya sengaja saya buat menyimpan nama sebagai array, bukan pointer. Kalau nama disimpan sebagai char*, qsort akan menukar pointer-nya dan itu masih benar, tapi saya harus menjamin memori yang ditunjuk tetap hidup. Array di dalam struct ikut berpindah saat elemennya ditukar, jadi tidak ada yang perlu dijaga. Pembanding mengembalikan selisih nilai untuk kunci pertama dan hasil strcmp apa adanya untuk kunci kedua.$ksp$, $ksp$#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-typedef struct {
-    char nama[33];
-    int nilai;
-} Peserta;
-
-/* Nilai menurun lebih dulu; nama menaik hanya dipakai kalau seri. */
-static int bandingkan(const void *a, const void *b) {
-    const Peserta *p = (const Peserta *)a;
-    const Peserta *q = (const Peserta *)b;
-
-    if (p->nilai != q->nilai) return q->nilai - p->nilai;
-    return strcmp(p->nama, q->nama);
-}
-
-int main(void) {
-    int n;
-    if (scanf("%d", &n) != 1 || n <= 0) return 1;
-
-    Peserta *daftar = malloc((size_t)n * sizeof *daftar);
-    if (daftar == NULL) return 1;
-
-    for (int i = 0; i < n; i++) {
-        if (scanf("%32s %d", daftar[i].nama, &daftar[i].nilai) != 2) {
-            free(daftar);
-            return 1;
-        }
-    }
-
-    qsort(daftar, (size_t)n, sizeof *daftar, bandingkan);
-
-    for (int i = 0; i < n; i++) {
-        printf("%d. %s %d\n", i + 1, daftar[i].nama, daftar[i].nilai);
-    }
-
-    free(daftar);
-    return 0;
-}$ksp$, $ksp$Dua array paralel itu bom waktu. Satu struct menyelesaikan semuanya.$ksp$, 8),
-  ($ksp$w-06$ksp$, $ksp$kevin-alexander-tanuwijaya$ksp$, $ksp$Kevin Alexander Tanuwijaya$ksp$, $ksp$https://picsum.photos/seed/ksp-member-kevin/640/800$ksp$, 2024, $ksp$c-06$ksp$, 6, $ksp$2026-08-14T23:11$ksp$, 5, $ksp$Submission pertama saya lolos semua contoh tapi ditolak karena kebocoran memori: saya hanya membebaskan simpul yang diambil lewat perintah A, dan lupa sisanya saat program berakhir. Perbaikannya satu perulangan di akhir main. Satu hal lagi yang saya catat: pada perintah A, pointer ke simpul berikutnya harus disimpan sebelum free, bukan sesudah. Versi yang salah tetap jalan di laptop saya, dan itu justru yang berbahaya.$ksp$, $ksp$#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-typedef struct Simpul {
-    char judul[65];
-    struct Simpul *next;
-} Simpul;
-
-int main(void) {
-    int n;
-    if (scanf("%d", &n) != 1) return 1;
-
-    Simpul *depan = NULL;
-
-    for (int i = 0; i < n; i++) {
-        char perintah[8];
-        if (scanf("%7s", perintah) != 1) break;
-
-        if (strcmp(perintah, "T") == 0) {
-            Simpul *baru = malloc(sizeof *baru);
-            if (baru == NULL) return 1;
-            if (scanf("%64s", baru->judul) != 1) {
-                free(baru);
-                return 1;
-            }
-            baru->next = depan;
-            depan = baru;
-        } else if (strcmp(perintah, "A") == 0) {
-            if (depan == NULL) {
-                puts("kosong");
-                continue;
-            }
-            /* Simpan penerusnya SEBELUM membebaskan simpul ini.
-               Membaca depan->next setelah free adalah perilaku tak
-               terdefinisi, dan biasanya kelihatan berhasil sampai
-               suatu hari tidak. */
-            Simpul *berikut = depan->next;
-            puts(depan->judul);
-            free(depan);
-            depan = berikut;
-        } else if (strcmp(perintah, "L") == 0) {
-            if (depan == NULL) {
-                puts("kosong");
-                continue;
-            }
-            for (const Simpul *p = depan; p != NULL; p = p->next) {
-                printf("%s", p->judul);
-                if (p->next != NULL) printf(" -> ");
-            }
-            putchar('\n');
-        }
-    }
-
-    while (depan != NULL) {
-        Simpul *berikut = depan->next;
-        free(depan);
-        depan = berikut;
-    }
-
-    return 0;
-}$ksp$, $ksp$Program yang kelihatan jalan dan program yang benar itu dua hal berbeda.$ksp$, 3),
-  ($ksp$w-07$ksp$, $ksp$salsabila-rahmawati$ksp$, $ksp$Salsabila Rahmawati$ksp$, $ksp$https://picsum.photos/seed/ksp-member-salsabila/640/800$ksp$, 2025, $ksp$c-07$ksp$, 7, $ksp$2026-08-18T20:40$ksp$, 9, $ksp$Empat batas yang menyusut, dan dua penjagaan tambahan sebelum melintasi sisi bawah dan sisi kiri. Tanpa dua penjagaan itu, matriks satu baris akan mencetak barisnya dua kali — sekali dari kiri ke kanan, sekali dari kanan ke kiri. Kasus itu tidak ada di contoh yang diberikan, jadi saya menemukannya hanya karena iseng menguji 1 x 5 sendiri.$ksp$, $ksp$#include <stdio.h>
-#include <stdlib.h>
-
-int main(void) {
-    int r;
-    int c;
-    if (scanf("%d %d", &r, &c) != 2 || r <= 0 || c <= 0) return 1;
-
-    int *m = malloc((size_t)r * (size_t)c * sizeof *m);
-    if (m == NULL) return 1;
-
-    for (int i = 0; i < r * c; i++) {
-        if (scanf("%d", &m[i]) != 1) {
-            free(m);
-            return 1;
-        }
-    }
-
-    int atas = 0;
-    int bawah = r - 1;
-    int kiri = 0;
-    int kanan = c - 1;
-    int pertama = 1;
-
-    while (atas <= bawah && kiri <= kanan) {
-        for (int j = kiri; j <= kanan; j++) {
-            if (!pertama) putchar(' ');
-            printf("%d", m[atas * c + j]);
-            pertama = 0;
-        }
-        atas++;
-
-        for (int i = atas; i <= bawah; i++) {
-            if (!pertama) putchar(' ');
-            printf("%d", m[i * c + kanan]);
-            pertama = 0;
-        }
-        kanan--;
-
-        /* Dua penjagaan ini yang menyelamatkan matriks satu baris dan
-           satu kolom dari tercetak dua kali. */
-        if (atas <= bawah) {
-            for (int j = kanan; j >= kiri; j--) {
-                if (!pertama) putchar(' ');
-                printf("%d", m[bawah * c + j]);
-                pertama = 0;
-            }
-            bawah--;
-        }
-
-        if (kiri <= kanan) {
-            for (int i = bawah; i >= atas; i--) {
-                if (!pertama) putchar(' ');
-                printf("%d", m[i * c + kiri]);
-                pertama = 0;
-            }
-            kiri++;
-        }
-    }
-
-    putchar('\n');
-    free(m);
-    return 0;
-}$ksp$, $ksp$Contoh yang diberikan itu lantai, bukan langit-langit. Uji sendiri yang lain.$ksp$, 2),
-  ($ksp$w-08$ksp$, $ksp$yohanes-krisna-adiputra$ksp$, $ksp$Yohanes Krisna Adiputra$ksp$, $ksp$https://picsum.photos/seed/ksp-member-yohanes/640/800$ksp$, 2024, $ksp$c-08$ksp$, 8, $ksp$2026-08-29T16:58$ksp$, 12, $ksp$strchr untuk menemukan titik koma, lalu menimpanya dengan karakter nol. Satu baris itu langsung memotong string jadi dua tanpa menyalin apa pun: bagian sebelum titik koma jadi nama, dan pointer setelahnya langsung bisa diberikan ke strtol. Bagian yang paling saya perhatikan justru fclose setelah menulis — tanpa itu, sebagian isi berkas masih di buffer saat saya membukanya kembali, dan keluarannya terpotong.$ksp$, $ksp$#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define MAKS_NAMA 256
-
-typedef struct {
-    char nama[33];
-    long total;
-} Rekap;
-
-static int bandingkan(const void *a, const void *b) {
-    const Rekap *p = (const Rekap *)a;
-    const Rekap *q = (const Rekap *)b;
-    return strcmp(p->nama, q->nama);
-}
-
-int main(void) {
-    int n;
-    if (scanf("%d", &n) != 1 || n < 0) return 1;
-
-    Rekap rekap[MAKS_NAMA];
-    int jumlah = 0;
-
-    for (int i = 0; i < n; i++) {
-        char baris[128];
-        if (scanf("%127s", baris) != 1) return 1;
-
-        char *pemisah = strchr(baris, ';');
-        if (pemisah == NULL) return 1;
-        *pemisah = '\0';
-        long durasi = strtol(pemisah + 1, NULL, 10);
-
-        int ketemu = -1;
-        for (int j = 0; j < jumlah; j++) {
-            if (strcmp(rekap[j].nama, baris) == 0) {
-                ketemu = j;
-                break;
-            }
-        }
-
-        if (ketemu >= 0) {
-            rekap[ketemu].total += durasi;
-        } else {
-            if (jumlah == MAKS_NAMA) return 1;
-            snprintf(rekap[jumlah].nama, sizeof rekap[jumlah].nama, "%s", baris);
-            rekap[jumlah].total = durasi;
-            jumlah++;
-        }
-    }
-
-    qsort(rekap, (size_t)jumlah, sizeof rekap[0], bandingkan);
-
-    FILE *tulis = fopen("rekap.txt", "w");
-    if (tulis == NULL) {
-        perror("rekap.txt");
-        return EXIT_FAILURE;
-    }
-    for (int i = 0; i < jumlah; i++) {
-        fprintf(tulis, "%s %ld\n", rekap[i].nama, rekap[i].total);
-    }
-    /* Tutup sebelum dibuka lagi: data yang masih tertahan di buffer
-       belum tentu sudah sampai ke disk. */
-    fclose(tulis);
-
-    FILE *baca = fopen("rekap.txt", "r");
-    if (baca == NULL) {
-        perror("rekap.txt");
-        return EXIT_FAILURE;
-    }
-
-    char baris[160];
-    while (fgets(baris, (int)sizeof baris, baca) != NULL) {
-        fputs(baris, stdout);
-    }
-    fclose(baca);
-
-    return 0;
-}$ksp$, $ksp$fclose bukan formalitas. Itu yang benar-benar mengirim data ke disk.$ksp$, 4),
-  ($ksp$w-09$ksp$, $ksp$ivana-christabel-sudarsono$ksp$, $ksp$Ivana Christabel Sudarsono$ksp$, $ksp$https://picsum.photos/seed/ksp-member-ivana/640/800$ksp$, 2024, $ksp$c-09$ksp$, 9, $ksp$2026-09-04T21:03$ksp$, 31, $ksp$Kapasitas awal empat, digandakan setiap kali penuh. Yang membuat saya berhenti sebentar adalah baris realloc. Menulis data = realloc(data, ...) kelihatan wajar sampai kamu sadar bahwa kalau realloc gagal, ia mengembalikan NULL tanpa membebaskan blok lama — dan kamu baru saja menimpa satu-satunya pointer ke blok itu. Hasilnya saya tampung dulu di variabel sementara, dan blok lama baru dilepas kalau realokasinya berhasil.$ksp$, $ksp$#include <stdio.h>
-#include <stdlib.h>
-
-int main(void) {
-    int kapasitas = 4;
-    int jumlah = 0;
-    int *data = malloc((size_t)kapasitas * sizeof *data);
-    if (data == NULL) return EXIT_FAILURE;
-
-    long total = 0;
-    int nilai;
-
-    while (scanf("%d", &nilai) == 1) {
-        if (jumlah == kapasitas) {
-            int kapasitas_baru = kapasitas * 2;
-            /* Hasil realloc ditampung dulu. Kalau langsung ditimpakan ke
-               data dan realloc gagal, satu-satunya pointer ke blok lama
-               hilang dan memorinya bocor untuk selamanya. */
-            int *lebih = realloc(data, (size_t)kapasitas_baru * sizeof *data);
-            if (lebih == NULL) {
-                free(data);
-                return EXIT_FAILURE;
-            }
-            data = lebih;
-            kapasitas = kapasitas_baru;
-        }
-
-        data[jumlah] = nilai;
-        jumlah++;
-        total += nilai;
-    }
-
-    printf("jumlah elemen: %d\n", jumlah);
-    printf("total: %ld\n", total);
-
-    printf("terbalik:");
-    for (int i = jumlah - 1; i >= 0; i--) {
-        printf(" %d", data[i]);
-    }
-    putchar('\n');
-
-    free(data);
-    return 0;
-}$ksp$, $ksp$Baris yang paling berbahaya di program saya justru yang paling pendek.$ksp$, 3),
-  ($ksp$w-10$ksp$, $ksp$damar-aji-setiawan$ksp$, $ksp$Damar Aji Setiawan$ksp$, $ksp$https://picsum.photos/seed/ksp-member-damar/640/800$ksp$, 2023, $ksp$c-10$ksp$, 10, $ksp$2026-09-07T22:19$ksp$, 88, $ksp$Rekursinya sendiri tujuh baris dan tidak berubah dari versi pertama. Yang saya ubah adalah penghitung langkah: awalnya saya kirim sebagai parameter dan mengembalikannya lagi, yang membuat tanda tangan fungsinya berantakan. Satu variabel static jauh lebih jelas untuk kasus ini. Banyaknya langkah saya hitung langsung dengan pergeseran bit, bukan dengan menghitung berapa kali fungsinya dipanggil.$ksp$, $ksp$#include <stdio.h>
-
-static long nomor = 0;
-
-static void pindah(int n, char dari, char ke, char bantu) {
-    if (n == 0) return;
-
-    pindah(n - 1, dari, bantu, ke);
-    nomor++;
-    printf("%ld: %c->%c\n", nomor, dari, ke);
-    pindah(n - 1, bantu, ke, dari);
-}
-
-int main(void) {
-    int n;
-    if (scanf("%d", &n) != 1 || n < 1) return 1;
-
-    long langkah = (1L << n) - 1L;
-    printf("%ld langkah\n", langkah);
-
-    pindah(n, 'A', 'C', 'B');
-    return 0;
-}$ksp$, $ksp$Kalau kasus dasarnya benar, sisanya hampir selalu menulis dirinya sendiri.$ksp$, 5),
-  ($ksp$w-11$ksp$, $ksp$fransiska-ayu-larasati$ksp$, $ksp$Fransiska Ayu Larasati$ksp$, $ksp$https://picsum.photos/seed/ksp-member-fransiska/640/800$ksp$, 2024, $ksp$c-11$ksp$, 11, $ksp$2026-09-19T14:26$ksp$, 15, $ksp$Daripada menulis empat pasang SET dan GET, saya buat satu tabel berisi nama medan, besar pergeseran, dan maskernya. Setelah itu SET dan GET masing-masing cukup ditulis sekali. Dua hal yang saya jaga: statusnya unsigned, karena pergeseran kiri pada bilangan bertanda yang meluap tidak terdefinisi; dan nilai baru selalu di-AND dengan maskernya sebelum digeser, supaya masukan yang melebihi lebar medan tidak pernah merembet ke medan tetangga.$ksp$, $ksp$#include <stdio.h>
-#include <string.h>
-
-typedef struct {
-    const char *nama;
-    unsigned int geser;
-    unsigned int masker;
-} Medan;
-
-static const Medan MEDAN[] = {
-    {"hadir",     0u, 0xFFu},
-    {"nilai",     8u, 0xFFu},
-    {"lunas",    16u, 0x01u},
-    {"angkatan", 17u, 0x0Fu},
-};
-
-static const Medan *cari_medan(const char *nama) {
-    const int banyak = (int)(sizeof MEDAN / sizeof MEDAN[0]);
-    for (int i = 0; i < banyak; i++) {
-        if (strcmp(MEDAN[i].nama, nama) == 0) return &MEDAN[i];
-    }
-    return NULL;
-}
-
-int main(void) {
-    int n;
-    if (scanf("%d", &n) != 1) return 1;
-
-    /* unsigned, bukan int: pergeseran kiri pada bilangan bertanda yang
-       meluap adalah perilaku tak terdefinisi. */
-    unsigned int status = 0u;
-
-    for (int i = 0; i < n; i++) {
-        char perintah[8];
-        if (scanf("%7s", perintah) != 1) break;
-
-        if (strcmp(perintah, "RAW") == 0) {
-            printf("%08X\n", status);
-            continue;
-        }
-
-        char nama[16];
-        if (scanf("%15s", nama) != 1) break;
-
-        const Medan *medan = cari_medan(nama);
-        if (medan == NULL) continue;
-
-        if (strcmp(perintah, "SET") == 0) {
-            unsigned int baru;
-            if (scanf("%u", &baru) != 1) break;
-            status &= ~(medan->masker << medan->geser);
-            status |= (baru & medan->masker) << medan->geser;
-        } else if (strcmp(perintah, "GET") == 0) {
-            printf("%u\n", (status >> medan->geser) & medan->masker);
-        }
-    }
-
-    return 0;
-}$ksp$, $ksp$Menang pertama saya, dan kebetulan di soal SEGFAULT. Saya masih agak kaget.$ksp$, 1);
+Saat menukar dua elemen, tukar struct-nya utuh — nama dan nilai ikut pindah
+bersama. Itulah keuntungan record dibanding dua array terpisah.
+
+Untuk membandingkan dua nama, pakai `strcmp` dari `string.h`. Operator `<`
+pada dua array karakter membandingkan alamatnya, bukan isinya.$ksp$, array[$ksp$1 <= N <= 100$ksp$, $ksp$Nama tanpa spasi, panjang <= 32 karakter$ksp$, $ksp$0 <= nilai <= 100$ksp$, $ksp$Urutan: nilai menurun, lalu nama menaik bila seri$ksp$]::text[], $ksp$[{"input":"4\nNadia 92\nGilang 95\nRangga 92\nIvana 88","output":"1. Gilang 95\n2. Nadia 92\n3. Rangga 92\n4. Ivana 88","penjelasan":"Nadia dan Rangga sama-sama 92, jadi urutannya ditentukan secara alfabetis."},{"input":"2\nBimo 70\nAlya 70","output":"1. Alya 70\n2. Bimo 70","penjelasan":"Nilainya identik, sehingga seluruh urutan ditentukan oleh nama."},{"input":"1\nDamar 100","output":"1. Damar 100","penjelasan":"Satu peserta tetap harus dicetak dengan format peringkat yang sama."}]$ksp$::jsonb, array[$ksp$Satu array of struct berisi nama dan nilai jauh lebih aman daripada dua array yang harus dijaga sejajar.$ksp$, $ksp$Bubble sort cukup untuk N <= 100: bandingkan dua elemen bersebelahan, tukar kalau urutannya salah.$ksp$, $ksp$strcmp(a, b) bernilai positif kalau a seharusnya di belakang b secara alfabetis.$ksp$]::text[], 0, array[$ksp$array-of-record$ksp$, $ksp$sorting$ksp$]::text[]);
 
 insert into public.registration_rounds (buka, tutup) values
   ($ksp$2026-08-24T00:00$ksp$, $ksp$2026-09-11T23:59$ksp$);

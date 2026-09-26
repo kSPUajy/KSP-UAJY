@@ -11,6 +11,6 @@ export default function Image() {
     command: 'ls ~/challenge',
     eyebrow: 'challenge',
     title: 'Arsip challenge mingguan',
-    subtitle: 'Satu soal C tiap Senin, dari MUDAH sampai SEGFAULT.',
+    subtitle: 'Satu soal C untuk setiap modul, terbit tiap Senin.',
   })
 }
