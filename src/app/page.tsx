@@ -91,19 +91,17 @@ export default async function HomePage() {
 
       <AboutSection index={1} pengurus={pengurus.filter((member) => member.divisi === 'inti')} />
 
-      <SectionTransition kind="scan" accent="magenta">
-        <ChallengeSection
-          index={2}
-          current={current}
-          teaser={currentBody ? mdxExcerpt(currentBody.deskripsiMdx) : ''}
-          currentWinner={currentWinner}
-          lastWinner={
-            lastWinner && lastWinnerChallenge
-              ? { winner: lastWinner, challengeTitle: lastWinnerChallenge.judul }
-              : null
-          }
-        />
-      </SectionTransition>
+      <ChallengeSection
+        index={2}
+        current={current}
+        teaser={currentBody ? mdxExcerpt(currentBody.deskripsiMdx) : ''}
+        currentWinner={currentWinner}
+        lastWinner={
+          lastWinner && lastWinnerChallenge
+            ? { winner: lastWinner, challengeTitle: lastWinnerChallenge.judul }
+            : null
+        }
+      />
       <LinkEvent index={3} />
       <SectionTransition kind="print">
         <TentorTeaser index={4} tentors={tentors} schedule={schedule} />

@@ -4,22 +4,18 @@ import { useRef } from 'react'
 import { motion, useInView } from 'motion/react'
 import type { Variants } from 'motion/react'
 
-import type { AccentName } from '@/lib/accent'
 import { useMotionMode } from '@/lib/hooks/useReducedMotion'
 
 /**
- * - `scan`: a bright line sweeps down the band once, like a monitor redraw.
  * - `print`: the band is revealed top to bottom in hard steps, like terminal
  *   output arriving line by line.
  * - `crt`: the band opens from a single horizontal line, like a tube TV
  *   switching on.
  */
-export type SectionTransitionKind = 'scan' | 'print' | 'crt'
+export type SectionTransitionKind = 'print' | 'crt'
 
 type SectionTransitionProps = {
   kind: SectionTransitionKind
-  /** The accent the sweep line glows in; match the section's. */
-  accent?: AccentName
   children: React.ReactNode
 }
 
@@ -27,7 +23,6 @@ type SectionTransitionProps = {
 const stepped = (t: number): number => Math.floor(t * 8) / 8
 
 const VARIANTS: Record<SectionTransitionKind, Variants> = {
-  scan: { hidden: {}, shown: {} },
   print: {
     hidden: { clipPath: 'inset(0 0 100% 0)' },
     shown: { clipPath: 'inset(0 0 0% 0)', transition: { duration: 0.9, ease: stepped } },
@@ -54,7 +49,7 @@ const VARIANTS: Record<SectionTransitionKind, Variants> = {
  * the animated inner box starts clipped to nothing — and a clipped-away
  * element never counts as "in view", so it would wait forever.
  */
-export function SectionTransition({ kind, accent, children }: SectionTransitionProps) {
+export function SectionTransition({ kind, children }: SectionTransitionProps) {
   const mode = useMotionMode()
   const outer = useRef<HTMLDivElement>(null)
   const inView = useInView(outer, { once: true, amount: 0.15 })
@@ -62,7 +57,7 @@ export function SectionTransition({ kind, accent, children }: SectionTransitionP
   if (mode === 'reduced') return <div>{children}</div>
 
   return (
-    <div ref={outer} className="relative" data-accent={accent}>
+    <div ref={outer}>
       <motion.div
         data-reveal
         style={kind === 'crt' ? { transformOrigin: '50% 50%' } : undefined}
@@ -72,15 +67,6 @@ export function SectionTransition({ kind, accent, children }: SectionTransitionP
       >
         {children}
       </motion.div>
-      {kind === 'scan' ? (
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 z-10 h-[3px] bg-accent shadow-[0_0_24px_6px_var(--accent)]"
-          initial={{ top: '0%', opacity: 0 }}
-          animate={inView ? { top: ['0%', '100%'], opacity: [0, 1, 1, 0] } : { top: '0%', opacity: 0 }}
-          transition={{ duration: 1.1, ease: 'easeInOut' }}
-        />
-      ) : null}
     </div>
   )
 }
