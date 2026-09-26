@@ -4,6 +4,12 @@ import { SectionShell } from '@/components/ui/SectionShell'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
 import { pad2 } from '@/lib/utils'
 
+const ALUR = [
+  { glyph: '>', judul: 'Tulis', deskripsi: 'Tanpa login. Nama boleh dikosongkan.' },
+  { glyph: '~', judul: 'Terkirim ke pengurus', deskripsi: 'Masuk ke kotak masuk pengurus, tidak ditampilkan di situs.' },
+  { glyph: '*', judul: 'Dibaca', deskripsi: 'Setiap masukan dibaca, satu per satu.' },
+] as const
+
 /**
  * Kritik dan saran, straight to the pengurus. Anonymous unless the sender
  * signs it; admins read them at `/admin/masukan`.
@@ -26,20 +32,29 @@ export function FeedbackSection({ index }: { index: number }) {
             Kelas terlalu cepat, modul kurang jelas, tentor susah dihubungi, atau punya ide kegiatan baru? Tulis
             saja. Setiap masukan dibaca langsung oleh pengurus.
           </p>
-          <ul className="mt-6 space-y-2 text-sm leading-6 text-fg">
-            {['Nama boleh dikosongkan', 'Tidak perlu login', 'Dibaca pengurus, tidak ditampilkan di situs'].map((item) => (
-              <li key={item} className="flex gap-3">
-                <span aria-hidden className="shrink-0 text-accent-fg">
-                  [x]
+          <ol aria-label="Alur masukan" className="mt-8 max-w-md">
+            {ALUR.map((step, position) => (
+              <li key={step.judul} className="relative flex gap-4 pb-6 last:pb-0">
+                {position < ALUR.length - 1 ? (
+                  <span aria-hidden className="absolute top-10 bottom-0 left-[1.1875rem] border-l-2 border-dashed border-line-soft" />
+                ) : null}
+                <span
+                  aria-hidden
+                  className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-line bg-accent font-display text-sm text-accent-ink hard-shadow-line"
+                >
+                  {step.glyph}
                 </span>
-                {item}
+                <span className="pt-1">
+                  <span className="block text-sm font-bold text-fg">{step.judul}</span>
+                  <span className="mt-0.5 block text-[13px] leading-6 text-muted">{step.deskripsi}</span>
+                </span>
               </li>
             ))}
-          </ul>
+          </ol>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <TerminalWindow title="~/masukan/baru.txt" tone="surface" className="relative">
+          <TerminalWindow title="~/masukan — nano baru.txt" tone="surface" shadow className="relative">
             <FeedbackForm />
           </TerminalWindow>
         </Reveal>
