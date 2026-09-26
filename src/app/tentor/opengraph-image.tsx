@@ -10,7 +10,7 @@ export default function Image() {
     file: '~/tentor/',
     command: 'ls ~/tentor',
     eyebrow: 'tentor',
-    title: 'Belajar dari kakak tingkat',
-    subtitle: 'Mahasiswa yang memegang kelas C, mendampingi peserta, dan menulis soal challenge.',
+    title: 'Belajar dari kakak tentor',
+    subtitle: 'Kakak-kakak yang membimbing kelas tiap minggu dan menemanimu belajar dari nol.',
   })
 }

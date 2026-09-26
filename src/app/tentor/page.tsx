@@ -31,10 +31,10 @@ export default async function TentorPage() {
         accent="cyan"
         command="ls ~/tentor"
         eyebrow="tentor"
-        title="Belajar dari kakak tingkat"
+        title="Belajar dari kakak tentor"
         description={
           tentors.length > 0
-            ? `${tentors.length} tentor aktif. Semuanya pernah duduk di kursi yang sama — sekarang mereka yang memegang kelas tiap minggu, mendampingi peserta, dan menilai tugas guided.`
+            ? `${tentors.length} kakak tentor yang siap menemanimu belajar. Mereka dulu juga mulai dari nol di kelas yang sama — sekarang giliran mereka membimbing kelas tiap minggu, menjawab pertanyaanmu, dan memeriksa tugasmu.`
             : undefined
         }
         facts={
