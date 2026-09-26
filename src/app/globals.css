@@ -39,6 +39,7 @@
   --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
   --font-news: var(--font-newsreader), Georgia, 'Times New Roman', serif;
   --font-blackletter: var(--font-unifraktur), var(--font-newsreader), Georgia, serif;
+  --font-marker: var(--font-permanent-marker), 'Comic Sans MS', cursive;
 
   /* Form language, enforced at build time: nothing here is round and
      nothing here is blurred. Clearing these namespaces makes `rounded-lg`,

@@ -10,7 +10,8 @@ type SectionHeaderProps = {
   /** Lets the enclosing section point `aria-labelledby` at this heading. */
   headingId?: string
   as?: 'h2' | 'h3'
-  align?: 'left' | 'center'
+  /** `right` sits the whole header flush right, for sections that mirror the page's left lean. */
+  align?: 'left' | 'center' | 'right'
   /** Rendered opposite the title on wide screens — a "lihat semua" link, say. */
   actions?: React.ReactNode
   className?: string
@@ -42,15 +43,25 @@ export function SectionHeader({
         'flex flex-col gap-6',
         // Same-property utilities resolve by stylesheet order, not class
         // order, so the centred layout replaces the row layout outright.
-        align === 'center' ? 'items-center text-center' : 'sm:flex-row sm:items-end sm:justify-between',
+        align === 'center'
+          ? 'items-center text-center'
+          : align === 'right'
+            ? 'items-end text-right'
+            : 'sm:flex-row sm:items-end sm:justify-between',
         className,
       )}
     >
-      <div className={cn('min-w-0', align === 'center' && 'flex flex-col items-center')}>
+      <div
+        className={cn(
+          'min-w-0',
+          align === 'center' && 'flex flex-col items-center',
+          align === 'right' && 'flex flex-col items-end',
+        )}
+      >
         {index === undefined ? (
           <p className="font-display text-[10px] tracking-[0.18em] text-accent-fg uppercase">{`// ${eyebrow}`}</p>
         ) : (
-          <SectionMarker index={index} label={eyebrow} />
+          <SectionMarker index={index} label={eyebrow} className={align === 'right' ? 'justify-end' : undefined} />
         )}
 
         <Heading
@@ -65,6 +76,7 @@ export function SectionHeader({
             className={cn(
               'mt-4 max-w-prose text-sm leading-7 text-muted',
               align === 'center' && 'mx-auto',
+              align === 'right' && 'ml-auto',
             )}
           >
             {description}

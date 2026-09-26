@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { IBM_Plex_Sans, JetBrains_Mono, Newsreader, Silkscreen, UnifrakturMaguntia } from 'next/font/google'
+import { IBM_Plex_Sans, JetBrains_Mono, Newsreader, Permanent_Marker, Silkscreen, UnifrakturMaguntia } from 'next/font/google'
 
 import { BackToTop } from '@/components/layout/BackToTop'
 import { Footer } from '@/components/layout/Footer'
@@ -53,6 +53,15 @@ const blackletter = UnifrakturMaguntia({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-unifraktur',
+  display: 'swap',
+  preload: false,
+})
+
+/** Marker handwriting, for the tape labels on the class cartridges only. */
+const marker = Permanent_Marker({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-permanent-marker',
   display: 'swap',
   preload: false,
 })
@@ -147,7 +156,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-palette="dark"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${silkscreen.variable} ${jetbrainsMono.variable} ${plexSans.variable} ${newsreader.variable} ${blackletter.variable}`}
+      className={`${silkscreen.variable} ${jetbrainsMono.variable} ${plexSans.variable} ${newsreader.variable} ${blackletter.variable} ${marker.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
