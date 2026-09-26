@@ -21,7 +21,7 @@ insert into public.sesi (id, judul, rilis, pj, ringkasan) values
   ($ksp$sesi-review$ksp$, $ksp$Review Materi$ksp$, $ksp$2027-02-22$ksp$, $ksp$PH$ksp$, $ksp$Mengulang materi semester ganjil sebelum lanjut ke prosedur dan fungsi. Tanpa modul dan tanpa tugas.$ksp$);
 
 insert into public.news_posts (id, slug, judul, tanggal, kategori, cover, excerpt, penulis, body_mdx, tags) values
-  ($ksp$n-14$ksp$, $ksp$kebiasaan-kecil-kode-c-rapi$ksp$, $ksp$Lima Kebiasaan Kecil Supaya Kode C Lebih Rapi$ksp$, $ksp$2026-09-24$ksp$, $ksp$tips$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-rapi/1200/675$ksp$, $ksp$Kode yang rapi lebih mudah dibaca, lebih mudah diperiksa, dan lebih mudah kamu perbaiki sendiri. Lima kebiasaan kecil yang dampaknya besar.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Kode yang rapi bukan soal gaya-gayaan. Kode yang rapi lebih mudah dibaca, lebih
+  ($ksp$n-14$ksp$, $ksp$kebiasaan-kecil-kode-c-rapi$ksp$, $ksp$Lima Kebiasaan Kecil Supaya Kode C Lebih Rapi$ksp$, $ksp$2026-09-24$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/1ab11745-52ea-45a8-88aa-ec7bc33a2e59.jpg$ksp$, $ksp$Kode yang rapi lebih mudah dibaca, lebih mudah diperiksa, dan lebih mudah kamu perbaiki sendiri. Lima kebiasaan kecil yang dampaknya besar.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Kode yang rapi bukan soal gaya-gayaan. Kode yang rapi lebih mudah dibaca, lebih
 mudah diperiksa tentor, dan yang paling penting, lebih mudah kamu perbaiki
 sendiri saat ada yang salah. Berikut lima kebiasaan kecil yang dampaknya besar.
 
@@ -81,7 +81,7 @@ the compiler**, lalu isi dengan `-Wall`.
 
 Anggap setiap warning sebagai pekerjaan rumah yang harus diselesaikan, bukan
 tulisan yang boleh diabaikan.$ksp$, array[$ksp$tips$ksp$, $ksp$pemula$ksp$, $ksp$gaya-kode$ksp$]::text[]),
-  ($ksp$n-13$ksp$, $ksp$debugging-pakai-printf$ksp$, $ksp$Debugging Pakai printf: Cara Paling Sederhana Menemukan Bug$ksp$, $ksp$2026-09-20$ksp$, $ksp$tips$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-debug/1200/675$ksp$, $ksp$Programnya jalan tapi hasilnya salah, dan tidak ada pesan error. Cetak isi variabelnya, dan lihat sendiri apa yang sebenarnya terjadi.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Programmu sudah bisa dikompilasi, tapi hasilnya salah. Tidak ada pesan error, dan
+  ($ksp$n-13$ksp$, $ksp$debugging-pakai-printf$ksp$, $ksp$Debugging Pakai printf: Cara Paling Sederhana Menemukan Bug$ksp$, $ksp$2026-09-20$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/00111d5a-7bbe-4182-a423-23cd0e53f258.jpg$ksp$, $ksp$Programnya jalan tapi hasilnya salah, dan tidak ada pesan error. Cetak isi variabelnya, dan lihat sendiri apa yang sebenarnya terjadi.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Programmu sudah bisa dikompilasi, tapi hasilnya salah. Tidak ada pesan error, dan
 kamu tidak tahu harus mulai dari mana. Di sinilah teknik paling sederhana dan
 paling sering dipakai programmer berguna: **mencetak isi variabel untuk melihat
 apa yang sebenarnya terjadi.**
@@ -135,7 +135,7 @@ Kondisinya seharusnya `i <= 5`.
 Setelah bugnya ketemu, hapus lagi semua `printf` tambahan. Kalau programmu
 dinilai dari keluarannya, satu baris ekstra saja bisa membuat jawaban yang
 sebenarnya benar dianggap salah.$ksp$, array[$ksp$tips$ksp$, $ksp$debugging$ksp$, $ksp$printf$ksp$]::text[]),
-  ($ksp$n-12$ksp$, $ksp$trik-printf-yang-jarang-diketahui$ksp$, $ksp$Trik printf yang Jarang Diketahui$ksp$, $ksp$2026-09-16$ksp$, $ksp$tips$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-printf/1200/675$ksp$, $ksp$Mengatur lebar kolom, mengisi dengan nol, mencetak tanda persen, sampai fakta bahwa printf ternyata mengembalikan nilai.$ksp$, $ksp$Tim KSP$ksp$, $ksp$`printf` adalah fungsi pertama yang dipelajari hampir semua orang. Tapi banyak
+  ($ksp$n-12$ksp$, $ksp$trik-printf-yang-jarang-diketahui$ksp$, $ksp$Trik printf yang Jarang Diketahui$ksp$, $ksp$2026-09-16$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/566f4709-6d64-494e-9d98-9de42229c288.jpg$ksp$, $ksp$Mengatur lebar kolom, mengisi dengan nol, mencetak tanda persen, sampai fakta bahwa printf ternyata mengembalikan nilai.$ksp$, $ksp$Tim KSP$ksp$, $ksp$`printf` adalah fungsi pertama yang dipelajari hampir semua orang. Tapi banyak
 yang hanya memakai `%d` dan `%s`, padahal `printf` bisa melakukan jauh lebih
 banyak. Berikut beberapa trik yang berguna, terutama untuk soal yang meminta
 format keluaran tertentu.
@@ -204,7 +204,7 @@ printf("%d\n", n);  // 5
 ```
 
 Hasilnya 5: empat huruf ditambah satu karakter baris baru.$ksp$, array[$ksp$tips$ksp$, $ksp$printf$ksp$, $ksp$format$ksp$]::text[]),
-  ($ksp$n-11$ksp$, $ksp$membaca-pesan-error-compiler$ksp$, $ksp$Membaca Pesan Error Compiler Tanpa Panik$ksp$, $ksp$2026-09-12$ksp$, $ksp$tips$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-error/1200/675$ksp$, $ksp$Pesan error itu teman: compiler memberi tahu letak masalahnya. Begini cara membacanya di Dev-C++, termasuk error for loop yang sering bikin bingung.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Pertama kali melihat daftar pesan error itu menakutkan. Tapi pesan error
+  ($ksp$n-11$ksp$, $ksp$membaca-pesan-error-compiler$ksp$, $ksp$Membaca Pesan Error Compiler Tanpa Panik$ksp$, $ksp$2026-09-12$ksp$, $ksp$tips$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/3e9f10a7-259c-41ee-b11f-abda21917f6a.jpg$ksp$, $ksp$Pesan error itu teman: compiler memberi tahu letak masalahnya. Begini cara membacanya di Dev-C++, termasuk error for loop yang sering bikin bingung.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Pertama kali melihat daftar pesan error itu menakutkan. Tapi pesan error
 sebenarnya adalah teman: compiler sedang memberi tahu di mana masalahnya. Kamu
 hanya perlu tahu cara membacanya. Contoh di artikel ini memakai Dev-C++, aplikasi
 yang dipakai di kelas.
@@ -292,7 +292,7 @@ calling the compiler**, lalu isi dengan `-Wall`.
    kesalahannya mungkin ada di baris tepat di atasnya.
 3. **Kompilasi sesering mungkin.** Menulis lima baris lalu kompilasi jauh lebih
    mudah daripada menulis seratus baris lalu menghadapi dua puluh error sekaligus.$ksp$, array[$ksp$tips$ksp$, $ksp$compiler$ksp$, $ksp$pemula$ksp$]::text[]),
-  ($ksp$n-10$ksp$, $ksp$fakta-unik-bahasa-c$ksp$, $ksp$Tujuh Fakta Unik tentang Bahasa C$ksp$, $ksp$2026-09-08$ksp$, $ksp$fakta$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-fakta/1200/675$ksp$, $ksp$Dari asal-usul namanya, program "Hello, world!" pertama, sampai keunikan kecil yang bikin programmer berpengalaman pun kaget.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Di balik kesannya yang serius, bahasa C punya banyak cerita dan keunikan kecil.
+  ($ksp$n-10$ksp$, $ksp$fakta-unik-bahasa-c$ksp$, $ksp$Tujuh Fakta Unik tentang Bahasa C$ksp$, $ksp$2026-09-08$ksp$, $ksp$fakta$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/2c2fbd7c-f51c-4327-958c-a6e4a0c2bec2.jpg$ksp$, $ksp$Dari asal-usul namanya, program "Hello, world!" pertama, sampai keunikan kecil yang bikin programmer berpengalaman pun kaget.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Di balik kesannya yang serius, bahasa C punya banyak cerita dan keunikan kecil.
 Berikut tujuh di antaranya.
 
 ## 1. Namanya diambil dari huruf sebelumnya
@@ -351,7 +351,7 @@ Angka yang dikembalikan `main` dikirim ke sistem operasi. Angka `0` berarti
 "program selesai dengan baik", sedangkan angka lain biasanya berarti ada masalah.
 Sejak C99, kalau `main` selesai tanpa `return`, C otomatis menganggapnya
 mengembalikan `0`.$ksp$, array[$ksp$fakta$ksp$, $ksp$sejarah$ksp$, $ksp$bahasa-c$ksp$]::text[]),
-  ($ksp$n-09$ksp$, $ksp$kenapa-bahasa-c-masih-dipakai$ksp$, $ksp$Kenapa Bahasa C Masih Dipakai Sampai Sekarang$ksp$, $ksp$2026-09-02$ksp$, $ksp$fakta$ksp$, $ksp$https://picsum.photos/seed/ksp-artikel-kenapa-c/1200/675$ksp$, $ksp$Umurnya sudah lebih dari lima puluh tahun, tapi C masih ada di Linux, Python, sampai mesin cuci. Ini alasannya.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Umur bahasa C sudah lebih dari lima puluh tahun. Di dunia teknologi, itu setara
+  ($ksp$n-09$ksp$, $ksp$kenapa-bahasa-c-masih-dipakai$ksp$, $ksp$Kenapa Bahasa C Masih Dipakai Sampai Sekarang$ksp$, $ksp$2026-09-02$ksp$, $ksp$fakta$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/196c9108-f12c-4f79-93a9-9b612ab10ffe.jpg$ksp$, $ksp$Umurnya sudah lebih dari lima puluh tahun, tapi C masih ada di Linux, Python, sampai mesin cuci. Ini alasannya.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Umur bahasa C sudah lebih dari lima puluh tahun. Di dunia teknologi, itu setara
 dengan zaman purba. Tapi sampai hari ini C masih diajarkan di hampir setiap
 jurusan informatika, dan masih dipakai untuk membangun perangkat lunak yang kamu
 pakai setiap hari. Kenapa bisa begitu?
@@ -395,7 +395,7 @@ variabel, dan memikirkan langkah demi langkah apa yang dikerjakan program.
 
 Karena itu, belajar C memang terasa lebih menantang di awal. Tapi pemahaman yang
 kamu dapat akan terbawa ke bahasa apa pun yang kamu pelajari sesudahnya.$ksp$, array[$ksp$fakta$ksp$, $ksp$sejarah$ksp$, $ksp$bahasa-c$ksp$]::text[]),
-  ($ksp$n-06$ksp$, $ksp$bahaya-scanf-persen-s$ksp$, $ksp$Berhenti Menulis scanf Persen-s Tanpa Batas Lebar$ksp$, $ksp$2026-08-30$ksp$, $ksp$tutorial$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-scanf/1200/675$ksp$, $ksp$Satu baris yang sering muncul di program pemula, dan hampir selalu menyimpan masalah. Perbaikannya cuma satu angka, dan angkanya bukan yang kamu kira.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Ada satu baris yang sering sekali muncul di program pemula, dan hampir selalu
+  ($ksp$n-06$ksp$, $ksp$bahaya-scanf-persen-s$ksp$, $ksp$Berhenti Menulis scanf Persen-s Tanpa Batas Lebar$ksp$, $ksp$2026-08-30$ksp$, $ksp$tutorial$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/964a775e-e74c-420d-a713-3e59b8a269ed.jpg$ksp$, $ksp$Satu baris yang sering muncul di program pemula, dan hampir selalu menyimpan masalah. Perbaikannya cuma satu angka, dan angkanya bukan yang kamu kira.$ksp$, $ksp$Tim KSP$ksp$, $ksp$Ada satu baris yang sering sekali muncul di program pemula, dan hampir selalu
 menyimpan masalah:
 
 ```c
@@ -455,7 +455,7 @@ sebagian besar soal, hal itu perlu dibuang sendiri.
 Setiap kali kamu menulis `%s` di dalam `scanf`, berhenti sebentar dan tanyakan
 berapa ukuran tujuannya. Kalau kamu tidak bisa menjawabnya langsung, itu tanda
 bahwa batasnya memang belum kamu pikirkan.$ksp$, array[$ksp$string$ksp$, $ksp$tutorial$ksp$, $ksp$keamanan$ksp$]::text[]),
-  ($ksp$n-01$ksp$, $ksp$pendaftaran-anggota-baru-2026$ksp$, $ksp$Pendaftaran Anggota Baru Semester Ganjil 2026/2027 Dibuka$ksp$, $ksp$2026-08-24$ksp$, $ksp$pengumuman$ksp$, $ksp$https://picsum.photos/seed/ksp-berita-pendaftaran/1200/675$ksp$, $ksp$Terbuka untuk mahasiswa aktif UAJY semester 1 sebagai persiapan mata kuliah dasar pemrograman C, tanpa syarat kemampuan awal. Biaya Rp150.000 dengan cashback 70%.$ksp$, $ksp$Pengurus KSP$ksp$, $ksp$Pendaftaran anggota baru Kelompok Studi Pemrograman untuk semester ganjil
+  ($ksp$n-01$ksp$, $ksp$pendaftaran-anggota-baru-2026$ksp$, $ksp$Pendaftaran Anggota Baru Semester Ganjil 2026/2027 Dibuka$ksp$, $ksp$2026-08-24$ksp$, $ksp$pengumuman$ksp$, $ksp$https://bgrgkqrolpgcmbdlruzt.supabase.co/storage/v1/object/public/media/berita/03028986-34f7-4b14-aa0d-cceaaa4142d7.jpg$ksp$, $ksp$Terbuka untuk mahasiswa aktif UAJY semester 1 sebagai persiapan mata kuliah dasar pemrograman C, tanpa syarat kemampuan awal. Biaya Rp150.000 dengan cashback 70%.$ksp$, $ksp$Pengurus KSP$ksp$, $ksp$Pendaftaran anggota baru Kelompok Studi Pemrograman untuk semester ganjil
 2026/2027 dibuka mulai hari ini sampai 11 September 2026. Pendaftaran terbuka
 untuk mahasiswa aktif UAJY semester 1, tanpa syarat kemampuan awal.
 
