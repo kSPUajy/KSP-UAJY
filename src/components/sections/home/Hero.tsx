@@ -1,3 +1,4 @@
+import { OnlineCount } from '@/components/layout/OnlinePresence'
 import { CrtVignette } from '@/components/overlays/Overlays'
 import { CompileStrip } from '@/components/sections/home/CompileStrip'
 import { DriftField } from '@/components/sections/home/DriftField'
@@ -24,6 +25,7 @@ const STATUS_ROWS = (registrationOpen: boolean) =>
     { key: 'tempat', value: 'Lab Komputasi' },
     { key: 'tugas', value: 'dikumpulkan tiap Minggu, 23.59 WIB' },
     { key: 'pendaftaran', value: registrationOpen ? 'dibuka — ayo gabung' : 'ditutup untuk periode ini', live: registrationOpen },
+    { key: 'online', value: <OnlineCount suffix="anggota sedang di situs" /> },
   ] as const
 
 /** The week at a glance, printed like `cat` output under the buttons. */

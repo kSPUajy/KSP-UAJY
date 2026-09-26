@@ -25,31 +25,33 @@ export function useOnlineCount(): number | null {
 }
 
 /**
- * Checks a signed-in visitor in on a Supabase Realtime presence channel for
- * as long as any page of the site is open. Keyed by user id, so several tabs
- * count once; closing the last one checks them out. Visitors who are not
- * signed in never join. Mounted once, in the root layout.
+ * Every visitor listens to a Supabase Realtime presence channel, so the
+ * count can show anywhere — the hero included. Only signed-in members are
+ * *counted*: they check in (`track`) for as long as any page of the site is
+ * open, keyed by user id so several tabs count once. Anyone else only
+ * listens, and a listener never appears in the presence state. Mounted
+ * once, in the root layout.
  */
 export function OnlinePresence() {
   const signedIn = useSignedIn()
 
   useEffect(() => {
-    if (!signedIn) return
     const supabase = supabaseBrowser()
     let cancelled = false
     let channel: ReturnType<typeof supabase.channel> | null = null
 
     void (async () => {
-      const { data } = await supabase.auth.getUser()
-      const user = data.user
-      if (!user || cancelled) return
-      channel = supabase.channel('ksp-online', { config: { presence: { key: user.id } } })
+      const user = signedIn ? (await supabase.auth.getUser()).data.user : null
+      if (cancelled) return
+      // A listener still needs some key; a random one never gets tracked.
+      const key = user?.id ?? `tamu-${crypto.randomUUID()}`
+      channel = supabase.channel('ksp-online', { config: { presence: { key } } })
       channel
         .on('presence', { event: 'sync' }, () => {
           if (channel) setOnline(Object.keys(channel.presenceState()).length)
         })
         .subscribe((status) => {
-          if (status === 'SUBSCRIBED') void channel?.track({ sejak: new Date().toISOString() })
+          if (status === 'SUBSCRIBED' && user) void channel?.track({ sejak: new Date().toISOString() })
         })
     })()
 
@@ -63,14 +65,17 @@ export function OnlinePresence() {
   return null
 }
 
-/** `5` with a live dot, or a dash while the count is still arriving. */
-export function OnlineCount() {
+/**
+ * `5` with a live dot, or an ellipsis while the count is still arriving.
+ * `suffix` reads after the number, e.g. "anggota sedang di situs".
+ */
+export function OnlineCount({ suffix }: { suffix?: string }) {
   const count = useOnlineCount()
   return (
     <span className="inline-flex items-center gap-1.5" aria-live="polite">
       <span aria-hidden className="rec-blink inline-block h-1.5 w-1.5 bg-[#3ddc5b]" />
       {count === null ? '…' : count}
-      <span className="sr-only"> orang sedang online</span>
+      {suffix ? <span> {suffix}</span> : <span className="sr-only"> orang sedang online</span>}
     </span>
   )
 }
