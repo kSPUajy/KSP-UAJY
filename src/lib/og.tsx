@@ -196,7 +196,8 @@ export async function renderOgCard({ accent, file, command, eyebrow, title, subt
 export const IG_SIZE = { width: 1080, height: 1350 } as const
 
 export type IgCard = {
-  cover: string
+  /** A data URL or fetchable JPEG/PNG; null draws a plain panel instead. */
+  cover: string | null
   /** e.g. `berita · fakta`. */
   eyebrow: string
   title: string
@@ -265,8 +266,30 @@ export async function renderIgCard({ cover, eyebrow, title, excerpt, path: artic
             <span style={{ marginLeft: 22 }}>{`~${clip(articlePath, 40)}`}</span>
           </div>
 
-          {/* eslint-disable-next-line @next/next/no-img-element -- Satori renders plain <img> only */}
-          <img src={cover} width={944} height={531} alt="" style={{ objectFit: 'cover', borderBottom: `4px solid ${INK.fg}` }} />
+          {cover ? (
+            // eslint-disable-next-line @next/next/no-img-element -- Satori renders plain <img> only
+            <img src={cover} width={944} height={531} alt="" style={{ objectFit: 'cover', borderBottom: `4px solid ${INK.fg}` }} />
+          ) : (
+            <div
+              style={{
+                width: 944,
+                height: 531,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderBottom: `4px solid ${INK.fg}`,
+                backgroundColor: INK.canvas,
+                backgroundImage: `radial-gradient(circle, ${INK.dot} 3px, transparent 3px)`,
+                backgroundSize: '28px 28px',
+                fontFamily: 'Silkscreen',
+                fontSize: 64,
+                letterSpacing: 6,
+                color,
+              }}
+            >
+              KABAR KSP
+            </div>
+          )}
 
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '36px 48px 40px' }}>
             <div
