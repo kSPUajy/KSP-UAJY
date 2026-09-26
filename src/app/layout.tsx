@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { IBM_Plex_Sans, JetBrains_Mono, Newsreader, Silkscreen, UnifrakturMaguntia } from 'next/font/google'
 
+import { BackToTop } from '@/components/layout/BackToTop'
 import { Footer } from '@/components/layout/Footer'
 import { Nav } from '@/components/layout/Nav'
 import { SmoothScroll } from '@/components/motion/SmoothScroll'
@@ -158,6 +159,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <PageOverlays />
           <CrtPowerOn />
           <SmoothScroll />
+          <BackToTop />
         </ThemeProvider>
       </body>
     </html>

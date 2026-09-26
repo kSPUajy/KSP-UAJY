@@ -4,6 +4,15 @@ import Lenis from 'lenis'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
+/** The running instance, for code that scrolls on purpose (back to top). */
+let active: Lenis | null = null
+
+/** Scrolls to `top` at Lenis's pace when it is running, natively otherwise. */
+export function scrollToTop(): void {
+  if (active) active.scrollTo(0)
+  else window.scrollTo({ top: 0 })
+}
+
 /**
  * Eased wheel scrolling for the whole site. Touch keeps the native feel, and
  * `prefers-reduced-motion` skips Lenis entirely. In-page anchors are handed
@@ -23,10 +32,12 @@ export function SmoothScroll() {
       allowNestedScroll: true,
     })
     lenisRef.current = lenis
+    active = lenis
 
     return () => {
       lenis.destroy()
       lenisRef.current = null
+      active = null
     }
   }, [])
 

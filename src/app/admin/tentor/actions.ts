@@ -64,5 +64,6 @@ export async function simpanProfilTentor(_previous: AdminFormState, formData: Fo
 
   updateTag(TAGS.tentor)
   revalidatePath('/admin/tentor')
+  revalidatePath('/admin/anggota')
   return succeeded(fields.tampil ? 'Profil tersimpan.' : 'Profil tersimpan dan disembunyikan dari situs.')
 }

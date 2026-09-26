@@ -4,9 +4,11 @@ import { AdminHeading } from '@/components/admin/AdminHeading'
 import { CipherName } from '@/components/admin/anggota/CipherName'
 import { CreateMemberForm, ImportMembersForm, MemberActions } from '@/components/admin/anggota/MemberForms'
 import type { MemberRowData } from '@/components/admin/anggota/MemberForms'
+import type { TentorProfileValues } from '@/components/admin/tentor/TentorProfileForm'
 import { Badge } from '@/components/ui/Badge'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
 import { requireProfile } from '@/lib/auth/session'
+import { getTentors } from '@/lib/data'
 import { pageMetadata } from '@/lib/metadata'
 import { createSupabaseServer } from '@/lib/supabase/server'
 
@@ -33,8 +35,37 @@ const shapeOf = (value: string): string => value.replace(/\S/g, 'x')
 export default async function AdminAnggotaPage() {
   const profile = await requireProfile('/admin/anggota', ['admin'])
   const db = await createSupabaseServer()
-  const { data, error } = await db.from('profiles').select('id, npm, nama, angkatan, role, must_change_password')
+  const [{ data, error }, tentors, { data: profileRows }] = await Promise.all([
+    db.from('profiles').select('id, npm, nama, angkatan, role, must_change_password'),
+    getTentors({ semua: true }),
+    db.from('tentor_profiles').select('*'),
+  ])
   if (error) throw new Error(`Gagal membaca anggota: ${error.message}`)
+
+  // Who is a tentor follows the site's own rule (role or a module
+  // assignment); the form gets the raw row, so an empty bio stays empty
+  // rather than coming back as the generated sentence.
+  const rowById = new Map((profileRows ?? []).map((row) => [row.profile_id, row]))
+  const tentorProfiles = new Map<string, TentorProfileValues>(
+    tentors.map((tentor) => {
+      const row = rowById.get(tentor.id)
+      return [
+        tentor.id,
+        {
+          profileId: tentor.id,
+          foto: row?.foto ?? '',
+          keahlian: row?.keahlian ?? [],
+          quote: row?.quote ?? '',
+          bio: row?.bio ?? '',
+          pengalaman: tentor.pengalaman,
+          snippetJudul: row?.snippet_judul ?? '',
+          snippetCode: row?.snippet_code ?? '',
+          socials: (row?.socials ?? {}) as TentorProfileValues['socials'],
+          tampil: row?.tampil ?? true,
+        },
+      ]
+    }),
+  )
 
   const members: MemberRowData[] = data
     .map((row) => ({
@@ -134,7 +165,7 @@ export default async function AdminAnggotaPage() {
                       cat: ~/.akun: Permission denied
                     </p>
                   ) : (
-                    <MemberActions member={member} isSelf={member.id === profile.id} />
+                    <MemberActions member={member} isSelf={member.id === profile.id} tentorProfile={tentorProfiles.get(member.id)} />
                   )}
                 </div>
               </details>

@@ -6,6 +6,8 @@ import { buatAnggota, hapusAnggota, imporAnggota, resetAnggota, ubahAnggota } fr
 import type { IssuedPassword } from '@/app/admin/anggota/actions'
 import { IssuedPasswords } from '@/components/admin/anggota/IssuedPasswords'
 import { AdminForm, FormMessage, Select, SubmitButton, TextArea, TextInput } from '@/components/admin/form'
+import { TentorProfileForm } from '@/components/admin/tentor/TentorProfileForm'
+import type { TentorProfileValues } from '@/components/admin/tentor/TentorProfileForm'
 
 const ROLE_OPTIONS = [
   { value: 'anggota', label: 'anggota' },
@@ -82,8 +84,20 @@ export type MemberRowData = {
   mustChangePassword: boolean
 }
 
-/** Edit, reset, delete — three small forms for one member. */
-export function MemberActions({ member, isSelf }: { member: MemberRowData; isSelf: boolean }) {
+/**
+ * Edit, reset, delete — three small forms for one member — and, for a
+ * tentor, their public profile, so it can be written from the same row.
+ */
+export function MemberActions({
+  member,
+  isSelf,
+  tentorProfile,
+}: {
+  member: MemberRowData
+  isSelf: boolean
+  /** Present only for tentors: the raw profile row, for the public-profile form. */
+  tentorProfile?: TentorProfileValues
+}) {
   const [editState, editAction] = useActionState(ubahAnggota, undefined)
   const [resetState, resetAction] = useActionState(resetAnggota, undefined)
   const [deleteState, deleteAction] = useActionState(hapusAnggota, undefined)
@@ -111,6 +125,16 @@ export function MemberActions({ member, isSelf }: { member: MemberRowData; isSel
           <SubmitButton variant="outline">simpan</SubmitButton>
         </div>
       </AdminForm>
+
+      {tentorProfile ? (
+        <section aria-label="Profil tentor" className="flex flex-col gap-4 border-t-2 border-line-soft pt-6">
+          <p className="text-[12px] leading-6 text-muted">
+            <span className="font-bold text-fg">Profil tentor</span> — foto, keahlian, kutipan, bio, dan pengalaman yang
+            tampil di halaman /tentor.
+          </p>
+          <TentorProfileForm initial={tentorProfile} />
+        </section>
+      ) : null}
 
       <AdminForm action={resetAction} state={resetState} className="flex flex-col gap-3 border-t-2 border-line-soft pt-6">
         <input type="hidden" name="id" value={member.id} />

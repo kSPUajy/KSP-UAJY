@@ -8,7 +8,7 @@ import type { Tentor } from '@/lib/types'
 import { pad2, snakeCase } from '@/lib/utils'
 
 type TentorCardProps = {
-  tentor: Pick<Tentor, 'nama' | 'slug' | 'foto' | 'angkatan' | 'keahlian' | 'modul'>
+  tentor: Pick<Tentor, 'nama' | 'slug' | 'foto' | 'punyaFoto' | 'angkatan' | 'keahlian' | 'modul'>
   /** `sizes` for the portrait — depends on the grid the card sits in. */
   sizes: string
   /** How many modules (or, without any, skills) to list. The full set lives on the profile page. */
@@ -47,6 +47,8 @@ export function TentorCard({ tentor, sizes, skills = 2, as: Heading = 'h3' }: Te
         height={PORTRAIT.height}
         sizes={sizes}
         bordered={false}
+        // Real photos in their own colours; only the generated stand-ins are duotoned.
+        treatment={tentor.punyaFoto ? 'none' : 'full'}
         reveal
         className="aspect-[4/5] border-b-2 border-line"
       />

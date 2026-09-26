@@ -107,6 +107,7 @@ export default async function TentorProfilePage({ params }: TentorPageProps) {
                     height={PORTRAIT.height}
                     sizes="(min-width: 1024px) 320px, 112px"
                     eager
+                    treatment={tentor.punyaFoto ? 'none' : 'full'}
                     className="aspect-[4/5] w-28 shrink-0 lg:w-full"
                   />
                   <div className="min-w-0 lg:mt-5">
