@@ -379,6 +379,12 @@ export async function getGalleryItems(): Promise<GalleryItem[]> {
   return data.map(toGalleryItem)
 }
 
+export async function getGalleryItem(id: string): Promise<GalleryItem | null> {
+  const { data, error } = await publicDb(TAGS.galeri).from('gallery_items').select('*').eq('id', id).maybeSingle()
+  if (error) throw new Error(`Gagal membaca galeri ${id}: ${error.message}`)
+  return data ? toGalleryItem(data) : null
+}
+
 // ------------------------------------------------------------------ stats ---
 
 /**

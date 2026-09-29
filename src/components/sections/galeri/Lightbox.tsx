@@ -5,13 +5,17 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
 import { CALM, mech } from '@/components/motion/variants'
+import { galeriFileBase, galeriPath } from '@/components/sections/galeri/galeri-format'
 import { Badge } from '@/components/ui/Badge'
+import { InstagramGlyph } from '@/components/ui/InstagramGlyph'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
 import { useMotionMode } from '@/lib/hooks/useReducedMotion'
+import { useShareInstagram } from '@/lib/hooks/useShareInstagram'
 import { formatTanggal } from '@/lib/format'
 import type { GalleryItem } from '@/lib/types'
 import { pad2 } from '@/lib/utils'
+import { siteConfig } from '@/site.config'
 
 type LightboxProps = {
   /** The item on screen, or null when closed. */
@@ -28,19 +32,22 @@ const SWIPE_THRESHOLD = 48
 
 const HEADING_ID = 'lightbox-caption'
 
-/** File name the title bar shows: `~/galeri/2025-09/g-03.jpg`. */
-const pathOf = (item: GalleryItem): string =>
-  `~/galeri/${item.tanggal.slice(0, 7)}/${item.id}.${item.type === 'video' ? 'mp4' : 'jpg'}`
+const ACTION_CLASS =
+  'inline-flex h-10 items-center gap-2 border-2 border-line bg-surface px-3 text-[11px] tracking-[0.08em] text-fg uppercase transition-colors hover:bg-surface-2 hover:text-accent-fg disabled:opacity-60'
+
+/** The caption copied for an Instagram post, linking back to this very item. */
+const igCaption = (item: GalleryItem): string =>
+  `${item.caption || item.alt}
+
+${siteConfig.name} ${siteConfig.campus.short} · ${formatTanggal(item.tanggal)}
+Lihat galeri lengkap: ${siteConfig.url}/galeri#${item.id}
+
+#KSPUAJY #BelajarNgoding #UAJY`
 
 function StepButton({ direction, onClick }: { direction: 1 | -1; onClick: () => void }) {
   const previous = direction === -1
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={previous ? 'Sebelumnya' : 'Berikutnya'}
-      className="inline-flex h-10 items-center gap-2 border-2 border-line bg-surface px-3 text-[11px] tracking-[0.08em] text-fg uppercase transition-colors hover:bg-surface-2 hover:text-accent-fg"
-    >
+    <button type="button" onClick={onClick} aria-label={previous ? 'Sebelumnya' : 'Berikutnya'} className={ACTION_CLASS}>
       {previous ? (
         <>
           <span aria-hidden>&lt;-</span>
@@ -64,6 +71,10 @@ function StepButton({ direction, onClick }: { direction: 1 | -1; onClick: () => 
  * One photo or video, full size and in its own colours — the grid behind it
  * is the duotoned contact sheet, this is the print.
  *
+ * Under it: download the original file (`/galeri/<id>/unduh`), or share the
+ * item to Instagram as a 1080 × 1350 card (`/galeri/<id>/instagram`) with a
+ * caption copied alongside.
+ *
  * Arrow keys and a horizontal swipe step through the run; Escape, the
  * backdrop and the close button all leave. Focus is trapped while it is open
  * and handed back to the frame that opened it.
@@ -73,6 +84,7 @@ export function Lightbox({ item, position, total, onClose, onStep }: LightboxPro
   const open = item !== null
   const panelRef = useFocusTrap<HTMLDivElement>(open, onClose)
   const swipeStart = useRef<{ x: number; y: number } | null>(null)
+  const ig = useShareInstagram()
 
   // Last item shown, so the panel keeps its content while it fades out.
   const [shown, setShown] = useState<GalleryItem | null>(null)
@@ -112,6 +124,9 @@ export function Lightbox({ item, position, total, onClose, onStep }: LightboxPro
 
   const fade = mode === 'reduced' ? CALM : mech(0.25)
   const current = item ?? shown
+  const igImage = current ? `/galeri/${current.id}/instagram` : ''
+  // A message belongs to the item it was about; stepping on clears it from view.
+  const igMessage = (ig.state.kind === 'done' || ig.state.kind === 'error') && ig.state.image === igImage ? ig.state.message : ''
 
   return (
     <AnimatePresence>
@@ -140,7 +155,7 @@ export function Lightbox({ item, position, total, onClose, onStep }: LightboxPro
             transition={mode === 'reduced' ? CALM : mech(0.3)}
           >
             <TerminalWindow
-              title={pathOf(current)}
+              title={`~${galeriPath(current)}`}
               shadow={false}
               actions={
                 <>
@@ -213,14 +228,45 @@ export function Lightbox({ item, position, total, onClose, onStep }: LightboxPro
                       {current.kategori}
                     </Badge>
                   </p>
+                  <p role="status" aria-live="polite" className="text-[11px] leading-5 text-accent-fg">
+                    {igMessage}
+                  </p>
                 </div>
 
-                {total > 1 ? (
-                  <div className="flex shrink-0 gap-2">
-                    <StepButton direction={-1} onClick={() => onStep(-1)} />
-                    <StepButton direction={1} onClick={() => onStep(1)} />
-                  </div>
-                ) : null}
+                <div className="flex shrink-0 flex-wrap gap-2">
+                  <a href={`/galeri/${current.id}/unduh`} download className={ACTION_CLASS}>
+                    <span aria-hidden>↓</span>
+                    unduh<span className="sr-only">{current.type === 'video' ? ' video ini' : ' foto ini'}</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      void ig.share({
+                        image: igImage,
+                        fileName: `${galeriFileBase(current)}-instagram.png`,
+                        title: current.caption || current.alt,
+                        caption: igCaption(current),
+                      })
+                    }
+                    disabled={ig.state.kind === 'busy'}
+                    className={ACTION_CLASS}
+                  >
+                    <InstagramGlyph />
+                    {ig.state.kind === 'busy' ? (
+                      'menyiapkan…'
+                    ) : (
+                      <span>
+                        bagikan<span className="sr-only sm:not-sr-only"> ke instagram</span>
+                      </span>
+                    )}
+                  </button>
+                  {total > 1 ? (
+                    <div className="ml-auto flex gap-2 sm:ml-2">
+                      <StepButton direction={-1} onClick={() => onStep(-1)} />
+                      <StepButton direction={1} onClick={() => onStep(1)} />
+                    </div>
+                  ) : null}
+                </div>
               </div>
             </TerminalWindow>
           </motion.div>
