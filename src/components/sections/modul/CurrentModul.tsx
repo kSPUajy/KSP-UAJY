@@ -1,4 +1,5 @@
-import { modulPath, modulRange } from '@/components/sections/modul/modul-format'
+import { modulBerkas, modulPath, modulRange } from '@/components/sections/modul/modul-format'
+import { ModulFiles } from '@/components/sections/modul/ModulFiles'
 import { ButtonAnchor } from '@/components/ui/Button'
 import { MeterBar } from '@/components/ui/MeterBar'
 import { StructBlock } from '@/components/ui/StructBlock'
@@ -17,6 +18,7 @@ type CurrentModulProps = {
  * semester so far.
  */
 export function CurrentModul({ modul, total }: CurrentModulProps) {
+  const berkas = modulBerkas(modul)
   return (
     <TerminalWindow
       title={modulPath(modul)}
@@ -32,17 +34,33 @@ export function CurrentModul({ modul, total }: CurrentModulProps) {
         <p className="mt-4 max-w-prose text-sm leading-7 text-muted">{modul.ringkasan}</p>
 
         <div className="mt-8">
-          {modul.berkasUrl ? (
-            <ButtonAnchor href={modul.berkasUrl} size="lg">
+          {berkas?.unduhHref ? (
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+              <ButtonAnchor href={berkas.unduhHref} target="_self" download size="lg">
+                unduh modul
+                <span aria-hidden>↓</span>
+              </ButtonAnchor>
+              <a
+                href={berkas.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[12px] text-accent-fg underline decoration-2 underline-offset-4 hover:text-fg"
+              >
+                baca di tab baru<span aria-hidden> ↗</span>
+              </a>
+            </div>
+          ) : berkas ? (
+            <ButtonAnchor href={berkas.href} size="lg">
               buka modul
               <span aria-hidden>↗</span>
               <span className="sr-only">(membuka tab baru)</span>
             </ButtonAnchor>
           ) : (
             <p className="border-l-2 border-accent-fg pl-4 text-[12px] leading-6 text-muted">
-              Berkas modul dibagikan di kelas, lalu diunggah di sini setelahnya.
+              Berkas modul ini belum diunggah.
             </p>
           )}
+          <ModulFiles modul={modul} only={['guided', 'unguided']} label="tugas" emptyText="" className="mt-6 text-[12px] leading-6" />
         </div>
       </div>
 

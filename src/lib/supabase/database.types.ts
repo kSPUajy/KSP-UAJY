@@ -176,6 +176,9 @@ export type Database = {
           tenggat: string | null
           tentor_pj: string[]
           tugas_deskripsi: string
+          tugas_guided_url: string | null
+          tugas_unguided_path: string | null
+          tugas_unguided_terbuka: boolean
           updated_at: string
         }
         Insert: {
@@ -189,6 +192,9 @@ export type Database = {
           tenggat?: string | null
           tentor_pj?: string[]
           tugas_deskripsi?: string
+          tugas_guided_url?: string | null
+          tugas_unguided_path?: string | null
+          tugas_unguided_terbuka?: boolean
           updated_at?: string
         }
         Update: {
@@ -202,6 +208,9 @@ export type Database = {
           tenggat?: string | null
           tentor_pj?: string[]
           tugas_deskripsi?: string
+          tugas_guided_url?: string | null
+          tugas_unguided_path?: string | null
+          tugas_unguided_terbuka?: boolean
           updated_at?: string
         }
         Relationships: []

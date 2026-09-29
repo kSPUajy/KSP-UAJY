@@ -1,4 +1,5 @@
 import { modulRelease } from '@/components/sections/modul/modul-format'
+import { ModulFiles } from '@/components/sections/modul/ModulFiles'
 import { DownloadButton } from '@/components/sections/tugas/DownloadButton'
 import { TugasUploader } from '@/components/sections/tugas/TugasUploader'
 import { Badge } from '@/components/ui/Badge'
@@ -30,15 +31,19 @@ export function TugasPanel({ item }: { item: TugasItem }) {
 
   if (state === 'terkunci') {
     return (
-      <p className="text-[12px] leading-6 text-dim">
-        Tugas minggu ini dibuka bersama modulnya, {modulRelease(modul)}.
-      </p>
+      <div className="flex flex-col gap-3">
+        <p className="text-[12px] leading-6 text-dim">
+          Pengumpulan tugas minggu ini dibuka bersama modulnya, {modulRelease(modul)}.
+        </p>
+        <ModulFiles modul={modul} label="berkas" emptyText="" className="text-[12px] leading-6" />
+      </div>
     )
   }
 
   return (
     <div className="flex flex-col gap-5">
       <div>
+        <ModulFiles modul={modul} label="berkas" emptyText="" className="mb-3 text-[12px] leading-6" />
         <p className="max-w-prose text-sm leading-7 text-muted">
           {modul.tugasDeskripsi ||
             'Kerjakan latihan terpandu di modul minggu ini, lalu kumpulkan kodemu di sini — satu berkas .c, atau satu folder berisi beberapa berkas yang di-zip.'}

@@ -78,8 +78,8 @@ export default async function ModulPage() {
                     notStarted && first
                       ? `Modul pertama dibuka ${modulRelease(first)}.`
                       : upcoming
-                        ? `Modul berikutnya, ${upcoming.judul}, dibuka ${modulRelease(upcoming)}. Modul yang sudah lewat tetap bisa dibuka di bawah.`
-                        : 'Seluruh modul semester ini sudah dibagikan. Arsipnya tetap bisa dibuka di bawah.'
+                        ? `Kelas berikutnya, ${upcoming.judul}, dimulai ${modulRelease(upcoming)}. Semua berkas modul tetap bisa diunduh di bawah.`
+                        : 'Seluruh modul semester ini sudah dibagikan. Semua berkasnya tetap bisa diunduh di bawah.'
                   }
                 />
               )}
@@ -92,7 +92,7 @@ export default async function ModulPage() {
                 eyebrow="timeline"
                 title="Satu semester, minggu demi minggu"
                 headingId="semua-modul"
-                description="Modul yang sudah lewat tetap terbuka untuk diulang. Yang belum tiba menunjukkan kapan dibuka."
+                description="Berkas modul dan tugas guided bisa diunduh kapan saja — yang sudah lewat untuk diulang, yang belum tiba untuk dipelajari lebih dulu. Tugas unguided terkunci sampai tentor membukanya."
               />
             </Reveal>
             <Reveal className="mt-10 max-w-4xl">

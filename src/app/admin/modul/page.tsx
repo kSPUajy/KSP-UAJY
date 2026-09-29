@@ -64,6 +64,7 @@ export default async function AdminModulPage() {
                   <span className="block truncate text-sm font-bold text-fg">{modul.judul}</span>
                   <span className="block truncate text-[11px] text-dim">
                     {modul.tentorPj.join(', ') || 'tentor belum diisi'} · {modul.koordinator || '—'}
+                    {modul.tugasUnguided ? ` · unguided ${modul.tugasUnguided.terbuka ? 'dibuka' : 'terkunci'}` : ''}
                   </span>
                 </span>
                 <span className="col-start-2 text-[11px] text-dim sm:col-start-auto">rilis {formatTanggalPendek(modul.rilis)}</span>

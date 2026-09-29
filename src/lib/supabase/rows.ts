@@ -53,6 +53,8 @@ export function toModul(row: ModuleRow): Modul {
     ...(row.berkas_url ? { berkasUrl: row.berkas_url } : {}),
     tugasDeskripsi: row.tugas_deskripsi,
     ...(row.tenggat ? { tenggat: wallClock(row.tenggat) } : {}),
+    ...(row.tugas_guided_url ? { tugasGuidedUrl: row.tugas_guided_url } : {}),
+    ...(row.tugas_unguided_path ? { tugasUnguided: { path: row.tugas_unguided_path, terbuka: row.tugas_unguided_terbuka } } : {}),
   }
 }
 

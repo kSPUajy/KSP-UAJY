@@ -1,4 +1,5 @@
 import { modulRange, modulRelease } from '@/components/sections/modul/modul-format'
+import { ModulFiles } from '@/components/sections/modul/ModulFiles'
 import { Badge } from '@/components/ui/Badge'
 import type { ModulStatus, TimelineEntry } from '@/lib/types'
 import { cn, pad2 } from '@/lib/utils'
@@ -23,10 +24,12 @@ const STATUS_TEXT: Record<ModulStatus, string> = {
 /**
  * The whole schedule as one rail: finished rows filled in, this week's lit
  * in the accent and marked `aria-current`, the rest hollow and dimmed with
- * their start date. Sessions that are not modules (Games, Review Materi)
- * sit on the same rail with a dashed node and no task. The status is always
- * spelled out in text as well — colour and the node are only the second way
- * of saying it.
+ * their start date. Every module's files — the module, the guided task, the
+ * unguided task once it is unlocked — can be downloaded from its row, past
+ * or upcoming. Sessions that are not modules (Games, Review Materi) sit on
+ * the same rail with a dashed node and no task. The status is always spelled
+ * out in text as well — colour and the node are only the second way of
+ * saying it.
  */
 export function ModulTimeline({ entries }: ModulTimelineProps) {
   return (
@@ -109,25 +112,21 @@ export function ModulTimeline({ entries }: ModulTimelineProps) {
                     </span>
                   </>
                 )}
-                <span aria-hidden>·</span>
                 {locked ? (
-                  <span>dibuka {modulRelease(entry)}</span>
-                ) : sesi ? (
-                  <span>tanpa modul</span>
-                ) : entry.berkasUrl ? (
-                  <a
-                    href={entry.berkasUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent-fg underline decoration-2 underline-offset-4 hover:text-fg"
-                  >
-                    buka modul<span aria-hidden> ↗</span>
-                    <span className="sr-only"> {entry.judul} (membuka tab baru)</span>
-                  </a>
-                ) : (
-                  <span>berkas menyusul</span>
-                )}
+                  <>
+                    <span aria-hidden>·</span>
+                    <span>mulai {modulRelease(entry)}</span>
+                  </>
+                ) : null}
+                {sesi ? (
+                  <>
+                    <span aria-hidden>·</span>
+                    <span>tanpa modul</span>
+                  </>
+                ) : null}
               </p>
+
+              {sesi ? null : <ModulFiles modul={entry} label="berkas" className="mt-2 text-[11px] leading-5" />}
             </div>
           </li>
         )

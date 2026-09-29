@@ -325,12 +325,20 @@ export type Modul = {
   koordinator: string
   /** One or two sentences on what the week covers. */
   ringkasan: string
-  /** Link to the module file. Absent until it is uploaded; never shown before `rilis`. */
+  /** Link to the module file (PDF or ZIP). Absent until it is uploaded; downloadable any week. */
   berkasUrl?: string
   /** Instructions for the week's guided task. Empty when there are none to add. */
   tugasDeskripsi: string
   /** Guided-task deadline, WIB wall clock. Absent means Sunday 23.59 of the module's week. */
   tenggat?: string
+  /** Link to the guided task's file (PDF or ZIP). Public, like the module file. */
+  tugasGuidedUrl?: string
+  /**
+   * The unguided task's file, kept in the private `modul-privat` bucket.
+   * Nobody but staff can download it until an admin switches `terbuka` on;
+   * the file is only ever reached through `/modul/<id>/tugas-unguided`.
+   */
+  tugasUnguided?: { path: string; terbuka: boolean }
 }
 
 /** A session on the schedule that is not a module (Games, Review Materi): no task, no grade. */

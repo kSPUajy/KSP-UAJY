@@ -11,8 +11,8 @@ import type { Modul, Sesi } from '@/lib/types'
  * one tentor each. The schedule is not weekly — midterms, holidays, and the
  * Games and Review sessions (which are not modules) leave gaps.
  *
- * `berkasUrl` stays empty until a module file exists — the page says the file
- * is on its way rather than showing a dead link.
+ * `berkasUrl` stays empty until a module file exists — the page says it has
+ * not been uploaded rather than showing a dead link.
  */
 export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
   {
