@@ -12,7 +12,7 @@ import { TAGS } from '@/lib/supabase/public'
 /** A password handed back exactly once, for the admin to pass on. */
 export type IssuedPassword = { npm: string; nama: string; password?: string; error?: string }
 
-const ROLE = z.enum(['anggota', 'tentor', 'admin'], { error: 'Pilih peran.' })
+const ROLE = z.enum(['anggota', 'tentor', 'admin', 'kominfo'], { error: 'Pilih peran.' })
 
 const angkatan = z
   .string()

@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { AdminHeading } from '@/components/admin/AdminHeading'
 import { BeritaForm } from '@/components/admin/berita/BeritaForm'
-import { requireProfile } from '@/lib/auth/session'
+import { PENERBIT, requireProfile } from '@/lib/auth/session'
 import { toWib } from '@/lib/format'
 import { pageMetadata } from '@/lib/metadata'
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = pageMetadata({
 })
 
 export default async function AdminBeritaBaruPage() {
-  const profile = await requireProfile('/admin/berita/baru', ['admin'])
+  const profile = await requireProfile('/admin/berita/baru', PENERBIT)
   return (
     <>
       <Link href="/admin/berita" className="text-xs text-muted hover:text-accent-fg">

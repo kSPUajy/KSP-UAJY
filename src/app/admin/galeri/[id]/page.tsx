@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 import { AdminHeading } from '@/components/admin/AdminHeading'
 import { DeleteGaleriForm, GaleriForm } from '@/components/admin/galeri/GaleriForm'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
-import { requireProfile } from '@/lib/auth/session'
+import { PENERBIT, requireProfile } from '@/lib/auth/session'
 import { pageMetadata } from '@/lib/metadata'
 import { createSupabaseServer } from '@/lib/supabase/server'
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function AdminGaleriEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  await requireProfile(`/admin/galeri/${id}`, ['admin'])
+  await requireProfile(`/admin/galeri/${id}`, PENERBIT)
   const db = await createSupabaseServer()
   const { data: item } = await db.from('gallery_items').select('*').eq('id', id).maybeSingle()
   if (!item) notFound()

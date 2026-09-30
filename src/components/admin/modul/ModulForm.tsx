@@ -6,9 +6,10 @@ import { useActionState, useId, useState, useTransition } from 'react'
 import { aturTugasUnguided, hapusModul, mulaiUploadModul, simpanModul } from '@/app/admin/modul/actions'
 import type { JenisBerkas } from '@/app/admin/modul/actions'
 import { AdminForm, FormMessage, SubmitButton, TextArea, TextInput } from '@/components/admin/form'
+import type { AppRole } from '@/lib/auth/session'
 import { cn } from '@/lib/utils'
 
-export type TentorOption = { id: string; nama: string; npm: string; role: 'anggota' | 'tentor' | 'admin' }
+export type TentorOption = { id: string; nama: string; npm: string; role: AppRole }
 
 export type ModulFormValues = {
   id?: string

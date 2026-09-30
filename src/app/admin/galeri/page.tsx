@@ -6,7 +6,7 @@ import { AdminHeading } from '@/components/admin/AdminHeading'
 import { BulkPhotoUpload } from '@/components/admin/galeri/BulkPhotoUpload'
 import { ButtonLink } from '@/components/ui/Button'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
-import { requireProfile } from '@/lib/auth/session'
+import { PENERBIT, requireProfile } from '@/lib/auth/session'
 import { formatTanggalPendek } from '@/lib/format'
 import { pageMetadata } from '@/lib/metadata'
 import { createSupabaseServer } from '@/lib/supabase/server'
@@ -19,7 +19,7 @@ export const metadata: Metadata = pageMetadata({
 })
 
 export default async function AdminGaleriPage() {
-  await requireProfile('/admin/galeri', ['admin'])
+  await requireProfile('/admin/galeri', PENERBIT)
   const db = await createSupabaseServer()
   const { data, error } = await db
     .from('gallery_items')

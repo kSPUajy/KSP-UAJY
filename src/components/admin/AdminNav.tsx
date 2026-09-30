@@ -3,30 +3,36 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import type { AppRole } from '@/lib/auth/session'
 import { cn } from '@/lib/utils'
 
-export const ADMIN_SECTIONS = [
+/** Sections without `roles` are admin-only; Kominfo manages the news and the gallery. */
+const ADMIN_SECTIONS: readonly { href: string; label: string; roles?: readonly AppRole[] }[] = [
   { href: '/admin', label: 'ringkasan' },
   { href: '/admin/anggota', label: 'anggota' },
   { href: '/admin/modul', label: 'modul' },
   { href: '/admin/tentor', label: 'tentor' },
-  { href: '/admin/berita', label: 'berita' },
+  { href: '/admin/berita', label: 'berita', roles: ['admin', 'kominfo'] },
   { href: '/admin/challenge', label: 'challenge' },
-  { href: '/admin/galeri', label: 'galeri' },
+  { href: '/admin/galeri', label: 'galeri', roles: ['admin', 'kominfo'] },
   { href: '/admin/pendaftaran', label: 'pendaftaran' },
   { href: '/admin/masukan', label: 'masukan' },
   { href: '/penilaian', label: 'penilaian' },
-] as const
+]
 
-/** A column of `cd` targets on wide screens, a scrolling tab strip on phones. */
-export function AdminNav() {
+/**
+ * A column of `cd` targets on wide screens, a scrolling tab strip on phones.
+ * Only the sections the role may open are listed; the pages check again.
+ */
+export function AdminNav({ role }: { role: AppRole }) {
   const pathname = usePathname()
+  const sections = ADMIN_SECTIONS.filter((section) => (section.roles ?? ['admin']).includes(role))
   const active = (href: string): boolean => (href === '/admin' ? pathname === href : pathname.startsWith(href))
 
   return (
     <nav aria-label="Panel admin">
       <ul className="flex gap-1 overflow-x-auto border-b-2 border-line-soft pb-2 lg:flex-col lg:gap-0 lg:overflow-visible lg:border-b-0 lg:border-l-2 lg:pb-0">
-        {ADMIN_SECTIONS.map((section) => (
+        {sections.map((section) => (
           <li key={section.href} className="shrink-0">
             <Link
               href={section.href}

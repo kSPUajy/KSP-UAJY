@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 import { commaList, failed, fieldErrors, formValues, requireAdminAction, succeeded } from '@/lib/admin/guard'
+import { PENERBIT } from '@/lib/auth/session'
 import type { AdminFormState } from '@/lib/admin/guard'
 import { mdxProblem } from '@/lib/admin/mdx'
 import { slugify } from '@/lib/format'
@@ -33,7 +34,7 @@ function refresh(): void {
 }
 
 export async function simpanBerita(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
-  const auth = await requireAdminAction()
+  const auth = await requireAdminAction(PENERBIT)
   if (!auth.ok) return auth.state
   const parsed = berita.safeParse(formValues(formData))
   if (!parsed.success) return failed('Periksa isian yang ditandai.', fieldErrors(parsed.error))
@@ -62,7 +63,7 @@ export async function simpanBerita(_previous: AdminFormState, formData: FormData
 }
 
 export async function hapusBerita(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
-  const auth = await requireAdminAction()
+  const auth = await requireAdminAction(PENERBIT)
   if (!auth.ok) return auth.state
   const id = String(formData.get('id') ?? '')
   const { data: row } = await auth.db.from('news_posts').select('slug').eq('id', id).maybeSingle()

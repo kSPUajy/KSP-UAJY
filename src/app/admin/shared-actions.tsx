@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto'
 
 import { MdxContent } from '@/components/mdx/MdxContent'
 import { requireAdminAction } from '@/lib/admin/guard'
+import { PENERBIT } from '@/lib/auth/session'
 import { mdxProblem } from '@/lib/admin/mdx'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 
@@ -18,7 +19,7 @@ const VIDEO_TYPES = { 'video/mp4': 'mp4', 'video/webm': 'webm' } as const
  * components — and sends the result back to the editor.
  */
 export async function pratinjauMdx(source: string): Promise<React.ReactNode> {
-  const auth = await requireAdminAction()
+  const auth = await requireAdminAction(PENERBIT)
   if (!auth.ok) return <p className="text-sm text-fg">{auth.state?.message}</p>
   const problem = await mdxProblem(source)
   if (problem) {
@@ -37,7 +38,7 @@ export async function mulaiUploadGambar(
   contentType: string,
   size: number,
 ): Promise<{ ok: true; path: string; token: string; publicUrl: string } | { ok: false; error: string }> {
-  const auth = await requireAdminAction()
+  const auth = await requireAdminAction(PENERBIT)
   if (!auth.ok) return { ok: false, error: auth.state?.message ?? 'Tidak diizinkan.' }
   if (!FOLDERS.includes(folder)) return { ok: false, error: 'Tujuan upload tidak dikenal.' }
   const extension = IMAGE_TYPES[contentType as keyof typeof IMAGE_TYPES]
@@ -56,7 +57,7 @@ export async function mulaiUploadVideo(
   contentType: string,
   size: number,
 ): Promise<{ ok: true; path: string; token: string; publicUrl: string } | { ok: false; error: string }> {
-  const auth = await requireAdminAction()
+  const auth = await requireAdminAction(PENERBIT)
   if (!auth.ok) return { ok: false, error: auth.state?.message ?? 'Tidak diizinkan.' }
   const extension = VIDEO_TYPES[contentType as keyof typeof VIDEO_TYPES]
   if (!extension) return { ok: false, error: 'Video harus MP4 atau WebM.' }

@@ -3,7 +3,7 @@ import 'server-only'
 import type { z } from 'zod'
 
 import { getSessionProfile } from '@/lib/auth/session'
-import type { SessionProfile } from '@/lib/auth/session'
+import type { AppRole, SessionProfile } from '@/lib/auth/session'
 import { createSupabaseServer } from '@/lib/supabase/server'
 
 /**
@@ -37,16 +37,18 @@ export const succeeded = (message: string, data?: unknown): AdminFormState => ({
  * guarded too, but an action is its own endpoint: anyone can post to it
  * directly, so it never trusts that the page it came from was allowed.
  *
- * The returned client acts as the admin's own session, so row-level
- * security (`is_admin()`) is the second gate on every write.
+ * Admin-only by default; the news and gallery actions also let Kominfo in
+ * (`PENERBIT`). The returned client acts as the caller's own session, so
+ * row-level security (`is_admin()`, `can_publish()`) is the second gate on
+ * every write.
  */
-export async function requireAdminAction(): Promise<
+export async function requireAdminAction(allowed: readonly AppRole[] = ['admin']): Promise<
   { ok: true; profile: SessionProfile; db: Awaited<ReturnType<typeof createSupabaseServer>> } | { ok: false; state: AdminFormState }
 > {
   const profile = await getSessionProfile()
   if (!profile) return { ok: false, state: failed('Sesi berakhir. Masuk lagi, lalu ulangi.') }
   if (profile.mustChangePassword) return { ok: false, state: failed('Ganti password dulu.') }
-  if (profile.role !== 'admin') return { ok: false, state: failed('Hanya admin yang boleh melakukan ini.') }
+  if (!allowed.includes(profile.role)) return { ok: false, state: failed(`Hanya ${allowed.join(' atau ')} yang boleh melakukan ini.`) }
   return { ok: true, profile, db: await createSupabaseServer() }
 }
 

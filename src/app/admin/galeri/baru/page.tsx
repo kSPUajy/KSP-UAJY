@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { AdminHeading } from '@/components/admin/AdminHeading'
 import { GaleriForm } from '@/components/admin/galeri/GaleriForm'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
-import { requireProfile } from '@/lib/auth/session'
+import { PENERBIT, requireProfile } from '@/lib/auth/session'
 import { pageMetadata } from '@/lib/metadata'
 
 export const metadata: Metadata = pageMetadata({
@@ -15,7 +15,7 @@ export const metadata: Metadata = pageMetadata({
 })
 
 export default async function AdminGaleriBaruPage() {
-  await requireProfile('/admin/galeri/baru', ['admin'])
+  await requireProfile('/admin/galeri/baru', PENERBIT)
   return (
     <>
       <Link href="/admin/galeri" className="text-xs text-muted hover:text-accent-fg">

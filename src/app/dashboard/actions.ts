@@ -18,11 +18,13 @@ type Failure = { ok: false; error: string }
 /**
  * The member and the module, or the reason they may not submit. Every
  * action starts here: nothing a browser sends is trusted on its own.
+ * Handing in is for anggota only; admins, tentors and Kominfo never do.
  */
 async function authorise(moduleId: string) {
   const profile = await getSessionProfile()
   if (!profile) return { ok: false, error: 'Sesi berakhir. Masuk lagi, lalu ulangi.' } as const
   if (profile.mustChangePassword) return { ok: false, error: 'Ganti password dulu sebelum mengumpulkan tugas.' } as const
+  if (profile.role !== 'anggota') return { ok: false, error: 'Pengumpulan tugas hanya untuk akun anggota.' } as const
 
   const modul = (await getModules()).find((item) => item.id === moduleId)
   if (!modul) return { ok: false, error: 'Modul tidak ditemukan.' } as const

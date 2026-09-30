@@ -5,7 +5,10 @@ import { cache } from 'react'
 
 import { createSupabaseServer } from '@/lib/supabase/server'
 
-export type AppRole = 'anggota' | 'tentor' | 'admin'
+export type AppRole = 'anggota' | 'tentor' | 'admin' | 'kominfo'
+
+/** Roles that manage the news and the gallery in the admin panel. */
+export const PENERBIT: readonly AppRole[] = ['admin', 'kominfo']
 
 /** What account pages get to know about the visitor — no more. */
 export type SessionProfile = {
@@ -62,7 +65,7 @@ export const signInPath = (next: string): string => `/masuk?next=${encodeURIComp
  */
 export async function requireProfile(
   next: string,
-  allowed: readonly AppRole[] = ['anggota', 'tentor', 'admin'],
+  allowed: readonly AppRole[] = ['anggota', 'tentor', 'admin', 'kominfo'],
 ): Promise<SessionProfile> {
   const profile = await getSessionProfile()
   if (!profile) redirect(signInPath(next))

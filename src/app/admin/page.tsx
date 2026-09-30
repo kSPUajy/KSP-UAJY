@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 import { AdminHeading } from '@/components/admin/AdminHeading'
-import { requireProfile } from '@/lib/auth/session'
+import { PENERBIT, requireProfile } from '@/lib/auth/session'
 import { getModules, getRegistration } from '@/lib/data'
 import { formatTanggal } from '@/lib/format'
 import { pageMetadata } from '@/lib/metadata'
@@ -16,9 +17,10 @@ export const metadata: Metadata = pageMetadata({
   noindex: true,
 })
 
-/** Counts that tell an admin whether anything needs doing this week. */
+/** Counts that tell an admin whether anything needs doing this week. Kominfo starts at the news. */
 export default async function AdminPage() {
-  await requireProfile('/admin', ['admin'])
+  const profile = await requireProfile('/admin', PENERBIT)
+  if (profile.role !== 'admin') redirect('/admin/berita')
   const db = await createSupabaseServer()
 
   const [modules, registration, members, drafts, submissions, feedback] = await Promise.all([
@@ -41,7 +43,7 @@ export default async function AdminPage() {
       href: '/admin/anggota',
       label: 'anggota',
       value: people.filter((person) => person.role === 'anggota').length,
-      note: `${people.filter((person) => person.role !== 'anggota').length} tentor/admin · ${waiting} belum login pertama`,
+      note: `${people.filter((person) => person.role !== 'anggota').length} tentor/admin/kominfo · ${waiting} belum login pertama`,
     },
     {
       href: '/admin/modul',

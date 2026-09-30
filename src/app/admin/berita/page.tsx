@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { AdminHeading } from '@/components/admin/AdminHeading'
 import { Badge } from '@/components/ui/Badge'
 import { ButtonLink } from '@/components/ui/Button'
-import { requireProfile } from '@/lib/auth/session'
+import { PENERBIT, requireProfile } from '@/lib/auth/session'
 import { formatTanggalPendek } from '@/lib/format'
 import { pageMetadata } from '@/lib/metadata'
 import { createSupabaseServer } from '@/lib/supabase/server'
@@ -17,9 +17,9 @@ export const metadata: Metadata = pageMetadata({
 })
 
 export default async function AdminBeritaPage() {
-  await requireProfile('/admin/berita', ['admin'])
+  await requireProfile('/admin/berita', PENERBIT)
   const db = await createSupabaseServer()
-  // The admin's session sees drafts too (RLS: published or is_admin).
+  // The admin's or Kominfo's session sees drafts too (RLS: published or can_publish).
   const { data, error } = await db
     .from('news_posts')
     .select('id, slug, judul, tanggal, kategori, penulis, published')

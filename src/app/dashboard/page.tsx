@@ -13,6 +13,7 @@ import { SectionShell } from '@/components/ui/SectionShell'
 import { StructBlock } from '@/components/ui/StructBlock'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
 import { requireProfile } from '@/lib/auth/session'
+import type { AppRole, SessionProfile } from '@/lib/auth/session'
 import { getModules } from '@/lib/data'
 import { pageMetadata } from '@/lib/metadata'
 import { getMySubmissions } from '@/lib/tugas/data'
@@ -26,12 +27,99 @@ export const metadata: Metadata = pageMetadata({
   noindex: true,
 })
 
+/** What each non-member account comes here to do. */
+const STAFF_INTRO: Record<Exclude<AppRole, 'anggota'>, string> = {
+  admin: 'Kelola situs dari panel admin, dan nilai tugas guided anggota.',
+  tentor: 'Nilai tugas guided anggota di modul yang kamu pegang.',
+  kominfo: 'Kelola berita dan galeri situs dari panel Kominfo.',
+}
+
+/** The way into each account's own work, then the links everyone has. */
+function AccountSection({ profile }: { profile: SessionProfile }) {
+  const member = profile.role === 'anggota'
+  return (
+    <SectionShell accent="lime" tone={member ? 'alt' : 'canvas'} divider={member} labelledBy="akun">
+      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
+        <div>
+          <SectionHeader eyebrow="akun" title="Akunmu" headingId="akun" />
+          <StructBlock
+            className="mt-8"
+            type={member ? 'anggota' : 'pengurus'}
+            name={`npm_${profile.npm}`}
+            label="Akun"
+            fields={[
+              { key: 'nama', value: profile.nama },
+              { key: 'npm', value: profile.npm },
+              { key: 'peran', value: profile.role, kind: 'ident' },
+              ...(profile.angkatan ? [{ key: 'angkatan', value: profile.angkatan }] : []),
+            ]}
+          />
+        </div>
+        <div className="lg:pt-16">
+          <div className="flex flex-wrap gap-3">
+            {profile.role === 'admin' ? (
+              <ButtonLink href="/admin" size="sm">
+                panel admin
+              </ButtonLink>
+            ) : null}
+            {profile.role === 'kominfo' ? (
+              <ButtonLink href="/admin/berita" size="sm">
+                kelola berita &amp; galeri
+              </ButtonLink>
+            ) : null}
+            {profile.role === 'admin' || profile.role === 'tentor' ? (
+              <ButtonLink href="/penilaian" size="sm" variant={profile.role === 'admin' ? 'outline' : 'solid'}>
+                penilaian
+              </ButtonLink>
+            ) : null}
+            <ButtonLink href="/modul" variant="outline" size="sm">
+              lihat modul
+            </ButtonLink>
+            <ButtonLink href="/masuk/ganti-password?next=/dashboard" variant="outline" size="sm">
+              ganti password
+            </ButtonLink>
+            <SignOutButton />
+          </div>
+          {member ? null : (
+            <p className="mt-6 max-w-prose border-l-2 border-accent-fg pl-4 text-[12px] leading-6 text-muted">
+              Pengumpulan tugas guided hanya untuk akun anggota, jadi akun {profile.role} tidak punya daftar tugas di sini.
+            </p>
+          )}
+        </div>
+      </div>
+    </SectionShell>
+  )
+}
+
 /**
- * The member's week: this week's guided task up top, ready to hand in; every
+ * A member's week: this week's guided task up top, ready to hand in; every
  * week below it with its status and grade; the account at the bottom.
+ *
+ * Handing in is for anggota alone. Admins, tentors and Kominfo get a short
+ * page that points at their own work instead (the actions refuse them too).
  */
 export default async function DashboardPage() {
   const profile = await requireProfile('/dashboard')
+
+  if (profile.role !== 'anggota') {
+    return (
+      <>
+        <PageHeader
+          accent="lime"
+          command={`whoami  # ${profile.npm}`}
+          eyebrow="dashboard"
+          title={`Halo, ${profile.nama.split(' ')[0]}`}
+          description={STAFF_INTRO[profile.role]}
+          facts={[
+            { label: 'peran', value: profile.role },
+            { label: 'online', value: <OnlineCount /> },
+          ]}
+        />
+        <AccountSection profile={profile} />
+      </>
+    )
+  }
+
   const [modules, submissions] = await Promise.all([getModules(), getMySubmissions(profile.id)])
 
   const items = tugasItems(modules, submissions)
@@ -101,44 +189,7 @@ export default async function DashboardPage() {
         </div>
       </SectionShell>
 
-      <SectionShell accent="lime" tone="alt" labelledBy="akun">
-        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
-          <div>
-            <SectionHeader eyebrow="akun" title="Akunmu" headingId="akun" />
-            <StructBlock
-              className="mt-8"
-              type="anggota"
-              name={`npm_${profile.npm}`}
-              label="Akun"
-              fields={[
-                { key: 'nama', value: profile.nama },
-                { key: 'npm', value: profile.npm },
-                { key: 'peran', value: profile.role, kind: 'ident' },
-                ...(profile.angkatan ? [{ key: 'angkatan', value: profile.angkatan }] : []),
-              ]}
-            />
-          </div>
-          <div className="flex flex-wrap gap-3 lg:pt-16">
-            {profile.role === 'admin' ? (
-              <ButtonLink href="/admin" size="sm">
-                panel admin
-              </ButtonLink>
-            ) : null}
-            {profile.role !== 'anggota' ? (
-              <ButtonLink href="/penilaian" size="sm" variant={profile.role === 'admin' ? 'outline' : 'solid'}>
-                penilaian
-              </ButtonLink>
-            ) : null}
-            <ButtonLink href="/modul" variant="outline" size="sm">
-              lihat modul
-            </ButtonLink>
-            <ButtonLink href="/masuk/ganti-password?next=/dashboard" variant="outline" size="sm">
-              ganti password
-            </ButtonLink>
-            <SignOutButton />
-          </div>
-        </div>
-      </SectionShell>
+      <AccountSection profile={profile} />
     </>
   )
 }

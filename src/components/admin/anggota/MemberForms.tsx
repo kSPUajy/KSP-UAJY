@@ -8,10 +8,12 @@ import { IssuedPasswords } from '@/components/admin/anggota/IssuedPasswords'
 import { AdminForm, FormMessage, Select, SubmitButton, TextArea, TextInput } from '@/components/admin/form'
 import { TentorProfileForm } from '@/components/admin/tentor/TentorProfileForm'
 import type { TentorProfileValues } from '@/components/admin/tentor/TentorProfileForm'
+import type { AppRole } from '@/lib/auth/session'
 
 const ROLE_OPTIONS = [
   { value: 'anggota', label: 'anggota' },
   { value: 'tentor', label: 'tentor' },
+  { value: 'kominfo', label: 'kominfo' },
   { value: 'admin', label: 'admin' },
 ] as const
 
@@ -80,7 +82,7 @@ export type MemberRowData = {
   npm: string
   nama: string
   angkatan: number | null
-  role: 'anggota' | 'tentor' | 'admin'
+  role: AppRole
   mustChangePassword: boolean
 }
 

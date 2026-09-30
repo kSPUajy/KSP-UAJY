@@ -2,7 +2,7 @@
  * Account administration from the command line — for the very first admin,
  * who cannot use the admin panel before they exist, and for emergencies.
  *
- *   npm run akun -- buat  --npm 220711234 --nama "Nama Lengkap" [--peran admin|tentor|anggota] [--angkatan 2022] [--password <awal>]
+ *   npm run akun -- buat  --npm 220711234 --nama "Nama Lengkap" [--peran admin|kominfo|tentor|anggota] [--angkatan 2022] [--password <awal>]
  *   npm run akun -- reset --npm 220711234
  *
  * Prints a one-time password. The member must replace it on first sign-in.
@@ -13,7 +13,7 @@
 import { createAccount, resetPassword } from '../src/lib/auth/accounts'
 import type { AppRole } from '../src/lib/auth/session'
 
-const ROLES: readonly AppRole[] = ['anggota', 'tentor', 'admin']
+const ROLES: readonly AppRole[] = ['anggota', 'tentor', 'admin', 'kominfo']
 
 function flag(name: string): string | undefined {
   const args = process.argv.slice(3)
@@ -23,7 +23,7 @@ function flag(name: string): string | undefined {
 
 function usage(): never {
   console.error(`Pemakaian:
-  npm run akun -- buat  --npm <NPM> --nama "<Nama Lengkap>" [--peran anggota|tentor|admin] [--angkatan <tahun>] [--password <awal>]
+  npm run akun -- buat  --npm <NPM> --nama "<Nama Lengkap>" [--peran anggota|tentor|kominfo|admin] [--angkatan <tahun>] [--password <awal>]
   npm run akun -- reset --npm <NPM>`)
   process.exit(1)
 }

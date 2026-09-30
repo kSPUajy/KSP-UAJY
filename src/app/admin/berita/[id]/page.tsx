@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { AdminHeading } from '@/components/admin/AdminHeading'
 import { BeritaForm, DeleteBeritaForm } from '@/components/admin/berita/BeritaForm'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
-import { requireProfile } from '@/lib/auth/session'
+import { PENERBIT, requireProfile } from '@/lib/auth/session'
 import { pageMetadata } from '@/lib/metadata'
 import { createSupabaseServer } from '@/lib/supabase/server'
 
@@ -18,7 +18,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function AdminBeritaEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  await requireProfile(`/admin/berita/${id}`, ['admin'])
+  await requireProfile(`/admin/berita/${id}`, PENERBIT)
   const db = await createSupabaseServer()
   const { data: post } = await db.from('news_posts').select('*').eq('id', id).maybeSingle()
   if (!post) notFound()

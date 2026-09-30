@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 import { failed, fieldErrors, formValues, requireAdminAction, succeeded } from '@/lib/admin/guard'
+import { PENERBIT } from '@/lib/auth/session'
 import type { AdminFormState } from '@/lib/admin/guard'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { TAGS } from '@/lib/supabase/public'
@@ -41,7 +42,7 @@ const newId = (): string => `g-${randomUUID().slice(0, 8)}`
 
 /** Create or update one item from the full form. */
 export async function simpanGaleri(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
-  const auth = await requireAdminAction()
+  const auth = await requireAdminAction(PENERBIT)
   if (!auth.ok) return auth.state
   const parsed = item.safeParse(formValues(formData))
   if (!parsed.success) return failed('Periksa isian yang ditandai.', fieldErrors(parsed.error))
@@ -73,7 +74,7 @@ const quick = z.object({
  * admin can write a better one later.
  */
 export async function tambahFotoGaleri(input: z.input<typeof quick>): Promise<{ ok: true } | { ok: false; error: string }> {
-  const auth = await requireAdminAction()
+  const auth = await requireAdminAction(PENERBIT)
   if (!auth.ok) return { ok: false, error: auth.state?.message ?? 'Tidak diizinkan.' }
   const parsed = quick.safeParse(input)
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Data foto tidak lengkap.' }
@@ -102,7 +103,7 @@ function ownObject(url: string | null): { bucket: string; path: string } | null 
 }
 
 export async function hapusGaleri(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
-  const auth = await requireAdminAction()
+  const auth = await requireAdminAction(PENERBIT)
   if (!auth.ok) return auth.state
   const id = String(formData.get('id') ?? '')
   if (formData.get('yakin') !== 'on') return failed('Centang konfirmasi dulu.')

@@ -19,7 +19,7 @@ export const metadata: Metadata = pageMetadata({
   noindex: true,
 })
 
-const ROLE_ORDER = { admin: 0, tentor: 1, anggota: 2 } as const
+const ROLE_ORDER = { admin: 0, kominfo: 1, tentor: 2, anggota: 3 } as const
 
 /**
  * The account of whoever built this site. Its row is an unreadable cipher —
