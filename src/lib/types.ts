@@ -335,18 +335,18 @@ export type AboutInfo = {
  * semester — which module is this week's, which are open, which are still
  * locked — is derived from `rilis` and the clock, never stored.
  *
- * The week runs Monday to Sunday: classes on Monday and Tuesday, the module
- * and its guided task released on Wednesday at 00.00 WIB. The task is due
- * at 19.00 when the next meeting starts, usually the next Monday.
+ * The module and its guided task open on the Wednesday before its class
+ * week, at 00.00 WIB, so members study it before class. Classes are the
+ * Monday and Tuesday after; the task is due when Monday's class starts,
+ * 19.00, since handing it in counts towards attendance.
  */
 export type Modul = {
   id: string
   minggu: number
   judul: string
   /**
-   * ISO date, `YYYY-MM-DD`: the day the module is released, at 00.00 WIB. A
-   * Wednesday, after the week's Monday and Tuesday classes. Handing in the
-   * guided task opens then.
+   * ISO date, `YYYY-MM-DD`: the day the module opens, at 00.00 WIB. The
+   * Wednesday before its class week. Handing in the guided task opens then.
    */
   rilis: string
   /** Tentor responsible for teaching it. Plain names: not every tentor has a profile page. */
@@ -358,7 +358,7 @@ export type Modul = {
   berkasUrl?: string
   /** Instructions for the week's guided task. Empty when there are none to add. */
   tugasDeskripsi: string
-  /** Guided-task deadline, WIB wall clock. Absent means `tenggatBawaan`: the next meeting, 19.00. */
+  /** Guided-task deadline, WIB wall clock. Absent means `tenggatBawaan`: the class Monday, 19.00. */
   tenggat?: string
   /** Link to the guided task's file (PDF or ZIP). Public, like the module file. */
   tugasGuidedUrl?: string
@@ -381,19 +381,18 @@ export type Sesi = {
   ringkasan: string
 }
 
-/** `selesai`: an earlier week. `berjalan`: this week's. `terkunci`: its week has not started. */
+/** `selesai`: an earlier week. `berjalan`: this week's (from its release). `terkunci`: not open yet. */
 export type ModulStatus = 'selesai' | 'berjalan' | 'terkunci'
 
 export type ModulWithStatus = Modul & {
   status: ModulStatus
-  /** First day of the module's week, `YYYY-MM-DD`: the Monday of its first class. */
+  /** The module's class week starts, `YYYY-MM-DD`: the Monday after its release. What timelines show. */
   mulai: string
-  /** Last day of the module's week, `YYYY-MM-DD`: its Sunday, or sooner when the next week starts. */
+  /** The class week's Sunday, `YYYY-MM-DD`. */
   sampai: string
   /**
-   * The default guided-task deadline, WIB wall clock: 19.00 on the day the
-   * next meeting starts (the next module's Monday or session), after any
-   * break. The task counts towards attendance at that meeting.
+   * The default guided-task deadline, WIB wall clock: 19.00 on the class
+   * Monday. The task counts towards attendance at that class.
    */
   tenggatBawaan: string
 }

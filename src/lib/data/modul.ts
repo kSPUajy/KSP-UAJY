@@ -6,9 +6,9 @@ import type { Modul, Sesi } from '@/lib/types'
  * The semester's class modules, one per week, from the module schedule the
  * coordinators keep.
  *
- * `rilis` is the Wednesday each module is released, after its Monday and
- * Tuesday classes from the tentoring schedule ("Jadwal Materi Tentoring KSP
- * C"), one tentor each. The module's week starts on that Monday. The schedule is not weekly — midterms, holidays, and the
+ * `rilis` is the Wednesday each module opens, before its Monday and Tuesday
+ * classes from the tentoring schedule ("Jadwal Materi Tentoring KSP C"), one
+ * tentor each. The class week is the Monday after. The schedule is not weekly — midterms, holidays, and the
  * Games and Review sessions (which are not modules) leave gaps.
  *
  * `berkasUrl` stays empty until a module file exists — the page says it has
@@ -19,7 +19,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-01',
     minggu: 1,
     judul: 'Flowchart 1',
-    rilis: '2026-09-23',
+    rilis: '2026-09-16',
     tentorPj: ['Sabrina', 'Eldha'],
     koordinator: 'Michelle',
     ringkasan:
@@ -29,7 +29,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-02',
     minggu: 2,
     judul: 'Flowchart 2',
-    rilis: '2026-09-30',
+    rilis: '2026-09-23',
     tentorPj: ['Sabrina', 'Eldha'],
     koordinator: 'Michelle',
     ringkasan:
@@ -39,7 +39,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-03',
     minggu: 3,
     judul: 'Tipe Data',
-    rilis: '2026-10-07',
+    rilis: '2026-09-30',
     tentorPj: ['Boby', 'Kley'],
     koordinator: 'Kley',
     ringkasan:
@@ -49,7 +49,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-04',
     minggu: 4,
     judul: 'Pemilihan',
-    rilis: '2026-11-04',
+    rilis: '2026-10-28',
     tentorPj: ['Dwi', 'Andrew'],
     koordinator: 'Kley',
     ringkasan: 'if, else if, else, dan switch — memilih jalur program berdasarkan kondisi.',
@@ -58,7 +58,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-05',
     minggu: 5,
     judul: 'Perulangan 1',
-    rilis: '2026-11-11',
+    rilis: '2026-11-04',
     tentorPj: ['Ardhya', 'Beto'],
     koordinator: 'Rena',
     ringkasan: 'for dan while: menghitung, menjumlahkan, dan menentukan kapan sebuah perulangan berhenti.',
@@ -67,7 +67,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-06',
     minggu: 6,
     judul: 'Perulangan 2',
-    rilis: '2026-11-18',
+    rilis: '2026-11-11',
     tentorPj: ['Doni', 'Rena'],
     koordinator: 'Rena',
     ringkasan: 'do-while, perulangan bersarang, serta break dan continue.',
@@ -76,7 +76,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-07',
     minggu: 7,
     judul: 'Prosedur 1',
-    rilis: '2026-11-25',
+    rilis: '2026-11-18',
     tentorPj: ['Richard', 'Petra'],
     koordinator: 'Richard',
     ringkasan: 'Memecah program menjadi prosedur: deklarasi, pemanggilan, dan parameter masukan.',
@@ -85,7 +85,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-08',
     minggu: 8,
     judul: 'Prosedur 2',
-    rilis: '2027-03-03',
+    rilis: '2027-02-24',
     tentorPj: ['Adit', 'Tristan'],
     koordinator: 'Richard',
     ringkasan:
@@ -95,7 +95,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-09',
     minggu: 9,
     judul: 'Fungsi',
-    rilis: '2027-03-17',
+    rilis: '2027-03-10',
     tentorPj: ['Nathan', 'Stella'],
     koordinator: 'Michelle',
     ringkasan: 'Fungsi yang mengembalikan nilai, return, dan kapan memilih fungsi daripada prosedur.',
@@ -104,7 +104,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-10',
     minggu: 10,
     judul: 'Array',
-    rilis: '2027-04-28',
+    rilis: '2027-04-21',
     tentorPj: ['Albert', 'Nadya'],
     koordinator: 'Audrey',
     ringkasan: 'Array satu dimensi: indeks, perulangan atas array, pencarian, dan nilai terbesar atau terkecil.',
@@ -113,7 +113,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-11',
     minggu: 11,
     judul: 'Record',
-    rilis: '2027-05-05',
+    rilis: '2027-04-28',
     tentorPj: ['Jolie', 'Epun'],
     koordinator: 'Audrey',
     ringkasan: 'struct sebagai record: mengelompokkan data yang saling berkaitan dan mengakses tiap field-nya.',
@@ -122,7 +122,7 @@ export const modulSources: readonly Omit<Modul, 'tugasDeskripsi'>[] = [
     id: 'mod-12',
     minggu: 12,
     judul: 'Array of Record',
-    rilis: '2027-05-19',
+    rilis: '2027-05-12',
     tentorPj: ['Adit'],
     // One session only, on the Tuesday; due that Sunday.
     tenggat: '2027-05-23T23:59',

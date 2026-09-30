@@ -4,7 +4,8 @@ import { aboutInfo } from '@/lib/data/tentang'
 import { joinInfo } from '@/lib/data/gabung'
 import { members } from '@/lib/data/members'
 import { driftTokens, tickerTokens } from '@/lib/data/motifs'
-import { addDays, deadlineToMs, mondayOf, releaseToMs, slugify } from '@/lib/format'
+import { deadlineToMs, releaseToMs, slugify } from '@/lib/format'
+import { withModulStatus, withSesiStatus } from '@/lib/jadwal'
 import { pixelPortrait } from '@/lib/pixel-portrait'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { TAGS, publicDb } from '@/lib/supabase/public'
@@ -30,7 +31,6 @@ import type {
   LeaderboardRow,
   Member,
   MemberNode,
-  ModulStatus,
   ModulWithStatus,
   NewsPost,
   NewsPostMeta,
@@ -474,59 +474,27 @@ export async function getAboutInfo(): Promise<AboutInfo> {
 
 // ------------------------------------------------------------------ modul ---
 
-/** Midnight WIB at the start of an ISO date. */
-const startOfDayMs = (iso: string): number => deadlineToMs(`${iso}T00:00`)
-
 /**
- * The semester's modules in order, each with where it stands right now.
- *
- * A module's week runs Monday to Sunday: Monday and Tuesday classes, the
- * module released on Wednesday (`rilis`). Its guided task is due at 19.00
- * on the day of the next meeting: the next module's Monday or the next
- * session's start, so a break such as midterms moves it to the first class
- * after the break.
- * The week is cut short by the next module's week or the module's own
- * deadline, if either comes sooner. The schedule has long breaks (midterms,
- * holidays, sessions that are not modules), and between modules nothing is
- * "this week's". Pages that show this regenerate hourly.
+ * The semester's modules in order, each with where it stands right now (see
+ * `withModulStatus`: a module opens on the Wednesday before its class week
+ * and its guided task is due when that class starts). Pages that show this
+ * regenerate hourly.
  */
 export async function getModules(now = Date.now()): Promise<ModulWithStatus[]> {
-  const [{ data, error }, sesi] = await Promise.all([
-    publicDb(TAGS.modul).from('modules').select('*').order('minggu', { ascending: true }),
-    publicDb(TAGS.modul).from('sesi').select('rilis'),
-  ])
+  const { data, error } = await publicDb(TAGS.modul).from('modules').select('*').order('minggu', { ascending: true })
   if (error) throw new Error(`Gagal membaca modul: ${error.message}`)
-  if (sesi.error) throw new Error(`Gagal membaca sesi: ${sesi.error.message}`)
-  const byWeek = data.map(toModul)
-  // The first day of every meeting on the schedule: each module's Monday, each session's start.
-  const meetings = [...byWeek.map((modul) => mondayOf(modul.rilis)), ...sesi.data.map((row) => row.rilis)].sort()
-  return byWeek.map((modul, index) => {
-    const next = byWeek[index + 1]
-    const mulai = mondayOf(modul.rilis)
-    // Due when the next meeting starts; the last module, with none after it, a week on.
-    const tenggatBawaan = `${meetings.find((day) => day > modul.rilis) ?? addDays(mulai, 7)}T19:00`
-    // One week, cut short by the next module's week or by the module's own deadline.
-    const cutoffs = [
-      addDays(mulai, 7),
-      next ? mondayOf(next.rilis) : undefined,
-      modul.tenggat ? addDays(modul.tenggat.slice(0, 10), 1) : undefined,
-    ]
-    const end = cutoffs.filter((day): day is string => Boolean(day)).sort()[0] ?? addDays(mulai, 7)
-    const status: ModulStatus = now < startOfDayMs(mulai) ? 'terkunci' : now < startOfDayMs(end) ? 'berjalan' : 'selesai'
-    return { ...modul, tentorPj: [...modul.tentorPj], status, mulai, sampai: addDays(end, -1), tenggatBawaan }
-  })
+  return withModulStatus(data.map(toModul), now)
 }
 
 /** Sessions that are not modules (Games, Review Materi), each running one week from its start. */
 export async function getSesi(now = Date.now()): Promise<SesiWithStatus[]> {
-  const { data, error } = await publicDb(TAGS.modul).from('sesi').select('*').order('rilis', { ascending: true })
-  if (error) throw new Error(`Gagal membaca sesi: ${error.message}`)
-  return data.map(toSesi).map((sesi) => {
-    const end = addDays(sesi.rilis, 7)
-    const status: ModulStatus =
-      now < startOfDayMs(sesi.rilis) ? 'terkunci' : now < startOfDayMs(end) ? 'berjalan' : 'selesai'
-    return { ...sesi, status, mulai: sesi.rilis, sampai: addDays(end, -1) }
-  })
+  const [sesi, modules] = await Promise.all([
+    publicDb(TAGS.modul).from('sesi').select('*').order('rilis', { ascending: true }),
+    publicDb(TAGS.modul).from('modules').select('rilis'),
+  ])
+  if (sesi.error) throw new Error(`Gagal membaca sesi: ${sesi.error.message}`)
+  if (modules.error) throw new Error(`Gagal membaca modul: ${modules.error.message}`)
+  return withSesiStatus(sesi.data.map(toSesi), modules.data.map((row) => row.rilis), now)
 }
 
 /**

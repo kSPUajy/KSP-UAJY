@@ -26,9 +26,9 @@ export function displayName(fileName: string): string {
 
 /**
  * The deadline, as a WIB wall-clock time: the module's own `tenggat` when an
- * admin set one, otherwise 19.00 when the next meeting starts (worked out
- * from the schedule by `getModules`). The guided task counts towards
- * attendance, so it is due before members walk into that class.
+ * admin set one, otherwise 19.00 on its class Monday (`tenggatBawaan`). The
+ * guided task counts towards attendance, so it is due before members walk
+ * into that class.
  */
 export function effectiveDeadline(modul: { tenggat?: string; tenggatBawaan: string }): string {
   return modul.tenggat ?? modul.tenggatBawaan

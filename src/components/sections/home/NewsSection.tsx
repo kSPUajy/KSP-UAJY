@@ -57,13 +57,21 @@ function briefs({
 }: Omit<NewsSectionProps, 'index' | 'posts'>): Brief[] {
   const running = schedule.find((entry) => entry.status === 'berjalan')
   const upcoming = schedule.find((entry) => entry.status === 'terkunci')
+  // A module is current from the Wednesday it opens, before its class.
   const kelas: Brief = running
-    ? {
-        label: 'kelas minggu ini',
-        value: running.jenis === 'modul' ? `M${pad2(running.minggu)} ${running.judul}` : running.judul,
-        note: `sampai ${formatTanggalPendek(running.sampai)}`,
-        href: '/modul',
-      }
+    ? running.jenis === 'modul'
+      ? {
+          label: 'modul minggu ini',
+          value: `M${pad2(running.minggu)} ${running.judul}`,
+          note: `kelas Senin, ${formatTanggalPendek(running.mulai)}`,
+          href: '/modul',
+        }
+      : {
+          label: 'kelas minggu ini',
+          value: running.judul,
+          note: `sampai ${formatTanggalPendek(running.sampai)}`,
+          href: '/modul',
+        }
     : {
         label: 'kelas',
         value: 'sedang libur',
