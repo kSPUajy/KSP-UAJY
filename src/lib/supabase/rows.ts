@@ -58,7 +58,7 @@ export function toModul(row: ModuleRow): Modul {
   }
 }
 
-export const NEWS_META_COLUMNS = 'id, slug, judul, tanggal, kategori, cover, excerpt, penulis, tags' as const
+export const NEWS_META_COLUMNS = 'id, slug, judul, tanggal, kategori, cover, excerpt, penulis, tags, berlaku_sampai' as const
 
 export function toNewsMeta(row: Omit<NewsRow, 'body_mdx' | 'published' | 'updated_at'>): NewsPostMeta {
   return {
@@ -71,6 +71,7 @@ export function toNewsMeta(row: Omit<NewsRow, 'body_mdx' | 'published' | 'update
     excerpt: row.excerpt,
     penulis: row.penulis,
     tags: row.tags,
+    berlakuSampai: row.berlaku_sampai,
   }
 }
 

@@ -26,6 +26,11 @@ const berita = z.object({
   tags: z.string().optional().transform(commaList),
   body_mdx: z.string().min(1, 'Isi berita wajib diisi.'),
   published: z.string().optional().transform((value) => value === 'on'),
+  berlaku_sampai: z
+    .string()
+    .optional()
+    .transform((value) => value || null)
+    .refine((value) => value === null || /^\d{4}-\d{2}-\d{2}$/.test(value), 'Isi tanggal, atau kosongkan.'),
 })
 
 function refresh(): void {
@@ -47,7 +52,8 @@ export async function simpanBerita(_previous: AdminFormState, formData: FormData
   if (problem) return failed('Isi berita tidak bisa ditampilkan.', { body_mdx: problem })
 
   const creating = !id
-  const row = { ...fields, slug }
+  // Only announcements expire; any other story keeps no end date.
+  const row = { ...fields, slug, berlaku_sampai: fields.kategori === 'pengumuman' ? fields.berlaku_sampai : null }
   const { error } = creating
     ? await auth.db.from('news_posts').insert({ id: `n-${randomUUID().slice(0, 8)}`, ...row })
     : await auth.db.from('news_posts').update(row).eq('id', id)

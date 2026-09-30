@@ -20,6 +20,7 @@ export type BeritaFormValues = {
   tags?: string[]
   bodyMdx?: string
   published?: boolean
+  berlakuSampai?: string | null
 }
 
 export function BeritaForm({ initial }: { initial: BeritaFormValues }) {
@@ -53,6 +54,16 @@ export function BeritaForm({ initial }: { initial: BeritaFormValues }) {
           error={error('kategori')}
         />
       </div>
+      <TextInput
+        id={`${uid}-berlaku`}
+        name="berlaku_sampai"
+        label="berlaku sampai (khusus pengumuman)"
+        type="date"
+        defaultValue={initial.berlakuSampai ?? ''}
+        error={error('berlaku_sampai')}
+        hint="Sampai tanggal ini pengumuman tampil paling depan di beranda. Setelahnya hilang dari beranda, tapi tetap ada di arsip berita. Kosongkan kalau tidak ada batas: pengumuman ikut diacak seperti berita lain."
+        className="sm:max-w-md"
+      />
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <TextInput id={`${uid}-penulis`} name="penulis" label="penulis" defaultValue={initial.penulis} required error={error('penulis')} hint="Nama persis tentor/pengurus akan tertaut ke profilnya." />
         <TextInput id={`${uid}-tags`} name="tags" label="tag" defaultValue={initial.tags?.join(', ')} hint="Pisahkan dengan koma. Tag “pendaftaran” menandai pengumuman pendaftaran." />

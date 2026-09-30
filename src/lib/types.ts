@@ -204,6 +204,12 @@ export type NewsPost = {
   /** Raw MDX, loaded from `src/content/news/<slug>.mdx`. */
   bodyMdx: string
   tags: string[]
+  /**
+   * An announcement's last valid day (WIB, inclusive): it leads the home
+   * page until then, and is left off it afterwards. Null for no end, and
+   * always null outside `pengumuman`.
+   */
+  berlakuSampai: string | null
 }
 
 export type NewsPostMeta = Omit<NewsPost, 'bodyMdx'>

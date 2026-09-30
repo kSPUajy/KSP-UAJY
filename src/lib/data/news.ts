@@ -13,7 +13,8 @@ import type { NewsPost } from '@/lib/types'
  * Covers are CC0 photos found through Openverse, cropped to 1200 × 675 and
  * stored in the `media` bucket; the line above each says where it came from.
  */
-export type NewsSource = Omit<NewsPost, 'bodyMdx'>
+/** `berlakuSampai` is not seeded: announcement end dates are set in the migrations and the panel. */
+export type NewsSource = Omit<NewsPost, 'bodyMdx' | 'berlakuSampai'>
 
 const TIM = 'Tim KSP'
 

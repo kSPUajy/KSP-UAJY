@@ -58,6 +58,7 @@ export default async function AdminBeritaEditPage({ params }: { params: Promise<
             tags: post.tags,
             bodyMdx: post.body_mdx,
             published: post.published,
+            berlakuSampai: post.berlaku_sampai,
           }}
         />
       </div>

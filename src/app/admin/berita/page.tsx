@@ -5,7 +5,7 @@ import { AdminHeading } from '@/components/admin/AdminHeading'
 import { Badge } from '@/components/ui/Badge'
 import { ButtonLink } from '@/components/ui/Button'
 import { PENERBIT, requireProfile } from '@/lib/auth/session'
-import { formatTanggalPendek } from '@/lib/format'
+import { formatTanggalPendek, toWib } from '@/lib/format'
 import { pageMetadata } from '@/lib/metadata'
 import { createSupabaseServer } from '@/lib/supabase/server'
 
@@ -22,9 +22,10 @@ export default async function AdminBeritaPage() {
   // The admin's or Kominfo's session sees drafts too (RLS: published or can_publish).
   const { data, error } = await db
     .from('news_posts')
-    .select('id, slug, judul, tanggal, kategori, penulis, published')
+    .select('id, slug, judul, tanggal, kategori, penulis, published, berlaku_sampai')
     .order('tanggal', { ascending: false })
   if (error) throw new Error(`Gagal membaca berita: ${error.message}`)
+  const today = toWib(new Date().toISOString()).slice(0, 10)
 
   return (
     <>
@@ -49,7 +50,15 @@ export default async function AdminBeritaPage() {
               <span className="col-start-1 row-start-2 min-w-0 truncate text-sm font-bold text-fg sm:col-start-auto sm:row-start-auto">
                 {post.judul}
               </span>
-              <span className="text-[11px] text-muted">{post.kategori}</span>
+              <span className="text-[11px] text-muted">
+                {post.kategori}
+                {/* An announcement's standing on the home page. */}
+                {post.kategori === 'pengumuman' && post.berlaku_sampai
+                  ? post.berlaku_sampai >= today
+                    ? ` · di depan s/d ${formatTanggalPendek(post.berlaku_sampai)}`
+                    : ' · sudah lewat'
+                  : null}
+              </span>
               <Badge size="sm" variant={post.published ? 'ghost' : 'solid'} accent={post.published ? undefined : 'amber'}>
                 {post.published ? 'terbit' : 'draf'}
               </Badge>

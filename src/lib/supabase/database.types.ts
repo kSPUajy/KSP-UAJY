@@ -217,6 +217,7 @@ export type Database = {
       }
       news_posts: {
         Row: {
+          berlaku_sampai: string | null
           body_mdx: string
           cover: string
           excerpt: string
@@ -231,6 +232,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          berlaku_sampai?: string | null
           body_mdx: string
           cover: string
           excerpt: string
@@ -245,6 +247,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          berlaku_sampai?: string | null
           body_mdx?: string
           cover?: string
           excerpt?: string
