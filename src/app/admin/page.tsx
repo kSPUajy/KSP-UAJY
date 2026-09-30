@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation'
 import { AdminHeading } from '@/components/admin/AdminHeading'
 import { PENERBIT, requireProfile } from '@/lib/auth/session'
 import { getModules, getRegistration } from '@/lib/data'
-import { formatTanggal } from '@/lib/format'
 import { pageMetadata } from '@/lib/metadata'
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { pad2 } from '@/lib/utils'
@@ -57,8 +56,11 @@ export default async function AdminPage() {
     {
       href: '/admin/pendaftaran',
       label: 'pendaftaran',
-      value: registration.status === 'buka' ? 'buka' : registration.status === 'segera' ? 'segera' : 'tutup',
-      note: registration.tutup ? `gelombang terakhir tutup ${formatTanggal(registration.tutup)}` : 'belum ada gelombang',
+      value: registration.open.length > 0 ? `${registration.open.length} buka` : 'tutup',
+      note:
+        registration.open.length > 0
+          ? registration.open.map((track) => track.nama).join(', ')
+          : 'tidak ada pendaftaran yang sedang dibuka',
     },
   ]
 

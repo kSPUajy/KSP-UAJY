@@ -48,7 +48,7 @@ export function JoinCta({ index, info, registration }: JoinCtaProps) {
 
           <RegistrationStatusLine registration={registration} className="mt-8 max-w-prose" />
 
-          <div className="mt-6 flex flex-col gap-4 sm:flex-row">
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
             <RegisterButton registration={registration} />
             <ButtonLink href="/gabung" variant="outline" size="lg">
               cara bergabung

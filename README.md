@@ -60,7 +60,7 @@ src/
     types.ts            model konten
     metadata.ts         metadata per halaman (title, canonical, Open Graph)
     og.tsx              generator kartu Open Graph
-  site.config.ts        nama, tagline, logo, URL, formulir pendaftaran, navigasi
+  site.config.ts        nama, tagline, logo, URL, navigasi
   assets/fonts/         TTF untuk gambar OG (lisensi OFL ada di sebelahnya)
 scripts/                pemeriksa konten (verify-*), generator seed, helper db
 supabase/
@@ -102,7 +102,7 @@ Definisi lengkapnya ada di `src/lib/types.ts`. Semua field wajib kecuali yang di
 | Cara bergabung (`JoinInfo`) | `lib/data/gabung.ts` | — | `/gabung`, hero dan bagian penutup beranda |
 | Tentang (`AboutInfo`) | `lib/data/tentang.ts` | — | `/tentang` |
 | Modul kelas (`Modul`) | tabel `modules` | tautan `berkas_url` | `/modul`, hero beranda |
-| Gelombang pendaftaran | tabel `registration_rounds` | — | hero, `/gabung` |
+| Pendaftaran per kelas | tabel `registration_tracks` | — | hero, kartu kelas dan bagian penutup beranda, `/gabung` |
 | Angka klub | `lib/data/stats.ts` | — | beranda, `/tentang` |
 
 Konvensi yang berlaku di semua jenis:
@@ -154,17 +154,16 @@ Status setiap modul dihitung dari jam, jadi tidak perlu diubah tiap minggu:
 
 `/modul` diregenerasi setiap jam, jadi pergantian minggu tampil paling lambat satu jam setelah Senin pukul 00.00 WIB. Setiap minggu juga punya anchor sendiri, misalnya `/modul#minggu-02`.
 
-### Membuka gelombang pendaftaran baru
+### Membuka dan menutup pendaftaran
 
-Tambahkan baris baru di tabel `registration_rounds` dengan `buka` dan `tutup` (waktu WIB). Gelombang yang dipakai adalah yang `buka`-nya paling baru; gelombang lama tetap tersimpan sebagai riwayat. Lalu terbitkan pengumumannya sebagai berita bertag `pendaftaran`. Status pendaftaran dihitung dari jam:
+KSP punya empat kelas, sama dengan kartu di bagian "Bukan cuma C" beranda: Bahasa C, Blockchain, Machine Learning, dan Java. Pendaftaran tiap kelas diatur di `/admin/pendaftaran` dengan satu saklar dan satu tautan formulir. Tidak ada tanggal: kelas tetap dibuka sampai saklarnya dimatikan. Isi tabelnya ada di `registration_tracks`.
 
-| Status | Kapan | Tombol utama di hero, bagian gabung beranda, dan `/gabung` |
-| --- | --- | --- |
-| `segera` | sebelum `buka` | "coba challenge dulu", ditambah tanggal pembukaan |
-| `buka` | `buka` sampai `tutup` | "daftar sekarang", menuju `siteConfig.joinFormUrl` |
-| `tutup` | setelah `tutup` | "coba challenge dulu", ditambah keterangan bahwa gelombang ini sudah ditutup |
+| Keadaan | Yang tampil di hero, kartu kelas, bagian gabung beranda, dan `/gabung` |
+| --- | --- |
+| Ada kelas yang dibuka | "Pendaftaran kelas … sedang dibuka", dan tombol "daftar kelas …" untuk tiap kelas yang tautannya diisi. Kartunya berwarna, bertanda "daftar dibuka", dan menuju `/gabung`. |
+| Tidak ada yang dibuka | "Tidak ada pendaftaran yang sedang dibuka", dan tombol utama berganti menjadi "coba challenge dulu" |
 
-Beranda dan `/gabung` diregenerasi setiap jam, jadi perubahan status tampil di situs paling lambat satu jam setelah waktunya.
+Saklar langsung tersimpan dan tampil di situs saat itu juga. Terbitkan juga pengumumannya sebagai berita bertag `pendaftaran`. Tabel lama `registration_rounds` (gelombang bertanggal) tidak dibaca lagi dan hanya disimpan sebagai riwayat.
 
 ### Menambah foto atau video galeri
 
@@ -176,14 +175,13 @@ Setiap item bisa ditautkan langsung: `/galeri#g-07` membuka item itu di lightbox
 
 ## Merek dan identitas
 
-Semua yang berbau merek ada di **`src/site.config.ts`**: nama, tagline, logo, kampus, URL situs, email, media sosial, URL formulir pendaftaran, dan urutan navigasi. Mengubah salah satunya tidak perlu menyentuh komponen.
+Semua yang berbau merek ada di **`src/site.config.ts`**: nama, tagline, logo, kampus, URL situs, email, media sosial, dan urutan navigasi. Mengubah salah satunya tidak perlu menyentuh komponen.
 
 Nilai yang **masih placeholder** dan harus diganti sebelum rilis. Cari dengan `grep -rn "TODO(brand)" src`.
 
 | Apa | Di mana |
 | --- | --- |
 | Tagline | `site.config.ts` → `tagline` |
-| URL formulir pendaftaran | `site.config.ts` → `joinFormUrl` |
 | URL situs | `site.config.ts` → `url` (dipakai untuk canonical, sitemap, dan Open Graph) |
 | Tahun berdiri dan cerita awal | `lib/data/tentang.ts` → entri pertama `sejarah` |
 | Foto | seluruh `foto`, `cover`, dan `src` masih memakai picsum.photos |

@@ -258,19 +258,21 @@ export type JoinInfo = {
 }
 
 /**
- * One registration round. Both ends are ISO datetimes without a zone, read
- * as campus time (WIB) — the same convention as challenge deadlines.
+ * One of KSP's classes as far as registration goes: whether it is taking
+ * sign-ups, and where to sign up. An admin flips the switch; there are no
+ * dates. `id` matches the class's cartridge on the home page.
  */
-export type RegistrationWindow = {
-  buka: string
-  tutup: string
+export type RegistrationTrack = {
+  id: string
+  nama: string
+  buka: boolean
+  /** The class's sign-up form. Null: the site announces it without a button. */
+  link: string | null
 }
 
-/** `segera`: announced, not yet open. `buka`: taking sign-ups. `tutup`: closed. */
-export type RegistrationStatus = 'segera' | 'buka' | 'tutup'
-
-export type Registration = RegistrationWindow & {
-  status: RegistrationStatus
+/** Registration right now: the classes taking sign-ups, in shelf order. Empty when none is. */
+export type Registration = {
+  open: RegistrationTrack[]
 }
 
 export type JoinStep = {

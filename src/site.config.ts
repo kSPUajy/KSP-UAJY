@@ -53,8 +53,6 @@ export const siteConfig = {
     alt: 'Logo Kelompok Studi Pemrograman UAJY',
   },
 
-  // TODO(brand): placeholder — ganti dengan URL Google Form pendaftaran asli.
-  joinFormUrl: 'https://forms.gle/ksp-uajy-pendaftaran',
   email: 'kspuajy2627@gmail.com',
 
   /** The secretariat's contact person, reachable on WhatsApp. */
@@ -104,7 +102,6 @@ export const siteConfig = {
   url: string
   locale: string
   logo: { src: string; width: number; height: number; alt: string }
-  joinFormUrl: string
   email: string
   contact: { name: string; phone: string; whatsapp: string }
   socials: Record<string, string>

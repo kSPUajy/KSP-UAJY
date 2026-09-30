@@ -98,9 +98,10 @@ function Tape({ text, tilt }: { text: string; tilt: number }) {
 /** Each tape lands at its own angle, as if stuck on by hand. */
 const TILTS = [-4, 3, -2, 5] as const
 
-function Cartridge({ track, position }: { track: Track; position: number }) {
+function Cartridge({ track, position, registering }: { track: Track; position: number; registering: boolean }) {
   const playable = track.status === 'berjalan'
-  const locked = track.status === 'genap'
+  // An open registration outranks the semester labels: the class is taking sign-ups now.
+  const locked = track.status === 'genap' && !registering
 
   const body = (
     <div
@@ -118,7 +119,7 @@ function Cartridge({ track, position }: { track: Track; position: number }) {
       <div
         className={cn(
           'relative mx-3 flex aspect-[4/3] items-center justify-center overflow-hidden border-2 border-line bg-accent transition-[filter] duration-300',
-          !playable && 'grayscale group-hover:grayscale-0',
+          !playable && !registering && 'grayscale group-hover:grayscale-0',
         )}
       >
         <span
@@ -131,7 +132,11 @@ function Cartridge({ track, position }: { track: Track; position: number }) {
             'relative h-[58%] w-[72%] text-accent-ink transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none',
           )}
         />
-        {track.status === 'segera' ? (
+        {registering ? (
+          <span className="absolute top-2 right-2 border-2 border-line bg-surface px-2 py-1 text-[10px] font-bold tracking-[0.1em] text-fg uppercase">
+            daftar dibuka
+          </span>
+        ) : track.status === 'segera' ? (
           <span className="absolute top-2 right-2 border-2 border-line bg-surface px-2 py-1 text-[10px] font-bold tracking-[0.1em] text-fg uppercase">
             segera
           </span>
@@ -151,7 +156,11 @@ function Cartridge({ track, position }: { track: Track; position: number }) {
         </h3>
         <p className="mt-2 flex-1 text-[13px] leading-6 text-muted">{track.deskripsi}</p>
         <p className="mt-4 text-[11px] font-bold tracking-[0.12em] uppercase">
-          {playable ? (
+          {registering ? (
+            <span className="text-accent-fg">
+              <span className="cursor-blink inline-block">▶</span> pendaftaran dibuka
+            </span>
+          ) : playable ? (
             <span className="text-accent-fg">
               <span className="cursor-blink inline-block">▶</span> press start
             </span>
@@ -178,7 +187,12 @@ function Cartridge({ track, position }: { track: Track; position: number }) {
   const lift =
     'group relative block h-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] [filter:drop-shadow(5px_5px_0_var(--line))] hover:-translate-y-2 hover:-rotate-1 motion-reduce:transition-none motion-reduce:hover:transform-none'
 
-  return playable ? (
+  return registering ? (
+    <Link href="/gabung" aria-label={`${track.nama} — pendaftaran dibuka, lihat cara bergabung`} className={lift}>
+      {body}
+      {tape}
+    </Link>
+  ) : playable ? (
     <Link href="/modul" aria-label={`${track.nama} — sedang berjalan, lihat jadwal modul`} className={lift}>
       {body}
       {tape}
@@ -196,9 +210,10 @@ function Cartridge({ track, position }: { track: Track; position: number }) {
  * levels — nothing has to be taken in order, and one person can join them
  * all. C is ready to play now and Blockchain opens later this semester;
  * Machine Learning and Java are locked until the even semester (hover to
- * peek at their colours, and watch the padlock refuse).
+ * peek at their colours, and watch the padlock refuse). A class whose
+ * registration switch is on says so, in colour, and leads to /gabung.
  */
-export function TracksSection({ index }: { index: number }) {
+export function TracksSection({ index, openIds }: { index: number; openIds: readonly string[] }) {
   return (
     <SectionShell accent="lime" tone="alt" dots labelledBy="kelas-title">
       <Reveal>
@@ -219,7 +234,7 @@ export function TracksSection({ index }: { index: number }) {
         {TRACKS.map((track, position) => (
           <li key={track.id}>
             <Reveal delay={position * 0.08} className="h-full">
-              <Cartridge track={track} position={position} />
+              <Cartridge track={track} position={position} registering={openIds.includes(track.id)} />
             </Reveal>
           </li>
         ))}

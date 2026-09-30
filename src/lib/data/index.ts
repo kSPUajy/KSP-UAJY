@@ -19,7 +19,6 @@ import {
   toNewsPost,
   toSesi,
   toWinner,
-  wallClock,
 } from '@/lib/supabase/rows'
 import { buildMemberTree } from '@/lib/tree'
 import type {
@@ -36,7 +35,7 @@ import type {
   NewsPost,
   NewsPostMeta,
   Registration,
-  RegistrationStatus,
+  RegistrationTrack,
   SesiWithStatus,
   SiteStats,
   Pengalaman,
@@ -429,26 +428,23 @@ export async function getJoinInfo(): Promise<JoinInfo> {
   }
 }
 
-/**
- * Where registration stands right now. Pages that show it regenerate hourly,
- * so a round opens or closes on the site within the hour it does on campus.
- */
-export async function getRegistration(now = Date.now()): Promise<Registration> {
+/** All four classes and their registration switches, in shelf order. */
+export async function getRegistrationTracks(): Promise<RegistrationTrack[]> {
   const { data, error } = await publicDb(TAGS.pendaftaran)
-    .from('registration_rounds')
-    .select('buka, tutup')
-    .order('buka', { ascending: false })
-    .limit(1)
-    .maybeSingle()
+    .from('registration_tracks')
+    .select('id, nama, buka, link')
+    .order('urutan')
   if (error) throw new Error(`Gagal membaca pendaftaran: ${error.message}`)
-  // No round scheduled yet reads as closed, with nothing to count down to.
-  if (!data) return { buka: '', tutup: '', status: 'tutup' }
+  return data
+}
 
-  const buka = wallClock(data.buka)
-  const tutup = wallClock(data.tutup)
-  const status: RegistrationStatus =
-    now < deadlineToMs(buka) ? 'segera' : now <= deadlineToMs(tutup) ? 'buka' : 'tutup'
-  return { buka, tutup, status }
+/**
+ * Which classes are taking sign-ups. The switches are flipped in the admin
+ * panel, which refreshes the pages that show them at once.
+ */
+export async function getRegistration(): Promise<Registration> {
+  const tracks = await getRegistrationTracks()
+  return { open: tracks.filter((track) => track.buka) }
 }
 
 // ------------------------------------------------------------------ about ---

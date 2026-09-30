@@ -82,12 +82,12 @@ export default async function HomePage() {
       <Hero
         stats={stats}
         driftTokens={driftTokens}
-        registrationOpen={registration.status === 'buka'}
+        openRegistrations={registration.open.map((track) => track.nama)}
         schedule={schedule}
       />
 
       <AboutSection index={1} pengurus={pengurus.filter((member) => member.divisi === 'inti')} />
-      <TracksSection index={2} />
+      <TracksSection index={2} openIds={registration.open.map((track) => track.id)} />
 
       <ChallengeSection
         index={3}

@@ -23,11 +23,11 @@ export const metadata: Metadata = pageMetadata({
 /** Tag that marks a registration announcement in the news data. */
 const ANNOUNCEMENT_TAG = 'pendaftaran'
 
-/** Registration opens and closes on the clock; regenerate hourly. */
+/**
+ * Flipping a class's registration switch refreshes this page at once (the
+ * panel expires its data); hourly covers the news it links to.
+ */
 export const revalidate = 3600
-
-/** Printed as a `key=value` fact in the header. */
-const STATUS_FACT = { segera: 'segera', buka: 'dibuka', tutup: 'ditutup' } as const
 
 export default async function GabungPage() {
   const [info, posts, stats, registration] = await Promise.all([
@@ -36,7 +36,7 @@ export default async function GabungPage() {
     getStats(),
     getRegistration(),
   ])
-  const open = registration.status === 'buka'
+  const open = registration.open.length > 0
 
   // Newest first, so the first match is the current round's announcement.
   const announcement = posts.find((post) => post.tags.includes(ANNOUNCEMENT_TAG))
@@ -50,7 +50,7 @@ export default async function GabungPage() {
         title="Belum bisa C? Justru itu alasannya."
         description={info.ringkasan}
         facts={[
-          { label: 'pendaftaran', value: STATUS_FACT[registration.status] },
+          { label: 'pendaftaran', value: open ? 'dibuka' : 'ditutup' },
           { label: 'biaya', value: 'Rp150rb' },
           { label: 'seleksi', value: 'tidak_ada' },
           { label: 'anggota_aktif', value: stats.anggota },
@@ -80,7 +80,7 @@ export default async function GabungPage() {
 
             <RegistrationStatusLine registration={registration} className="mt-8 max-w-prose" />
 
-            <div className="mt-6 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
               <RegisterButton registration={registration} />
               {announcement ? (
                 <ButtonLink href={`/berita/${announcement.slug}`} variant="outline" size="lg">
@@ -180,7 +180,7 @@ export default async function GabungPage() {
                 </>
               ) : (
                 <>
-                  Gelombang ini <span className="text-accent-fg">sudah tutup.</span>
+                  Tidak ada pendaftaran <span className="text-accent-fg">yang sedang dibuka.</span>
                 </>
               )}
             </h2>
@@ -190,7 +190,7 @@ export default async function GabungPage() {
                 : 'Sambil menunggu gelombang berikutnya, challenge mingguan tetap terbuka untuk semua mahasiswa UAJY — banyak anggota kami masuk lewat pintu itu dulu.'}
             </p>
           </div>
-          <div className="flex flex-col gap-4 sm:flex-row">
+          <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
             <RegisterButton registration={registration} />
             {open ? (
               <ButtonLink href="/challenge" variant="outline" size="lg">

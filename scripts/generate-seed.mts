@@ -16,7 +16,6 @@ import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { challengeSources } from '../src/lib/data/challenges'
-import { registrationSeed } from '../src/lib/data/gabung'
 import { modulSources, sesiSources } from '../src/lib/data/modul'
 import { newsSources } from '../src/lib/data/news'
 import { winnerSources } from '../src/lib/data/winners'
@@ -153,7 +152,7 @@ sections.push(
   ),
 )
 
-sections.push(insert('registration_rounds', ['buka', 'tutup'], [[text(registrationSeed.buka), text(registrationSeed.tutup)]]))
+// Registration is per class now (registration_tracks), seeded by its migration.
 
 const out = path.join(ROOT, 'supabase', 'seed.sql')
 await writeFile(out, sections.filter(Boolean).join('\n'), 'utf8')

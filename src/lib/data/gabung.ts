@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { JoinInfo, RegistrationWindow } from '@/lib/types'
+import type { JoinInfo } from '@/lib/types'
 
 /**
  * What joining involves. Every fact here matches the registration
@@ -116,15 +116,4 @@ export const joinInfo: JoinInfo = {
         'Kelas tidak menerima peserta baru di tengah jalan, tapi challenge mingguan terbuka untuk semua mahasiswa UAJY kapan pun. Banyak anggota kami masuk lewat pintu itu dulu.',
     },
   ],
-}
-
-/**
- * The first registration round, for `scripts/generate-seed.mts` only. The
- * live value is the newest row of `registration_rounds`, which admins edit;
- * the round the announcement describes opened the day it was posted and
- * closed at the end of 11 September.
- */
-export const registrationSeed: RegistrationWindow = {
-  buka: '2026-08-24T00:00',
-  tutup: '2026-09-11T23:59',
 }

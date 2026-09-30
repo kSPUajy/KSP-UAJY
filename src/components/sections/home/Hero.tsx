@@ -1,5 +1,6 @@
 import { OnlineCount } from '@/components/layout/OnlinePresence'
 import { CrtVignette } from '@/components/overlays/Overlays'
+import { listNames } from '@/components/sections/gabung/Registration'
 import { CompileStrip } from '@/components/sections/home/CompileStrip'
 import { DriftField } from '@/components/sections/home/DriftField'
 import { HeroModulPanel } from '@/components/sections/home/HeroModulPanel'
@@ -13,30 +14,37 @@ import { siteConfig } from '@/site.config'
 type HeroProps = {
   stats: SiteStats
   driftTokens: readonly string[]
-  /** Outside a registration round the hero leads with the challenge instead. */
-  registrationOpen: boolean
+  /** Classes taking sign-ups. With none, the hero leads with the challenge instead. */
+  openRegistrations: readonly string[]
   /** The schedule — modules and sessions — for the panel beside the wordmark. */
   schedule: readonly TimelineEntry[]
 }
 
-const STATUS_ROWS = (registrationOpen: boolean) =>
+const STATUS_ROWS = (openRegistrations: readonly string[]) =>
   [
     { key: 'tentoring', value: 'Senin & Selasa, 19.00–21.00 WIB' },
     { key: 'tempat', value: 'Lab Komputasi' },
     { key: 'tugas', value: 'dikumpulkan tiap Minggu, 23.59 WIB' },
-    { key: 'pendaftaran', value: registrationOpen ? 'dibuka — ayo gabung' : 'ditutup untuk periode ini', live: registrationOpen },
+    {
+      key: 'pendaftaran',
+      value:
+        openRegistrations.length > 0
+          ? `dibuka: ${listNames(openRegistrations)}`
+          : 'tidak ada pendaftaran yang sedang dibuka',
+      live: openRegistrations.length > 0,
+    },
     { key: 'online', value: <OnlineCount suffix="anggota sedang di situs" /> },
   ] as const
 
 /** The week at a glance, printed like `cat` output under the buttons. */
-function HeroStatus({ registrationOpen }: { registrationOpen: boolean }) {
+function HeroStatus({ openRegistrations }: { openRegistrations: readonly string[] }) {
   return (
     <div className="max-w-md border-l-2 border-accent pl-4 text-[12px] leading-6 sm:text-[13px]">
       <p aria-hidden className="text-muted">
         <span className="text-accent-fg">$</span> cat ~/ksp/jadwal.conf
       </p>
       <dl className="mt-1 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4">
-        {STATUS_ROWS(registrationOpen).map((row) => (
+        {STATUS_ROWS(openRegistrations).map((row) => (
           <div key={row.key} className="contents">
             <dt className="text-dim">{row.key}</dt>
             <dd className={'live' in row && row.live ? 'text-accent-fg' : 'text-fg'}>{row.value}</dd>
@@ -54,7 +62,7 @@ function HeroStatus({ registrationOpen }: { registrationOpen: boolean }) {
  * `svh`, not `dvh`: the small viewport height never changes as a phone's URL
  * bar slides away, so the hero never resizes under someone's thumb.
  */
-export function Hero({ stats, driftTokens, registrationOpen, schedule }: HeroProps) {
+export function Hero({ stats, driftTokens, openRegistrations, schedule }: HeroProps) {
   const timeline = heroTimeline(siteConfig.heroCommand)
 
   return (
@@ -84,9 +92,9 @@ export function Hero({ stats, driftTokens, registrationOpen, schedule }: HeroPro
             tagline={siteConfig.tagline}
             backdrop={<DriftField tokens={driftTokens} />}
             aside={schedule.length > 0 ? <HeroModulPanel entries={schedule} /> : undefined}
-            status={<HeroStatus registrationOpen={registrationOpen} />}
+            status={<HeroStatus openRegistrations={openRegistrations} />}
             actions={
-              registrationOpen ? (
+              openRegistrations.length > 0 ? (
                 <>
                   <ButtonLink href={siteConfig.cta.href} size="lg">
                     Gabung Sekarang

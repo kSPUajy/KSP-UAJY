@@ -314,6 +314,33 @@ export type Database = {
         }
         Relationships: []
       }
+      registration_tracks: {
+        Row: {
+          buka: boolean
+          id: string
+          link: string | null
+          nama: string
+          updated_at: string
+          urutan: number
+        }
+        Insert: {
+          buka?: boolean
+          id: string
+          link?: string | null
+          nama: string
+          updated_at?: string
+          urutan: number
+        }
+        Update: {
+          buka?: boolean
+          id?: string
+          link?: string | null
+          nama?: string
+          updated_at?: string
+          urutan?: number
+        }
+        Relationships: []
+      }
       sesi: {
         Row: {
           id: string
