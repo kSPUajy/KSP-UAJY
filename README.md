@@ -241,7 +241,8 @@ Hal-hal yang perlu diketahui:
 
 Setiap modul punya satu tugas guided. Anggota mengumpulkannya di **`/dashboard`**, berupa **satu berkas `.c`** atau **satu folder yang di-zip** (berisi minimal satu `.c`), maksimal **5 MB**.
 
-- **Tenggat:** kolom `tenggat` di tabel `modules` (WIB). Kalau kosong, tenggatnya **Minggu 23.59** di minggu modul itu. Setelah tenggat, pengumpulan tetap diterima tapi ditandai **terlambat**. Tanda itu dihitung oleh server, bukan browser.
+- **Rilis:** kolom `rilis` adalah hari modul dan tugas guided dirilis, **Rabu pukul 00.00 WIB** setelah kelas Senin dan Selasa. Minggu modulnya dihitung dari Senin itu sampai Minggu.
+- **Tenggat:** kolom `tenggat` di tabel `modules` (WIB). Kalau kosong, tenggatnya **Senin setelah modul rilis, pukul 19.00**, saat kelas berikutnya dimulai, karena tugas guided menjadi syarat absensi. Setelah tenggat, pengumpulan tetap diterima tapi ditandai **terlambat**. Tanda itu dihitung oleh server, bukan browser.
 - **Instruksi:** kolom `tugas_deskripsi` di tabel `modules`. Kalau kosong, ditampilkan instruksi umum.
 - **Kumpul ulang:** boleh kapan saja selama belum dinilai. Berkas lama diganti, jadi hanya ada satu pengumpulan per modul per anggota. Tugas yang sudah dinilai terkunci.
 - **Alur upload:** browser memeriksa berkas lebih dulu, lalu server menerbitkan *signed upload URL* sekali pakai dan browser mengunggah langsung ke Supabase Storage (bucket privat `tugas`). Setelah itu server mengunduh ulang berkas itu, memeriksanya lagi, dan baru mencatatnya. Berkas yang tidak lolos pemeriksaan langsung dihapus. Dengan alur ini, berkas 5 MB tidak perlu melewati server Next, yang di Vercel dibatasi sekitar 4,5 MB per request.

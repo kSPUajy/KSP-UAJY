@@ -16,7 +16,7 @@ export const metadata: Metadata = pageMetadata({
   noindex: true,
 })
 
-/** Suggests the week after the last one, released the Monday after it. */
+/** Suggests the week after the last one, released on the Wednesday after it. */
 export default async function AdminModulBaruPage() {
   await requireProfile('/admin/modul/baru', ['admin'])
   const db = await createSupabaseServer()

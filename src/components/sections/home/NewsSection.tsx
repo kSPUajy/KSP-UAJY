@@ -68,7 +68,7 @@ function briefs({
         label: 'kelas',
         value: 'sedang libur',
         note: upcoming
-          ? `berikutnya ${upcoming.judul}, ${formatTanggalPendek(upcoming.rilis)}`
+          ? `berikutnya ${upcoming.judul}, ${formatTanggalPendek(upcoming.mulai)}`
           : 'jadwal berikutnya menyusul',
         href: '/modul',
       }

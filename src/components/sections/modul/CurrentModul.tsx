@@ -1,4 +1,4 @@
-import { modulBerkas, modulPath, modulRange } from '@/components/sections/modul/modul-format'
+import { modulBerkas, modulPath, modulRange, modulRelease } from '@/components/sections/modul/modul-format'
 import { ModulFiles } from '@/components/sections/modul/ModulFiles'
 import { ButtonAnchor } from '@/components/ui/Button'
 import { MeterBar } from '@/components/ui/MeterBar'
@@ -71,6 +71,7 @@ export function CurrentModul({ modul, total }: CurrentModulProps) {
           label={`Detail modul minggu ${modul.minggu}`}
           fields={[
             { key: 'periode', value: modulRange(modul) },
+            { key: 'rilis', value: `${modulRelease(modul)}, 00.00 WIB` },
             { key: 'tentor_pj', value: modul.tentorPj.join(', ') },
             { key: 'koordinator', value: modul.koordinator },
           ]}

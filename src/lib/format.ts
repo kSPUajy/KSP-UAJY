@@ -61,6 +61,18 @@ export function formatTanggalWaktu(iso: string): string {
   return `${formatTanggal(iso)}, ${time} WIB`
 }
 
+/**
+ * The Monday of the week an ISO date falls in, as `YYYY-MM-DD`. A module's
+ * week starts with its Monday class, whatever day the module itself is
+ * released.
+ */
+export function mondayOf(iso: string): string {
+  const parts = parseIso(iso)
+  if (!parts) return iso
+  const weekday = new Date(Date.UTC(parts.year, parts.month - 1, parts.day)).getUTCDay()
+  return addDays(iso.slice(0, 10), -((weekday + 6) % 7))
+}
+
 /** Weekday name for an ISO date, computed without constructing a local Date. */
 export function namaHari(iso: string): string {
   const parts = parseIso(iso)

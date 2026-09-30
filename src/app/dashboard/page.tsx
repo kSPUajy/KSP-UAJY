@@ -17,7 +17,7 @@ import type { AppRole, SessionProfile } from '@/lib/auth/session'
 import { getModules } from '@/lib/data'
 import { pageMetadata } from '@/lib/metadata'
 import { getMySubmissions } from '@/lib/tugas/data'
-import { tugasItems } from '@/lib/tugas/status'
+import { beforeDeadline, focusItem, tugasItems } from '@/lib/tugas/status'
 import { pad2 } from '@/lib/utils'
 
 export const metadata: Metadata = pageMetadata({
@@ -128,7 +128,7 @@ export default async function DashboardPage() {
   const grades = released.flatMap((item) => (item.submission?.nilai != null ? [item.submission.nilai] : []))
   const average = grades.length > 0 ? Math.round(grades.reduce((sum, grade) => sum + grade, 0) / grades.length) : null
 
-  const focus = items.find((item) => item.modul.status === 'berjalan') ?? released[released.length - 1] ?? null
+  const focus = focusItem(items)
 
   return (
     <>
@@ -150,7 +150,7 @@ export default async function DashboardPage() {
         <SectionShell accent="lime" tone="tint" divider={false} labelledBy="tugas-minggu-ini">
           <Reveal>
             <SectionHeader
-              eyebrow={focus.modul.status === 'berjalan' ? 'minggu ini' : 'tugas terakhir'}
+              eyebrow={focus.modul.status === 'berjalan' ? 'minggu ini' : beforeDeadline(focus) ? 'masih dibuka' : 'tugas terakhir'}
               title="Tugas guided"
               headingId="tugas-minggu-ini"
             />

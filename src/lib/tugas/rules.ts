@@ -5,7 +5,7 @@
  * word. Nothing here touches Node or the DOM, so both can run it.
  */
 
-import { addDays } from '@/lib/format'
+import { addDays, deadlineToMs, mondayOf } from '@/lib/format'
 
 export const MAX_BYTES = 5 * 1024 * 1024
 
@@ -26,11 +26,17 @@ export function displayName(fileName: string): string {
 
 /**
  * The deadline, as a WIB wall-clock time: the module's own `tenggat` when an
- * admin set one, otherwise Sunday 23.59 of the module's week (modules are
- * released on Mondays).
+ * admin set one, otherwise 19.00 on the Monday after the module's release,
+ * when the next class starts. The guided task counts towards attendance, so
+ * it is due before members walk into that class.
  */
 export function effectiveDeadline(modul: { rilis: string; tenggat?: string }): string {
-  return modul.tenggat ?? `${addDays(modul.rilis, 6)}T23:59`
+  return modul.tenggat ?? `${addDays(mondayOf(modul.rilis), 7)}T19:00`
+}
+
+/** Handing in opens with the module's release: `rilis` at 00.00 WIB. */
+export function isReleased(modul: { rilis: string }, now = Date.now()): boolean {
+  return now >= deadlineToMs(`${modul.rilis}T00:00`)
 }
 
 export type Verdict = { ok: true; summary: string } | { ok: false; error: string }

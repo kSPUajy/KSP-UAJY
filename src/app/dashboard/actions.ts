@@ -9,7 +9,7 @@ import { getModules } from '@/lib/data'
 import { deadlineToMs } from '@/lib/format'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { createSupabaseServer } from '@/lib/supabase/server'
-import { MAX_BYTES, checkFile, displayName, effectiveDeadline, kindOf } from '@/lib/tugas/rules'
+import { MAX_BYTES, checkFile, displayName, effectiveDeadline, isReleased, kindOf } from '@/lib/tugas/rules'
 
 const BUCKET = 'tugas'
 
@@ -28,7 +28,7 @@ async function authorise(moduleId: string) {
 
   const modul = (await getModules()).find((item) => item.id === moduleId)
   if (!modul) return { ok: false, error: 'Modul tidak ditemukan.' } as const
-  if (modul.status === 'terkunci') return { ok: false, error: 'Modul ini belum dibuka.' } as const
+  if (modul.status === 'terkunci' || !isReleased(modul)) return { ok: false, error: 'Modul ini belum dirilis.' } as const
 
   return { ok: true, profile, modul } as const
 }

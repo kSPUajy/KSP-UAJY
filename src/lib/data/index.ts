@@ -4,7 +4,7 @@ import { aboutInfo } from '@/lib/data/tentang'
 import { joinInfo } from '@/lib/data/gabung'
 import { members } from '@/lib/data/members'
 import { driftTokens, tickerTokens } from '@/lib/data/motifs'
-import { addDays, deadlineToMs, releaseToMs, slugify } from '@/lib/format'
+import { addDays, deadlineToMs, mondayOf, releaseToMs, slugify } from '@/lib/format'
 import { pixelPortrait } from '@/lib/pixel-portrait'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { TAGS, publicDb } from '@/lib/supabase/public'
@@ -480,11 +480,13 @@ const startOfDayMs = (iso: string): number => deadlineToMs(`${iso}T00:00`)
 /**
  * The semester's modules in order, each with where it stands right now.
  *
- * A module runs for one week from its release — Monday and Tuesday classes,
- * guided task due that Sunday — or until the next one opens, if that comes
- * sooner. The schedule has long breaks (midterms, holidays, sessions that are
- * not modules), and between modules nothing is "this week's". Pages that show
- * this regenerate hourly.
+ * A module's week runs Monday to Sunday: Monday and Tuesday classes, the
+ * module released on Wednesday (`rilis`), its guided task due the next
+ * Monday at 19.00.
+ * The week is cut short by the next module's week or the module's own
+ * deadline, if either comes sooner. The schedule has long breaks (midterms,
+ * holidays, sessions that are not modules), and between modules nothing is
+ * "this week's". Pages that show this regenerate hourly.
  */
 export async function getModules(now = Date.now()): Promise<ModulWithStatus[]> {
   const { data, error } = await publicDb(TAGS.modul).from('modules').select('*').order('minggu', { ascending: true })
@@ -492,12 +494,16 @@ export async function getModules(now = Date.now()): Promise<ModulWithStatus[]> {
   const byWeek = data.map(toModul)
   return byWeek.map((modul, index) => {
     const next = byWeek[index + 1]
-    // One week, cut short by the next module or by the module's own deadline.
-    const cutoffs = [addDays(modul.rilis, 7), next?.rilis, modul.tenggat ? addDays(modul.tenggat.slice(0, 10), 1) : undefined]
-    const end = cutoffs.filter((day): day is string => Boolean(day)).sort()[0] ?? addDays(modul.rilis, 7)
-    const status: ModulStatus =
-      now < startOfDayMs(modul.rilis) ? 'terkunci' : now < startOfDayMs(end) ? 'berjalan' : 'selesai'
-    return { ...modul, tentorPj: [...modul.tentorPj], status, sampai: addDays(end, -1) }
+    const mulai = mondayOf(modul.rilis)
+    // One week, cut short by the next module's week or by the module's own deadline.
+    const cutoffs = [
+      addDays(mulai, 7),
+      next ? mondayOf(next.rilis) : undefined,
+      modul.tenggat ? addDays(modul.tenggat.slice(0, 10), 1) : undefined,
+    ]
+    const end = cutoffs.filter((day): day is string => Boolean(day)).sort()[0] ?? addDays(mulai, 7)
+    const status: ModulStatus = now < startOfDayMs(mulai) ? 'terkunci' : now < startOfDayMs(end) ? 'berjalan' : 'selesai'
+    return { ...modul, tentorPj: [...modul.tentorPj], status, mulai, sampai: addDays(end, -1) }
   })
 }
 
@@ -509,7 +515,7 @@ export async function getSesi(now = Date.now()): Promise<SesiWithStatus[]> {
     const end = addDays(sesi.rilis, 7)
     const status: ModulStatus =
       now < startOfDayMs(sesi.rilis) ? 'terkunci' : now < startOfDayMs(end) ? 'berjalan' : 'selesai'
-    return { ...sesi, status, sampai: addDays(end, -1) }
+    return { ...sesi, status, mulai: sesi.rilis, sampai: addDays(end, -1) }
   })
 }
 
@@ -524,7 +530,7 @@ export async function getTimeline(now = Date.now()): Promise<TimelineEntry[]> {
     ...modules.map((modul) => ({ jenis: 'modul' as const, ...modul })),
     ...sesi.map((item) => ({ jenis: 'sesi' as const, ...item })),
   ]
-  return entries.sort((a, b) => a.rilis.localeCompare(b.rilis) || (a.jenis === 'modul' ? -1 : 1))
+  return entries.sort((a, b) => a.mulai.localeCompare(b.mulai) || (a.jenis === 'modul' ? -1 : 1))
 }
 
 // ----------------------------------------------------------------- motifs ---

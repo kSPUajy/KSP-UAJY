@@ -207,7 +207,7 @@ export function ModulForm({
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-[8rem_minmax(0,1fr)_12rem]">
         <TextInput id={`${uid}-minggu`} name="minggu" label="minggu" type="number" min={1} defaultValue={initial.minggu} required error={error('minggu')} />
         <TextInput id={`${uid}-judul`} name="judul" label="judul" defaultValue={initial.judul} required error={error('judul')} />
-        <TextInput id={`${uid}-rilis`} name="rilis" label="rilis" type="date" defaultValue={initial.rilis} required hint="Senin modul dibagikan." error={error('rilis')} />
+        <TextInput id={`${uid}-rilis`} name="rilis" label="rilis" type="date" defaultValue={initial.rilis} required hint="Hari modul dirilis, pukul 00.00 WIB: Rabu setelah kelas Senin dan Selasa. Minggunya dihitung dari Senin itu." error={error('rilis')} />
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -259,7 +259,7 @@ export function ModulForm({
           label="tenggat"
           type="datetime-local"
           defaultValue={initial.tenggat}
-          hint="WIB. Kosongkan = Minggu 23.59 di minggu modul."
+          hint="WIB. Kosongkan = Senin setelah modul rilis, pukul 19.00, saat kelas berikutnya dimulai."
           error={error('tenggat')}
         />
         <TextInput

@@ -36,14 +36,14 @@ function toRows(tentors: readonly Tentor[], schedule: readonly TimelineEntry[]):
       const running = entries.find((entry) => entry.status === 'berjalan')
       const next = entries
         .filter((entry) => entry.status === 'terkunci')
-        .sort((a, b) => a.rilis.localeCompare(b.rilis))[0]
+        .sort((a, b) => a.mulai.localeCompare(b.mulai))[0]
       const label = (entry: { minggu: number }) => `M${pad2(entry.minggu)}`
 
       const stat: TopStat = running ? 'R' : next ? 'S' : entries.length > 0 ? 'Z' : 'I'
       const command = running
         ? `teach --modul=${label(running)} "${running.judul}"`
         : next
-          ? `sleep --until="${formatTanggalPendek(next.rilis)}"  # ${label(next)}`
+          ? `sleep --until="${formatTanggalPendek(next.mulai)}"  # ${label(next)}`
           : entries.length > 0
             ? `exit 0  # ${entries.map(label).join(', ')} selesai`
             : 'wait  # menunggu penugasan'
@@ -65,7 +65,7 @@ function toRows(tentors: readonly Tentor[], schedule: readonly TimelineEntry[]):
           .join(' ')
           .toLowerCase(),
         // Carried for sorting sleepers by who wakes first.
-        ...(next ? { wake: next.rilis } : {}),
+        ...(next ? { wake: next.mulai } : {}),
       }
     })
     .sort(

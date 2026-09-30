@@ -6,15 +6,15 @@ import { pad2 } from '@/lib/utils'
 export const modulPath = (modul: ModulWithStatus): string =>
   `~/modul/minggu-${pad2(modul.minggu)}/${slugify(modul.judul)}.pdf`
 
-/** `21 Sep – 27 Sep 2026`, dropping the first year when both ends share it. */
-export function modulRange(modul: { rilis: string; sampai: string }): string {
-  const from = formatTanggalPendek(modul.rilis)
+/** The week, `21 Sep – 27 Sep 2026`, dropping the first year when both ends share it. */
+export function modulRange(modul: { mulai: string; sampai: string }): string {
+  const from = formatTanggalPendek(modul.mulai)
   const to = formatTanggalPendek(modul.sampai)
-  const year = modul.rilis.slice(0, 4)
+  const year = modul.mulai.slice(0, 4)
   return modul.sampai.startsWith(year) ? `${from.replace(` ${year}`, '')} – ${to}` : `${from} – ${to}`
 }
 
-/** `Senin, 28 Sep 2026` */
+/** `Rabu, 30 Sep 2026` */
 export const modulRelease = (modul: { rilis: string }): string =>
   `${namaHari(modul.rilis)}, ${formatTanggalPendek(modul.rilis)}`
 

@@ -334,12 +334,20 @@ export type AboutInfo = {
  * One week's class module. Everything on `/modul` that changes over the
  * semester — which module is this week's, which are open, which are still
  * locked — is derived from `rilis` and the clock, never stored.
+ *
+ * The week runs Monday to Sunday: classes on Monday and Tuesday, the module
+ * and its guided task released on Wednesday at 00.00 WIB. The task is due
+ * the next Monday at 19.00, when the next class starts.
  */
 export type Modul = {
   id: string
   minggu: number
   judul: string
-  /** ISO date, `YYYY-MM-DD`: the Monday the module is handed out, read as WIB. */
+  /**
+   * ISO date, `YYYY-MM-DD`: the day the module is released, at 00.00 WIB. A
+   * Wednesday, after the week's Monday and Tuesday classes. Handing in the
+   * guided task opens then.
+   */
   rilis: string
   /** Tentor responsible for teaching it. Plain names: not every tentor has a profile page. */
   tentorPj: string[]
@@ -350,7 +358,7 @@ export type Modul = {
   berkasUrl?: string
   /** Instructions for the week's guided task. Empty when there are none to add. */
   tugasDeskripsi: string
-  /** Guided-task deadline, WIB wall clock. Absent means Sunday 23.59 of the module's week. */
+  /** Guided-task deadline, WIB wall clock. Absent means 19.00 on the Monday after the release. */
   tenggat?: string
   /** Link to the guided task's file (PDF or ZIP). Public, like the module file. */
   tugasGuidedUrl?: string
@@ -373,17 +381,21 @@ export type Sesi = {
   ringkasan: string
 }
 
-/** `selesai`: an earlier week. `berjalan`: this week's. `terkunci`: not released yet. */
+/** `selesai`: an earlier week. `berjalan`: this week's. `terkunci`: its week has not started. */
 export type ModulStatus = 'selesai' | 'berjalan' | 'terkunci'
 
 export type ModulWithStatus = Modul & {
   status: ModulStatus
-  /** Last day of the module's week, `YYYY-MM-DD` — the day before the next release. */
+  /** First day of the module's week, `YYYY-MM-DD`: the Monday of its first class. */
+  mulai: string
+  /** Last day of the module's week, `YYYY-MM-DD`: its Sunday, or sooner when the next week starts. */
   sampai: string
 }
 
 export type SesiWithStatus = Sesi & {
   status: ModulStatus
+  /** The session's start, the same as `rilis`. */
+  mulai: string
   sampai: string
 }
 

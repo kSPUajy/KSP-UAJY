@@ -33,7 +33,7 @@ export function TugasPanel({ item }: { item: TugasItem }) {
     return (
       <div className="flex flex-col gap-3">
         <p className="text-[12px] leading-6 text-dim">
-          Pengumpulan tugas minggu ini dibuka bersama modulnya, {modulRelease(modul)}.
+          Pengumpulan tugas minggu ini dibuka bersama modulnya, {modulRelease(modul)} pukul 00.00 WIB.
         </p>
         <ModulFiles modul={modul} label="berkas" emptyText="" className="text-[12px] leading-6" />
       </div>
