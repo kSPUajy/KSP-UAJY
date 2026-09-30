@@ -1,6 +1,6 @@
 import { OnlineCount } from '@/components/layout/OnlinePresence'
 import { CrtVignette } from '@/components/overlays/Overlays'
-import { listNames } from '@/components/sections/gabung/Registration'
+import { listNames, pendaftaranHref } from '@/components/sections/gabung/Registration'
 import { CompileStrip } from '@/components/sections/home/CompileStrip'
 import { DriftField } from '@/components/sections/home/DriftField'
 import { HeroModulPanel } from '@/components/sections/home/HeroModulPanel'
@@ -8,19 +8,19 @@ import { HeroSequence } from '@/components/sections/home/HeroSequence'
 import { heroTimeline } from '@/components/sections/home/hero-timeline'
 import { ButtonLink } from '@/components/ui/Button'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
-import type { SiteStats, TimelineEntry } from '@/lib/types'
+import type { RegistrationTrack, SiteStats, TimelineEntry } from '@/lib/types'
 import { siteConfig } from '@/site.config'
 
 type HeroProps = {
   stats: SiteStats
   driftTokens: readonly string[]
-  /** Classes taking sign-ups. With none, the hero leads with the challenge instead. */
-  openRegistrations: readonly string[]
+  /** Classes taking sign-ups, in shelf order. With none, the hero leads with the challenge instead. */
+  openRegistrations: readonly RegistrationTrack[]
   /** The schedule — modules and sessions — for the panel beside the wordmark. */
   schedule: readonly TimelineEntry[]
 }
 
-const STATUS_ROWS = (openRegistrations: readonly string[]) =>
+const STATUS_ROWS = (openRegistrations: readonly RegistrationTrack[]) =>
   [
     { key: 'tentoring', value: 'Senin & Selasa, 19.00–21.00 WIB' },
     { key: 'tempat', value: 'Lab Komputasi' },
@@ -29,7 +29,7 @@ const STATUS_ROWS = (openRegistrations: readonly string[]) =>
       key: 'pendaftaran',
       value:
         openRegistrations.length > 0
-          ? `dibuka: ${listNames(openRegistrations)}`
+          ? `dibuka: ${listNames(openRegistrations.map((track) => track.nama))}`
           : 'tidak ada pendaftaran yang sedang dibuka',
       live: openRegistrations.length > 0,
     },
@@ -37,7 +37,7 @@ const STATUS_ROWS = (openRegistrations: readonly string[]) =>
   ] as const
 
 /** The week at a glance, printed like `cat` output under the buttons. */
-function HeroStatus({ openRegistrations }: { openRegistrations: readonly string[] }) {
+function HeroStatus({ openRegistrations }: { openRegistrations: readonly RegistrationTrack[] }) {
   return (
     <div className="max-w-md border-l-2 border-accent pl-4 text-[12px] leading-6 sm:text-[13px]">
       <p aria-hidden className="text-muted">
@@ -94,9 +94,9 @@ export function Hero({ stats, driftTokens, openRegistrations, schedule }: HeroPr
             aside={schedule.length > 0 ? <HeroModulPanel entries={schedule} /> : undefined}
             status={<HeroStatus openRegistrations={openRegistrations} />}
             actions={
-              openRegistrations.length > 0 ? (
+              openRegistrations[0] ? (
                 <>
-                  <ButtonLink href={siteConfig.cta.href} size="lg">
+                  <ButtonLink href={pendaftaranHref(openRegistrations[0].id)} size="lg">
                     Gabung Sekarang
                   </ButtonLink>
                   <ButtonLink href="/challenge" variant="outline" size="lg">

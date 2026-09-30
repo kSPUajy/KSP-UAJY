@@ -1,6 +1,12 @@
 import { Reveal } from '@/components/motion/Reveal'
 import { BenefitLog } from '@/components/sections/gabung/BenefitLog'
-import { RegisterButton, RegistrationStatusLine } from '@/components/sections/gabung/Registration'
+import {
+  KELAS_C,
+  onlyClass,
+  OtherOpenClasses,
+  RegisterButton,
+  RegistrationStatusLine,
+} from '@/components/sections/gabung/Registration'
 import { ButtonLink } from '@/components/ui/Button'
 import { SectionMarker } from '@/components/ui/SectionMarker'
 import { SectionShell } from '@/components/ui/SectionShell'
@@ -17,9 +23,11 @@ type JoinCtaProps = {
  * gallery band, and the lime button has to be the brightest thing in view.
  *
  * Left: the pitch and the three conditions. Right: what membership installs,
- * printed as a build log.
+ * printed as a build log. It is KSP C's pitch, so its status and button are
+ * C's; other open classes get a line pointing at their own pages.
  */
 export function JoinCta({ index, info, registration }: JoinCtaProps) {
+  const kelas = onlyClass(registration, KELAS_C)
   return (
     <SectionShell accent="lime" tone="void" dots labelledBy="gabung-title">
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:gap-16">
@@ -46,14 +54,15 @@ export function JoinCta({ index, info, registration }: JoinCtaProps) {
             ))}
           </ul>
 
-          <RegistrationStatusLine registration={registration} className="mt-8 max-w-prose" />
+          <RegistrationStatusLine registration={kelas} className="mt-8 max-w-prose" />
 
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-            <RegisterButton registration={registration} />
+            <RegisterButton registration={kelas} />
             <ButtonLink href="/gabung" variant="outline" size="lg">
               cara bergabung
             </ButtonLink>
           </div>
+          <OtherOpenClasses registration={registration} except={KELAS_C} className="mt-4 max-w-prose" />
         </Reveal>
 
         <Reveal delay={0.1}>

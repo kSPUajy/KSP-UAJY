@@ -52,7 +52,7 @@ const browserStorage = () =>
 
 /** Shrink, then upload into `media/<folder>/`. Resolves to the public URL and size. */
 export async function uploadPhoto(
-  folder: 'galeri' | 'berita' | 'pemenang' | 'tentor',
+  folder: 'galeri' | 'berita' | 'pemenang' | 'tentor' | 'kelas',
   file: File,
 ): Promise<{ url: string; width: number; height: number }> {
   const image = await shrinkImage(file)

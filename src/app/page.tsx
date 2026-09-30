@@ -82,7 +82,7 @@ export default async function HomePage() {
       <Hero
         stats={stats}
         driftTokens={driftTokens}
-        openRegistrations={registration.open.map((track) => track.nama)}
+        openRegistrations={registration.open}
         schedule={schedule}
       />
 

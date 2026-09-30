@@ -3,7 +3,13 @@ import type { Metadata } from 'next'
 import { Reveal } from '@/components/motion/Reveal'
 import { BenefitLog } from '@/components/sections/gabung/BenefitLog'
 import { JoinSteps } from '@/components/sections/gabung/JoinSteps'
-import { RegisterButton, RegistrationStatusLine } from '@/components/sections/gabung/Registration'
+import {
+  KELAS_C,
+  onlyClass,
+  OtherOpenClasses,
+  RegisterButton,
+  RegistrationStatusLine,
+} from '@/components/sections/gabung/Registration'
 import { Accordion } from '@/components/ui/Accordion'
 import { ButtonLink } from '@/components/ui/Button'
 import { PageHeader } from '@/components/ui/PageHeader'
@@ -20,7 +26,11 @@ export const metadata: Metadata = pageMetadata({
   path: '/gabung',
 })
 
-/** Tag that marks a registration announcement in the news data. */
+/**
+ * Tag that marks a registration announcement in the news data. Another
+ * class's announcement also carries that class's id as a tag, and belongs
+ * to its own page.
+ */
 const ANNOUNCEMENT_TAG = 'pendaftaran'
 
 /**
@@ -36,10 +46,15 @@ export default async function GabungPage() {
     getStats(),
     getRegistration(),
   ])
-  const open = registration.open.length > 0
+  // This page is KSP C's. Other classes have their own, /gabung/<id>.
+  const kelas = onlyClass(registration, KELAS_C)
+  const open = kelas.open.length > 0
+  const otherIds = registration.tracks.map((track) => track.id).filter((id) => id !== KELAS_C)
 
-  // Newest first, so the first match is the current round's announcement.
-  const announcement = posts.find((post) => post.tags.includes(ANNOUNCEMENT_TAG))
+  // Newest first, so the first match is C's latest announcement.
+  const announcement = posts.find(
+    (post) => post.tags.includes(ANNOUNCEMENT_TAG) && !otherIds.some((id) => post.tags.includes(id)),
+  )
 
   return (
     <>
@@ -78,16 +93,17 @@ export default async function GabungPage() {
               setelah pendaftaran ada untuk menempatkanmu di jalur yang pas, bukan untuk menyaring.
             </p>
 
-            <RegistrationStatusLine registration={registration} className="mt-8 max-w-prose" />
+            <RegistrationStatusLine registration={kelas} className="mt-8 max-w-prose" />
 
             <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-              <RegisterButton registration={registration} />
+              <RegisterButton registration={kelas} />
               {announcement ? (
                 <ButtonLink href={`/berita/${announcement.slug}`} variant="outline" size="lg">
                   baca pengumuman
                 </ButtonLink>
               ) : null}
             </div>
+            <OtherOpenClasses registration={registration} except={KELAS_C} className="mt-4 max-w-prose" />
           </Reveal>
 
           <Reveal delay={0.1}>
@@ -180,7 +196,7 @@ export default async function GabungPage() {
                 </>
               ) : (
                 <>
-                  Tidak ada pendaftaran <span className="text-accent-fg">yang sedang dibuka.</span>
+                  Pendaftaran kelas C <span className="text-accent-fg">sedang ditutup.</span>
                 </>
               )}
             </h2>
@@ -189,9 +205,10 @@ export default async function GabungPage() {
                 ? 'Belum yakin? Coba dulu challenge minggu ini — terbuka untuk semua mahasiswa, anggota atau bukan.'
                 : 'Sambil menunggu gelombang berikutnya, challenge mingguan tetap terbuka untuk semua mahasiswa UAJY — banyak anggota kami masuk lewat pintu itu dulu.'}
             </p>
+            <OtherOpenClasses registration={registration} except={KELAS_C} className="mt-4 max-w-prose" />
           </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-            <RegisterButton registration={registration} />
+            <RegisterButton registration={kelas} />
             {open ? (
               <ButtonLink href="/challenge" variant="outline" size="lg">
                 coba challenge

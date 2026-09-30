@@ -270,8 +270,21 @@ export type RegistrationTrack = {
   link: string | null
 }
 
-/** Registration right now: the classes taking sign-ups, in shelf order. Empty when none is. */
+/**
+ * A class's own registration page, `/gabung/<id>`, edited in the admin
+ * panel. C has none here: its page is `/gabung`, written in code.
+ */
+export type RegistrationPage = RegistrationTrack & {
+  ringkasan: string
+  syarat: string[]
+  /** The rest of the page: what the class covers, schedule, fees. */
+  isiMdx: string
+  poster: string | null
+}
+
+/** Registration right now, in shelf order: every class, and the ones taking sign-ups (empty when none is). */
 export type Registration = {
+  tracks: RegistrationTrack[]
   open: RegistrationTrack[]
 }
 

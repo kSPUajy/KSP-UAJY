@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { Reveal } from '@/components/motion/Reveal'
+import { pendaftaranHref } from '@/components/sections/gabung/Registration'
 import { PixelIcon } from '@/components/ui/PixelIcon'
 import type { PixelIconName } from '@/components/ui/PixelIcon'
 import { SectionHeader } from '@/components/ui/SectionHeader'
@@ -61,6 +62,9 @@ const TRACKS: readonly Track[] = [
     accent: 'orange',
   },
 ]
+
+/** A class's colour, shared with its registration page. */
+export const trackAccent = (id: string): AccentName => TRACKS.find((track) => track.id === id)?.accent ?? 'lime'
 
 /** The cartridge silhouette: top corners cut like a game cart. */
 const CART_SHAPE = 'polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%, 0 14px)'
@@ -188,7 +192,7 @@ function Cartridge({ track, position, registering }: { track: Track; position: n
     'group relative block h-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] [filter:drop-shadow(5px_5px_0_var(--line))] hover:-translate-y-2 hover:-rotate-1 motion-reduce:transition-none motion-reduce:hover:transform-none'
 
   return registering ? (
-    <Link href="/gabung" aria-label={`${track.nama} — pendaftaran dibuka, lihat cara bergabung`} className={lift}>
+    <Link href={pendaftaranHref(track.id)} aria-label={`${track.nama} — pendaftaran dibuka, lihat cara mendaftar`} className={lift}>
       {body}
       {tape}
     </Link>
@@ -211,7 +215,8 @@ function Cartridge({ track, position, registering }: { track: Track; position: n
  * all. C is ready to play now and Blockchain opens later this semester;
  * Machine Learning and Java are locked until the even semester (hover to
  * peek at their colours, and watch the padlock refuse). A class whose
- * registration switch is on says so, in colour, and leads to /gabung.
+ * registration switch is on says so, in colour, and leads to its own
+ * registration page.
  */
 export function TracksSection({ index, openIds }: { index: number; openIds: readonly string[] }) {
   return (

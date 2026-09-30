@@ -1,6 +1,6 @@
 import { PaperToss } from '@/components/motion/PaperToss'
 import { Reveal } from '@/components/motion/Reveal'
-import { listNames } from '@/components/sections/gabung/Registration'
+import { listNames, pendaftaranHref } from '@/components/sections/gabung/Registration'
 import { NewsSheet } from '@/components/sections/home/NewsSheet'
 import type { Brief } from '@/components/sections/home/NewsSheet'
 import { ButtonLink } from '@/components/ui/Button'
@@ -97,20 +97,19 @@ function briefs({
             href: '/challenge',
           }
 
-  const pendaftaran: Brief =
-    registration.open.length > 0
-      ? {
-          label: 'pendaftaran',
-          value: 'dibuka',
-          note: `kelas ${listNames(registration.open.map((track) => track.nama))}`,
-          href: '/gabung',
-        }
-      : {
-          label: 'pendaftaran',
-          value: 'tidak ada yang dibuka',
-          note: 'info berikutnya diumumkan di sini',
-          href: '/gabung',
-        }
+  const pendaftaran: Brief = registration.open[0]
+    ? {
+        label: 'pendaftaran',
+        value: 'dibuka',
+        note: `kelas ${listNames(registration.open.map((track) => track.nama))}`,
+        href: pendaftaranHref(registration.open[0].id),
+      }
+    : {
+        label: 'pendaftaran',
+        value: 'tidak ada yang dibuka',
+        note: 'info berikutnya diumumkan di sini',
+        href: '/gabung',
+      }
 
   return [kelas, challenge, pendaftaran]
 }

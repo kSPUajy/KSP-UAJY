@@ -102,7 +102,7 @@ Definisi lengkapnya ada di `src/lib/types.ts`. Semua field wajib kecuali yang di
 | Cara bergabung (`JoinInfo`) | `lib/data/gabung.ts` | — | `/gabung`, hero dan bagian penutup beranda |
 | Tentang (`AboutInfo`) | `lib/data/tentang.ts` | — | `/tentang` |
 | Modul kelas (`Modul`) | tabel `modules` | tautan `berkas_url` | `/modul`, hero beranda |
-| Pendaftaran per kelas | tabel `registration_tracks` | — | hero, kartu kelas dan bagian penutup beranda, `/gabung` |
+| Pendaftaran per kelas | tabel `registration_tracks` | kolom `isi_mdx` | hero, kartu kelas dan bagian penutup beranda, `/gabung`, `/gabung/<kelas>` |
 | Angka klub | `lib/data/stats.ts` | — | beranda, `/tentang` |
 
 Konvensi yang berlaku di semua jenis:
@@ -158,9 +158,11 @@ Status setiap modul dihitung dari jam, jadi tidak perlu diubah tiap minggu:
 
 KSP punya empat kelas, sama dengan kartu di bagian "Bukan cuma C" beranda: Bahasa C, Blockchain, Machine Learning, dan Java. Pendaftaran tiap kelas diatur di `/admin/pendaftaran` dengan satu saklar dan satu tautan formulir. Tidak ada tanggal: kelas tetap dibuka sampai saklarnya dimatikan. Isi tabelnya ada di `registration_tracks`.
 
+Setiap kelas punya halaman pendaftaran sendiri. Halaman KSP C adalah `/gabung`, dan isinya (syarat, manfaat, alur, FAQ) diatur di `lib/data/gabung.ts`. Kelas lain ada di `/gabung/<kelas>` (misalnya `/gabung/blockchain`), dan isinya diedit di `/admin/pendaftaran/<kelas>`: ringkasan, syarat (satu per baris), poster, dan isi MDX (materi, jadwal, biaya). Pengumuman pendaftaran kelas selain C diberi tag `pendaftaran` dan id kelasnya (misalnya `blockchain`), supaya tombol "baca pengumuman" di halaman kelas itu menemukannya.
+
 | Keadaan | Yang tampil di hero, kartu kelas, bagian gabung beranda, dan `/gabung` |
 | --- | --- |
-| Ada kelas yang dibuka | "Pendaftaran kelas … sedang dibuka", dan tombol "daftar kelas …" untuk tiap kelas yang tautannya diisi. Kartunya berwarna, bertanda "daftar dibuka", dan menuju `/gabung`. |
+| Ada kelas yang dibuka | "Pendaftaran kelas … sedang dibuka" dan tombol "daftar kelas …" (kalau tautannya diisi) di halaman kelas itu. Kartunya berwarna, bertanda "daftar dibuka", dan menuju halaman kelasnya. Tombol hero dan kotak Sekilas KSP menuju halaman kelas pertama yang dibuka. Halaman kelas lain menampilkan "Sedang dibuka juga: kelas …". |
 | Tidak ada yang dibuka | "Tidak ada pendaftaran yang sedang dibuka", dan tombol utama berganti menjadi "coba challenge dulu" |
 
 Saklar langsung tersimpan dan tampil di situs saat itu juga. Terbitkan juga pengumumannya sebagai berita bertag `pendaftaran`. Tabel lama `registration_rounds` (gelombang bertanggal) tidak dibaca lagi dan hanya disimpan sebagai riwayat.

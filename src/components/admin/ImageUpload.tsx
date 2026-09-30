@@ -13,7 +13,7 @@ export function ImageUpload({
   folder,
   onUploaded,
 }: {
-  folder: 'berita' | 'pemenang' | 'tentor' | 'galeri'
+  folder: 'berita' | 'pemenang' | 'tentor' | 'galeri' | 'kelas'
   onUploaded: (url: string) => void
 }) {
   const id = useId()

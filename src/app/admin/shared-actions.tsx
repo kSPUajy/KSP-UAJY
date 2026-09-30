@@ -10,7 +10,7 @@ import { createSupabaseAdmin } from '@/lib/supabase/admin'
 
 const IMAGE_MAX = 3 * 1024 * 1024
 const IMAGE_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' } as const
-const FOLDERS = ['berita', 'pemenang', 'tentor', 'galeri'] as const
+const FOLDERS = ['berita', 'pemenang', 'tentor', 'galeri', 'kelas'] as const
 const VIDEO_MAX = 50 * 1024 * 1024
 const VIDEO_TYPES = { 'video/mp4': 'mp4', 'video/webm': 'webm' } as const
 

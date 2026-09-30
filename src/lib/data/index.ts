@@ -35,6 +35,7 @@ import type {
   NewsPost,
   NewsPostMeta,
   Registration,
+  RegistrationPage,
   RegistrationTrack,
   SesiWithStatus,
   SiteStats,
@@ -438,13 +439,26 @@ export async function getRegistrationTracks(): Promise<RegistrationTrack[]> {
   return data
 }
 
+/** A class's own registration page, or null for an unknown class. */
+export async function getRegistrationPage(id: string): Promise<RegistrationPage | null> {
+  const { data, error } = await publicDb(TAGS.pendaftaran)
+    .from('registration_tracks')
+    .select('id, nama, buka, link, ringkasan, syarat, isi_mdx, poster')
+    .eq('id', id)
+    .maybeSingle()
+  if (error) throw new Error(`Gagal membaca pendaftaran ${id}: ${error.message}`)
+  if (!data) return null
+  const { isi_mdx: isiMdx, ...rest } = data
+  return { ...rest, isiMdx }
+}
+
 /**
  * Which classes are taking sign-ups. The switches are flipped in the admin
  * panel, which refreshes the pages that show them at once.
  */
 export async function getRegistration(): Promise<Registration> {
   const tracks = await getRegistrationTracks()
-  return { open: tracks.filter((track) => track.buka) }
+  return { tracks, open: tracks.filter((track) => track.buka) }
 }
 
 // ------------------------------------------------------------------ about ---

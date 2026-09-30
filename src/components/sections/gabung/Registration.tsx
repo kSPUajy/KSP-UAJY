@@ -1,7 +1,22 @@
+import Link from 'next/link'
+
 import { ButtonAnchor, ButtonLink } from '@/components/ui/Button'
 import type { ButtonSize } from '@/components/ui/Button'
 import type { Registration, RegistrationTrack } from '@/lib/types'
 import { cn } from '@/lib/utils'
+
+/** C's registration page is /gabung itself; every other class has its own. */
+export const KELAS_C = 'c'
+
+export const pendaftaranHref = (id: string): string => (id === KELAS_C ? '/gabung' : `/gabung/${id}`)
+
+/** Registration narrowed to one class, for that class's own page. */
+export function onlyClass(registration: Registration, id: string): Registration {
+  return {
+    tracks: registration.tracks.filter((track) => track.id === id),
+    open: registration.open.filter((track) => track.id === id),
+  }
+}
 
 /** `Bahasa C`, `Bahasa C dan Blockchain`, `Bahasa C, Blockchain, dan Java`. */
 export function listNames(names: readonly string[]): string {
@@ -13,11 +28,20 @@ export function listNames(names: readonly string[]): string {
  * The primary action for joining, whatever registration is doing.
  *
  * One "daftar" button per open class that has a form. With none, it points
- * at the weekly challenge instead: the one thing anyone on campus can do
- * today without being a member, and the door most members came in through.
- * A closed form behind a "daftar sekarang" button would be the worst of both.
+ * at the weekly challenge instead (the `challenge` fallback): the one thing
+ * anyone on campus can do today without being a member, and the door most
+ * members came in through. A closed form behind a "daftar sekarang" button
+ * would be the worst of both.
  */
-export function RegisterButton({ registration, size = 'lg' }: { registration: Registration; size?: ButtonSize }) {
+export function RegisterButton({
+  registration,
+  size = 'lg',
+  fallback = 'challenge',
+}: {
+  registration: Registration
+  size?: ButtonSize
+  fallback?: 'challenge' | 'none'
+}) {
   const forms = registration.open.filter((track): track is RegistrationTrack & { link: string } => track.link !== null)
 
   if (forms.length > 0) {
@@ -34,6 +58,7 @@ export function RegisterButton({ registration, size = 'lg' }: { registration: Re
     )
   }
 
+  if (fallback === 'none') return null
   return (
     <ButtonLink href="/challenge" size={size}>
       coba challenge dulu
@@ -41,7 +66,10 @@ export function RegisterButton({ registration, size = 'lg' }: { registration: Re
   )
 }
 
-/** Where registration stands, as one status line: an LED and a sentence. */
+/**
+ * Where registration stands, as one status line: an LED and a sentence.
+ * Given one class (`onlyClass`), it speaks for that class alone.
+ */
 export function RegistrationStatusLine({
   registration,
   className,
@@ -50,9 +78,12 @@ export function RegistrationStatusLine({
   className?: string
 }) {
   const open = registration.open.length > 0
+  const single = registration.tracks.length === 1 ? registration.tracks[0] : undefined
   const text = open
     ? `Pendaftaran kelas ${listNames(registration.open.map((track) => track.nama))} sedang dibuka.`
-    : 'Tidak ada pendaftaran yang sedang dibuka. Info pendaftaran berikutnya diumumkan di halaman berita.'
+    : single
+      ? `Pendaftaran kelas ${single.nama} sedang tidak dibuka. Info pendaftaran berikutnya diumumkan di halaman berita.`
+      : 'Tidak ada pendaftaran yang sedang dibuka. Info pendaftaran berikutnya diumumkan di halaman berita.'
 
   return (
     <p className={cn('flex items-start gap-3 text-[12px] leading-6', className)}>
@@ -66,6 +97,37 @@ export function RegistrationStatusLine({
         </span>
         <span className="text-muted"> — {text}</span>
       </span>
+    </p>
+  )
+}
+
+/** On one class's page: the other classes taking sign-ups, each a way to its own page. */
+export function OtherOpenClasses({
+  registration,
+  except,
+  className,
+}: {
+  registration: Registration
+  except: string
+  className?: string
+}) {
+  const others = registration.open.filter((track) => track.id !== except)
+  if (others.length === 0) return null
+
+  return (
+    <p className={cn('text-[12px] leading-6 text-muted', className)}>
+      Sedang dibuka juga:{' '}
+      {others.map((track, position) => (
+        <span key={track.id}>
+          {position > 0 ? ', ' : null}
+          <Link
+            href={pendaftaranHref(track.id)}
+            className="text-accent-fg underline decoration-2 underline-offset-4 hover:text-fg"
+          >
+            kelas {track.nama} <span aria-hidden>→</span>
+          </Link>
+        </span>
+      ))}
     </p>
   )
 }

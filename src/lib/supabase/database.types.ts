@@ -318,24 +318,36 @@ export type Database = {
         Row: {
           buka: boolean
           id: string
+          isi_mdx: string
           link: string | null
           nama: string
+          poster: string | null
+          ringkasan: string
+          syarat: string[]
           updated_at: string
           urutan: number
         }
         Insert: {
           buka?: boolean
           id: string
+          isi_mdx?: string
           link?: string | null
           nama: string
+          poster?: string | null
+          ringkasan?: string
+          syarat?: string[]
           updated_at?: string
           urutan: number
         }
         Update: {
           buka?: boolean
           id?: string
+          isi_mdx?: string
           link?: string | null
           nama?: string
+          poster?: string | null
+          ringkasan?: string
+          syarat?: string[]
           updated_at?: string
           urutan?: number
         }

@@ -2,8 +2,10 @@
 
 import { useActionState, useId, useState, useTransition } from 'react'
 
-import { aturPendaftaran, simpanTautanPendaftaran } from '@/app/admin/pendaftaran/actions'
-import { AdminForm, FormMessage, SubmitButton, TextInput } from '@/components/admin/form'
+import { aturPendaftaran, simpanHalamanKelas, simpanTautanPendaftaran } from '@/app/admin/pendaftaran/actions'
+import { AdminForm, FormMessage, SubmitButton, TextArea, TextInput } from '@/components/admin/form'
+import { ImageUpload } from '@/components/admin/ImageUpload'
+import { MdxEditor } from '@/components/admin/MdxEditor'
 import { cn } from '@/lib/utils'
 
 /**
@@ -83,6 +85,77 @@ export function TrackLinkForm({ id, initial, className }: { id: string; initial:
       <FormMessage state={state} />
       <div>
         <SubmitButton variant="outline">simpan tautan</SubmitButton>
+      </div>
+    </AdminForm>
+  )
+}
+
+export type KelasPageValues = {
+  id: string
+  ringkasan: string
+  syarat: string[]
+  isiMdx: string
+  poster: string | null
+}
+
+/** A class's own registration page, /gabung/<id>: pitch, requirements, poster, details. */
+export function KelasPageForm({ initial }: { initial: KelasPageValues }) {
+  const [state, action] = useActionState(simpanHalamanKelas, undefined)
+  const [poster, setPoster] = useState(initial.poster ?? '')
+  const uid = useId()
+  const error = (field: string): string | undefined => state?.errors?.[field]
+
+  return (
+    <AdminForm action={action} state={state} className="flex flex-col gap-6">
+      <input type="hidden" name="id" value={initial.id} />
+      <TextArea
+        id={`${uid}-ringkasan`}
+        name="ringkasan"
+        label="ringkasan"
+        rows={3}
+        defaultValue={initial.ringkasan}
+        error={error('ringkasan')}
+        hint="Satu–dua kalimat di bawah judul halaman dan di kartu share."
+      />
+      <TextArea
+        id={`${uid}-syarat`}
+        name="syarat"
+        label="syarat"
+        rows={4}
+        defaultValue={initial.syarat.join('\n')}
+        error={error('syarat')}
+        hint="Satu syarat per baris."
+      />
+
+      <fieldset className="flex flex-col gap-4 border-2 border-line-soft p-4 sm:p-5">
+        <legend className="px-2 text-[11px] tracking-[0.12em] text-accent-fg uppercase">poster</legend>
+        <TextInput
+          id={`${uid}-poster`}
+          name="poster"
+          label="tautan"
+          type="url"
+          value={poster}
+          onChange={(event) => setPoster(event.target.value)}
+          placeholder="https://…"
+          error={error('poster')}
+          hint="Tampil utuh di samping syarat. Kosongkan kalau tidak ada."
+        />
+        <ImageUpload folder="kelas" onUploaded={setPoster} />
+      </fieldset>
+
+      <MdxEditor
+        name="isi_mdx"
+        label="isi (mdx): materi, jadwal, biaya, dan lain-lain"
+        rows={20}
+        defaultValue={initial.isiMdx}
+        error={error('isi_mdx')}
+      />
+
+      <div className="flex flex-col gap-4 border-t-2 border-line-soft pt-6">
+        <FormMessage state={state} />
+        <div>
+          <SubmitButton>simpan halaman</SubmitButton>
+        </div>
       </div>
     </AdminForm>
   )

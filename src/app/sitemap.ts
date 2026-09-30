@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-import { getChallenges, getNewsPosts, getTentors, getWinnerProfiles } from '@/lib/data'
+import { getChallenges, getNewsPosts, getRegistrationTracks, getTentors, getWinnerProfiles } from '@/lib/data'
 import { siteConfig } from '@/site.config'
 
 const url = (path: string): string => `${siteConfig.url}${path}`
@@ -17,11 +17,12 @@ export const revalidate = 3600
  * deploy, which teaches them to ignore the field.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [posts, challenges, tentors, winners] = await Promise.all([
+  const [posts, challenges, tentors, winners, tracks] = await Promise.all([
     getNewsPosts(),
     getChallenges(),
     getTentors(),
     getWinnerProfiles(),
+    getRegistrationTracks(),
   ])
 
   const sections: MetadataRoute.Sitemap = [
@@ -30,6 +31,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .filter((item) => item.href !== '/')
       .map((item) => ({ url: url(item.href), changeFrequency: 'weekly' as const, priority: 0.8 })),
     { url: url(siteConfig.cta.href), changeFrequency: 'monthly', priority: 0.9 },
+    // Every class but C has its own registration page; C's is /gabung above.
+    ...tracks
+      .filter((track) => track.id !== 'c')
+      .map((track) => ({ url: url(`/gabung/${track.id}`), changeFrequency: 'monthly' as const, priority: 0.7 })),
   ]
 
   return [
