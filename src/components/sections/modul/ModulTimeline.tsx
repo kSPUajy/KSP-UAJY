@@ -1,7 +1,6 @@
-import { modulRange, modulRelease } from '@/components/sections/modul/modul-format'
+import { modulRange, modulStart } from '@/components/sections/modul/modul-format'
 import { ModulFiles } from '@/components/sections/modul/ModulFiles'
 import { Badge } from '@/components/ui/Badge'
-import { isReleased } from '@/lib/tugas/rules'
 import type { ModulStatus, TimelineEntry } from '@/lib/types'
 import { cn, pad2 } from '@/lib/utils'
 
@@ -113,18 +112,10 @@ export function ModulTimeline({ entries }: ModulTimelineProps) {
                     </span>
                   </>
                 )}
-                {sesi ? (
-                  locked ? (
-                    <>
-                      <span aria-hidden>·</span>
-                      <span>mulai {modulRelease(entry)}</span>
-                    </>
-                  ) : null
-                ) : !isReleased(entry) ? (
-                  // Its week may have started with the Monday class; the module itself comes out on Wednesday.
+                {locked ? (
                   <>
                     <span aria-hidden>·</span>
-                    <span>rilis {modulRelease(entry)}, 00.00</span>
+                    <span>mulai {modulStart(entry)}</span>
                   </>
                 ) : null}
                 {sesi ? (

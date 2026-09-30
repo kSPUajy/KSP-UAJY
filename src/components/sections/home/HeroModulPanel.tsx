@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { modulRelease } from '@/components/sections/modul/modul-format'
+import { modulStart } from '@/components/sections/modul/modul-format'
 import { TerminalWindow } from '@/components/ui/TerminalWindow'
 import { formatTanggalPendek } from '@/lib/format'
 import type { ModulStatus, TimelineEntry } from '@/lib/types'
@@ -104,11 +104,11 @@ export function HeroModulPanel({ entries }: HeroModulPanelProps) {
                     </span>
                   ) : null}
                   <span className="sr-only">
-                    {`${sesi ? ' — sesi tanpa modul' : ''} — ${STATUS_TEXT[entry.status]}${locked ? `, dibuka ${modulRelease(entry)}` : ''}`}
+                    {`${sesi ? ' — sesi tanpa modul' : ''} — ${STATUS_TEXT[entry.status]}${locked ? `, mulai ${modulStart(entry)}` : ''}`}
                   </span>
                 </span>
                 <span aria-hidden className="text-xs text-dim tabular-nums">
-                  {isCurrent ? 'minggu ini' : shortDate(entry.rilis)}
+                  {isCurrent ? 'minggu ini' : shortDate(entry.mulai)}
                 </span>
               </Link>
             </li>

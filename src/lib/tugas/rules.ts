@@ -5,7 +5,7 @@
  * word. Nothing here touches Node or the DOM, so both can run it.
  */
 
-import { addDays, deadlineToMs, mondayOf } from '@/lib/format'
+import { deadlineToMs } from '@/lib/format'
 
 export const MAX_BYTES = 5 * 1024 * 1024
 
@@ -26,12 +26,12 @@ export function displayName(fileName: string): string {
 
 /**
  * The deadline, as a WIB wall-clock time: the module's own `tenggat` when an
- * admin set one, otherwise 19.00 on the Monday after the module's release,
- * when the next class starts. The guided task counts towards attendance, so
- * it is due before members walk into that class.
+ * admin set one, otherwise 19.00 when the next meeting starts (worked out
+ * from the schedule by `getModules`). The guided task counts towards
+ * attendance, so it is due before members walk into that class.
  */
-export function effectiveDeadline(modul: { rilis: string; tenggat?: string }): string {
-  return modul.tenggat ?? `${addDays(mondayOf(modul.rilis), 7)}T19:00`
+export function effectiveDeadline(modul: { tenggat?: string; tenggatBawaan: string }): string {
+  return modul.tenggat ?? modul.tenggatBawaan
 }
 
 /** Handing in opens with the module's release: `rilis` at 00.00 WIB. */

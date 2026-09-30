@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { Reveal } from '@/components/motion/Reveal'
 import { CurrentModul, CurrentSesi } from '@/components/sections/modul/CurrentModul'
 import { ModulTimeline } from '@/components/sections/modul/ModulTimeline'
-import { modulRelease } from '@/components/sections/modul/modul-format'
+import { modulRelease, modulStart } from '@/components/sections/modul/modul-format'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { SectionHeader } from '@/components/ui/SectionHeader'
@@ -76,9 +76,9 @@ export default async function ModulPage() {
                   title={notStarted ? 'Semester belum dimulai' : upcoming ? 'Minggu ini tidak ada modul baru' : 'Semua modul sudah selesai'}
                   description={
                     notStarted && first
-                      ? `Modul pertama dibuka ${modulRelease(first)}.`
+                      ? `Kelas pertama dimulai ${modulStart(first)}, dan modulnya dibuka ${modulRelease(first)} pukul 00.00.`
                       : upcoming
-                        ? `Kelas berikutnya, ${upcoming.judul}, dimulai ${modulRelease(upcoming)}. Semua berkas modul tetap bisa diunduh di bawah.`
+                        ? `Kelas berikutnya, ${upcoming.judul}, dimulai ${modulStart(upcoming)}. Semua berkas modul tetap bisa diunduh di bawah.`
                         : 'Seluruh modul semester ini sudah dibagikan. Semua berkasnya tetap bisa diunduh di bawah.'
                   }
                 />

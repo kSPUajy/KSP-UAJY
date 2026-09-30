@@ -14,9 +14,13 @@ export function modulRange(modul: { mulai: string; sampai: string }): string {
   return modul.sampai.startsWith(year) ? `${from.replace(` ${year}`, '')} – ${to}` : `${from} – ${to}`
 }
 
-/** `Rabu, 30 Sep 2026` */
+/** When the module and its task open, `Rabu, 30 Sep 2026`. Only for that; the schedule shows the Monday. */
 export const modulRelease = (modul: { rilis: string }): string =>
   `${namaHari(modul.rilis)}, ${formatTanggalPendek(modul.rilis)}`
+
+/** When the week starts, with its Monday class: `Senin, 28 Sep 2026`. What every timeline shows. */
+export const modulStart = (entry: { mulai: string }): string =>
+  `${namaHari(entry.mulai)}, ${formatTanggalPendek(entry.mulai)}`
 
 /** `ksp-modul-02-flowchart-2.pdf`, or `ksp-modul-02-flowchart-2-tugas-guided.zip` for one of its tasks. */
 export const modulFileName = (modul: { minggu: number; judul: string }, bagian: string | null, extension: string): string =>

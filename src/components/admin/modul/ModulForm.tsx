@@ -259,7 +259,7 @@ export function ModulForm({
           label="tenggat"
           type="datetime-local"
           defaultValue={initial.tenggat}
-          hint="WIB. Kosongkan = Senin setelah modul rilis, pukul 19.00, saat kelas berikutnya dimulai."
+          hint="WIB. Kosongkan = pukul 19.00 di pertemuan berikutnya (Senin modul berikutnya atau awal sesi), jadi melewati jeda seperti UTS."
           error={error('tenggat')}
         />
         <TextInput

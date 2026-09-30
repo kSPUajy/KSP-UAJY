@@ -337,7 +337,7 @@ export type AboutInfo = {
  *
  * The week runs Monday to Sunday: classes on Monday and Tuesday, the module
  * and its guided task released on Wednesday at 00.00 WIB. The task is due
- * the next Monday at 19.00, when the next class starts.
+ * at 19.00 when the next meeting starts, usually the next Monday.
  */
 export type Modul = {
   id: string
@@ -358,7 +358,7 @@ export type Modul = {
   berkasUrl?: string
   /** Instructions for the week's guided task. Empty when there are none to add. */
   tugasDeskripsi: string
-  /** Guided-task deadline, WIB wall clock. Absent means 19.00 on the Monday after the release. */
+  /** Guided-task deadline, WIB wall clock. Absent means `tenggatBawaan`: the next meeting, 19.00. */
   tenggat?: string
   /** Link to the guided task's file (PDF or ZIP). Public, like the module file. */
   tugasGuidedUrl?: string
@@ -390,6 +390,12 @@ export type ModulWithStatus = Modul & {
   mulai: string
   /** Last day of the module's week, `YYYY-MM-DD`: its Sunday, or sooner when the next week starts. */
   sampai: string
+  /**
+   * The default guided-task deadline, WIB wall clock: 19.00 on the day the
+   * next meeting starts (the next module's Monday or session), after any
+   * break. The task counts towards attendance at that meeting.
+   */
+  tenggatBawaan: string
 }
 
 export type SesiWithStatus = Sesi & {

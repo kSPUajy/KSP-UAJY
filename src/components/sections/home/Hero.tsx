@@ -24,7 +24,7 @@ const STATUS_ROWS = (openRegistrations: readonly RegistrationTrack[]) =>
   [
     { key: 'tentoring', value: 'Senin & Selasa, 19.00–21.00 WIB' },
     { key: 'tempat', value: 'Lab Komputasi' },
-    { key: 'tugas', value: 'dikumpulkan Senin berikutnya, 19.00 WIB' },
+    { key: 'tugas', value: 'dikumpulkan sebelum kelas berikutnya, 19.00 WIB' },
     {
       key: 'pendaftaran',
       value:
