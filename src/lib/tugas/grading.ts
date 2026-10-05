@@ -118,7 +118,12 @@ export type GradingView = {
   nilai: number | null
   komentar: string | null
   penilai: string | null
-  content: { kind: 'c'; code: string } | { kind: 'zip'; entries: ZipEntry[] } | { kind: 'missing' }
+  /** Code and zips are read here; a rar or a PDF can only be downloaded. */
+  content:
+    | { kind: 'code'; code: string }
+    | { kind: 'zip'; entries: ZipEntry[] }
+    | { kind: 'unduh'; jenis: 'rar' | 'pdf' }
+    | { kind: 'missing' }
 }
 
 /** One submission, with its code ready to read. Null when this grader may not see it. */
@@ -134,20 +139,20 @@ export async function getSubmissionForGrading(submissionId: string): Promise<Gra
   const { data: allowed } = await db.rpc('can_grade', { target_module: row.module_id })
   if (!allowed) return null
 
+  const kind = kindOf(row.storage_path)
+  const unreadable = kind === 'rar' || kind === 'pdf' ? kind : null
+
   const [{ data: student }, modules, file] = await Promise.all([
     db.from('profiles').select('npm, nama').eq('id', row.user_id).maybeSingle(),
     getModules(),
-    createSupabaseAdmin().storage.from('tugas').download(row.storage_path),
+    unreadable ? null : createSupabaseAdmin().storage.from('tugas').download(row.storage_path),
   ])
   const modul = modules.find((item) => item.id === row.module_id)
 
-  let content: GradingView['content'] = { kind: 'missing' }
-  if (file.data) {
+  let content: GradingView['content'] = unreadable ? { kind: 'unduh', jenis: unreadable } : { kind: 'missing' }
+  if (file?.data) {
     const bytes = new Uint8Array(await file.data.arrayBuffer())
-    content =
-      kindOf(row.storage_path) === 'zip'
-        ? { kind: 'zip', entries: readZip(bytes) }
-        : { kind: 'c', code: new TextDecoder().decode(bytes) }
+    content = kind === 'zip' ? { kind: 'zip', entries: readZip(bytes) } : { kind: 'code', code: new TextDecoder().decode(bytes) }
   }
 
   return {

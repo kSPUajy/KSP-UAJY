@@ -20,7 +20,7 @@ export const metadata: Metadata = pageMetadata({
   noindex: true,
 })
 
-const isC = (path: string): boolean => /\.(c|h)$/i.test(path)
+const isCode = (path: string): boolean => /\.(c|h|cpp|hpp)$/i.test(path)
 
 export default async function NilaiTugasPage({ params }: { params: Promise<{ moduleId: string; submissionId: string }> }) {
   const { moduleId, submissionId } = await params
@@ -77,11 +77,16 @@ export default async function NilaiTugasPage({ params }: { params: Promise<{ mod
             <DownloadButton submissionId={view.id} fileName={view.fileName} />
           </p>
 
-          {view.content.kind === 'c' ? (
+          {view.content.kind === 'code' ? (
             <CodeBlock code={view.content.code} filename={view.fileName} />
+          ) : view.content.kind === 'unduh' ? (
+            <p className="border-2 border-line-soft px-4 py-3 text-[12px] leading-6 text-muted">
+              {view.content.jenis === 'pdf' ? 'Berkas PDF' : 'Arsip rar'} tidak bisa ditampilkan di halaman ini. Unduh
+              berkasnya untuk membacanya.
+            </p>
           ) : view.content.kind === 'zip' ? (
             view.content.entries.map((entry) =>
-              entry.text !== undefined && isC(entry.path) ? (
+              entry.text !== undefined && isCode(entry.path) ? (
                 <CodeBlock key={entry.path} code={entry.text} filename={entry.path} />
               ) : entry.text !== undefined ? (
                 <TerminalWindow key={entry.path} title={entry.path} tone="code" shadow={false} bodyClassName="p-0">

@@ -3,7 +3,7 @@ import 'server-only'
 import { inflateRawSync } from 'node:zlib'
 
 /** Files a tentor would want to read inline. Everything else is listed, not shown. */
-const TEXT_FILE = /\.(c|h|txt|md|in|out)$/i
+const TEXT_FILE = /\.(c|h|cpp|hpp|txt|md|in|out)$/i
 const JUNK = /(^|\/)(__MACOSX\/|\.DS_Store$|Thumbs\.db$|desktop\.ini$)/i
 
 const PER_FILE_LIMIT = 64 * 1024

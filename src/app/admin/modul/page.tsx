@@ -54,29 +54,43 @@ export default async function AdminModulPage() {
         {modules.map((modul) => {
           const counts = perModule.get(modul.id) ?? { total: 0, graded: 0 }
           return (
-            <li key={modul.id} className="border-b-2 border-line">
-              <Link
-                href={`/admin/modul/${modul.id}`}
-                className="grid grid-cols-[3.5rem_minmax(0,1fr)] items-center gap-x-4 gap-y-1 px-3 py-3.5 transition-colors hover:bg-surface-2 sm:grid-cols-[3.5rem_minmax(0,1fr)_7rem_9rem_auto]"
-              >
-                <span className="font-display text-[11px] tracking-[0.12em] text-accent-fg">M{pad2(modul.minggu)}</span>
-                <span className="min-w-0">
-                  <span className="block truncate text-sm font-bold text-fg">{modul.judul}</span>
-                  <span className="block truncate text-[11px] text-dim">
-                    {modul.tentorPj.join(', ') || 'tentor belum diisi'} · {modul.koordinator || '—'}
-                    {modul.tugasUnguided ? ` · unguided ${modul.tugasUnguided.terbuka ? 'dibuka' : 'terkunci'}` : ''}
-                  </span>
+            // The whole row opens the module (its title link is stretched over
+            // it); the count is its own link, to the names behind the number.
+            <li
+              key={modul.id}
+              className="relative grid grid-cols-[3.5rem_minmax(0,1fr)] items-center gap-x-4 gap-y-1 border-b-2 border-line px-3 py-3.5 transition-colors hover:bg-surface-2 sm:grid-cols-[3.5rem_minmax(0,1fr)_7rem_11rem_auto]"
+            >
+              <span className="font-display text-[11px] tracking-[0.12em] text-accent-fg">M{pad2(modul.minggu)}</span>
+              <span className="min-w-0">
+                <Link href={`/admin/modul/${modul.id}`} className="block truncate text-sm font-bold text-fg after:absolute after:inset-0">
+                  {modul.judul}
+                </Link>
+                <span className="block truncate text-[11px] text-dim">
+                  {modul.tentorPj.join(', ') || 'tentor belum diisi'} · {modul.koordinator || '—'}
+                  {modul.tugasUnguided ? ` · unguided ${modul.tugasUnguided.terbuka ? 'dibuka' : 'terkunci'}` : ''}
                 </span>
-                <span className="col-start-2 text-[11px] text-dim sm:col-start-auto">rilis {formatTanggalPendek(modul.rilis)}</span>
-                <span className="col-start-2 text-[11px] text-muted tabular-nums sm:col-start-auto">
-                  {modul.status === 'terkunci' ? '—' : `${counts.total}/${members ?? 0} tugas · ${counts.graded} dinilai`}
-                </span>
-                <span className="col-start-2 sm:col-start-auto">
-                  <Badge size="sm" variant={modul.status === 'berjalan' ? 'solid' : 'ghost'}>
-                    {modul.status === 'berjalan' ? 'minggu ini' : modul.status}
-                  </Badge>
-                </span>
-              </Link>
+              </span>
+              <span className="col-start-2 text-[11px] text-dim sm:col-start-auto">rilis {formatTanggalPendek(modul.rilis)}</span>
+              <span className="col-start-2 text-[11px] text-muted tabular-nums sm:col-start-auto">
+                {modul.status === 'terkunci' ? (
+                  '—'
+                ) : (
+                  <Link
+                    href={`/penilaian/${modul.id}`}
+                    title="Lihat siapa saja yang sudah mengumpulkan"
+                    className="relative z-10 underline decoration-accent-fg decoration-2 underline-offset-4 hover:text-fg"
+                  >
+                    {counts.total}/{members ?? 0} mengumpulkan <span aria-hidden>-&gt;</span>
+                    <span className="sr-only"> — lihat siapa saja</span>
+                  </Link>
+                )}
+                {modul.status !== 'terkunci' && counts.graded > 0 ? <span className="block text-dim">{counts.graded} dinilai</span> : null}
+              </span>
+              <span className="col-start-2 sm:col-start-auto">
+                <Badge size="sm" variant={modul.status === 'berjalan' ? 'solid' : 'ghost'}>
+                  {modul.status === 'berjalan' ? 'minggu ini' : modul.status}
+                </Badge>
+              </span>
             </li>
           )
         })}

@@ -9,7 +9,7 @@ import { getModules } from '@/lib/data'
 import { deadlineToMs } from '@/lib/format'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { createSupabaseServer } from '@/lib/supabase/server'
-import { MAX_BYTES, checkFile, displayName, effectiveDeadline, isReleased, kindOf } from '@/lib/tugas/rules'
+import { MAX_BYTES, WRONG_KIND, checkFile, displayName, effectiveDeadline, isReleased, kindOf } from '@/lib/tugas/rules'
 
 const BUCKET = 'tugas'
 
@@ -59,7 +59,7 @@ export async function mulaiUpload(
   if (!auth.ok) return auth
 
   const kind = kindOf(fileName)
-  if (!kind) return { ok: false, error: 'Hanya berkas .c atau .zip yang diterima.' }
+  if (!kind) return { ok: false, error: WRONG_KIND }
   if (!Number.isFinite(size) || size <= 0) return { ok: false, error: 'Berkasnya kosong.' }
   if (size > MAX_BYTES) return { ok: false, error: 'Berkas terlalu besar. Batasnya 5 MB.' }
 

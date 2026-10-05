@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js'
 import { useId, useRef, useState } from 'react'
 
 import { mulaiUpload, selesaiUpload } from '@/app/dashboard/actions'
-import { MAX_BYTES, checkFile, kindOf } from '@/lib/tugas/rules'
+import { CONTENT_TYPE, FILE_KINDS, MAX_BYTES, WRONG_KIND, checkFile, kindOf } from '@/lib/tugas/rules'
 import { cn } from '@/lib/utils'
 
 type Phase =
@@ -13,10 +13,20 @@ type Phase =
   | { name: 'done'; message: string; late: boolean }
   | { name: 'error'; message: string }
 
+/** The picker lists these and nothing else, so a member sees every file they may hand in. */
+const ACCEPT = FILE_KINDS.map((kind) => `.${kind}`).join(',')
+
+/** The accepted kinds as a member reads them under the drop zone: what each one is for. */
+const ACCEPTED: readonly { kinds: string; untuk: string }[] = [
+  { kinds: '.c · .cpp', untuk: 'kode program' },
+  { kinds: '.zip · .rar', untuk: 'beberapa berkas atau satu folder, dijadikan satu arsip' },
+  { kinds: '.pdf', untuk: 'jawaban berupa dokumen' },
+]
+
 /**
- * Pick or drop one `.c` file or one `.zip`, and it is handed in.
+ * Pick or drop one file — code, an archive, or a PDF — and it is handed in.
  *
- * The file is checked here first, so a wrong zip is caught in a second
+ * The file is checked here first, so a wrong one is caught in a second
  * instead of after an upload. Then the server issues a one-time upload URL,
  * the browser sends the bytes straight to storage, and the server checks
  * them again before recording anything. The browser's check is a courtesy;
@@ -31,7 +41,7 @@ export function TugasUploader({ moduleId, replacing }: { moduleId: string; repla
 
   async function submit(file: File): Promise<void> {
     const kind = kindOf(file.name)
-    if (!kind) return setPhase({ name: 'error', message: 'Hanya berkas .c atau .zip yang diterima.' })
+    if (!kind) return setPhase({ name: 'error', message: WRONG_KIND })
     if (file.size > MAX_BYTES) return setPhase({ name: 'error', message: 'Berkas terlalu besar. Batasnya 5 MB.' })
 
     setPhase({ name: 'working', step: 'memeriksa berkas…' })
@@ -46,9 +56,12 @@ export function TugasUploader({ moduleId, replacing }: { moduleId: string; repla
     const storage = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
       auth: { persistSession: false, autoRefreshToken: false },
     }).storage.from('tugas')
-    const { error } = await storage.uploadToSignedUrl(start.path, start.token, file, {
-      contentType: kind === 'zip' ? 'application/zip' : 'text/x-csrc',
-    })
+    // Storage takes the type from the file itself, and browsers disagree on
+    // it (Windows calls a zip `application/x-zip-compressed`, and a `.c`
+    // nothing at all), so it is restated.
+    const contentType = CONTENT_TYPE[kind]
+    const body = new File([file], file.name, { type: contentType })
+    const { error } = await storage.uploadToSignedUrl(start.path, start.token, body, { contentType })
     if (error) return setPhase({ name: 'error', message: 'Upload terputus. Periksa koneksi, lalu coba lagi.' })
 
     setPhase({ name: 'working', step: 'mencatat…' })
@@ -94,19 +107,29 @@ export function TugasUploader({ moduleId, replacing }: { moduleId: string; repla
           </span>
           {replacing ? 'ganti berkas' : 'kumpulkan tugas'}
         </span>
-        <span className="text-[11px] leading-5 text-dim">
-          satu berkas .c, atau satu folder yang di-zip · maks 5 MB · pilih atau seret ke sini
-        </span>
+        <span className="text-[11px] leading-5 text-dim">pilih berkas, atau seret ke sini</span>
       </label>
       <input
         ref={inputRef}
         id={inputId}
         type="file"
-        accept=".c,.zip,text/x-csrc,application/zip"
+        accept={ACCEPT}
         className="sr-only"
         disabled={busy}
         onChange={(event) => onFiles(event.target.files)}
       />
+
+      <div className="mt-3 text-[11px] leading-5 text-dim">
+        <p className="text-muted">berkas yang diterima · satu berkas per tugas · maks 5 MB</p>
+        <ul className="mt-1">
+          {ACCEPTED.map((item) => (
+            <li key={item.kinds} className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-3">
+              <span className="text-fg">{item.kinds}</span>
+              <span>{item.untuk}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <p role="status" aria-live="polite" className="mt-3 min-h-6 text-[12px] leading-6">
         {phase.name === 'working' ? <span className="text-muted">{phase.step}</span> : null}

@@ -24,10 +24,12 @@ export default async function AdminModulEditPage({ params }: { params: Promise<{
 
   // Read fresh under the admin's session, never from the public cache.
   const db = await createSupabaseServer()
-  const [{ data }, { data: tentorRows }, { data: assignmentRows }] = await Promise.all([
+  const [{ data }, { data: tentorRows }, { data: assignmentRows }, { count: handedIn }, { count: members }] = await Promise.all([
     db.from('modules').select('*').eq('id', id).maybeSingle(),
     db.from('profiles').select('id, nama, npm, role').in('role', ['tentor', 'admin']).order('nama'),
     db.from('module_tentors').select('profile_id').eq('module_id', id),
+    db.from('submissions').select('id', { count: 'exact', head: true }).eq('module_id', id),
+    db.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'anggota'),
   ])
   if (!data) notFound()
   const modul = toModul(data)
@@ -50,7 +52,18 @@ export default async function AdminModulEditPage({ params }: { params: Promise<{
         cd ..
       </Link>
       <div className="mt-6">
-        <AdminHeading command={`vim ~/modul/minggu-${pad2(modul.minggu)}`} title={modul.judul} />
+        <AdminHeading
+          command={`vim ~/modul/minggu-${pad2(modul.minggu)}`}
+          title={modul.judul}
+          description={
+            <>
+              {handedIn ?? 0} dari {members ?? 0} anggota sudah mengumpulkan tugas guided modul ini.{' '}
+              <Link href={`/penilaian/${modul.id}`} className="text-accent-fg underline underline-offset-4">
+                lihat siapa saja <span aria-hidden>-&gt;</span>
+              </Link>
+            </>
+          }
+        />
       </div>
 
       <div className="mt-8 max-w-3xl">

@@ -46,7 +46,7 @@ export function TugasPanel({ item }: { item: TugasItem }) {
         <ModulFiles modul={modul} label="berkas" emptyText="" className="mb-3 text-[12px] leading-6" />
         <p className="max-w-prose text-sm leading-7 text-muted">
           {modul.tugasDeskripsi ||
-            'Kerjakan latihan terpandu di modul minggu ini, lalu kumpulkan kodemu di sini — satu berkas .c, atau satu folder berisi beberapa berkas yang di-zip.'}
+            'Kerjakan latihan terpandu di modul minggu ini, lalu kumpulkan hasilnya di sini: kodenya langsung, atau beberapa berkas yang dijadikan satu arsip.'}
         </p>
         <p className="mt-2 text-[12px] leading-6 text-dim">
           tenggat: <span className="text-fg">{wibLabel(deadline)}</span>

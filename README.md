@@ -239,14 +239,14 @@ Hal-hal yang perlu diketahui:
 
 ## Tugas guided
 
-Setiap modul punya satu tugas guided. Anggota mengumpulkannya di **`/dashboard`**, berupa **satu berkas `.c`** atau **satu folder yang di-zip** (berisi minimal satu `.c`), maksimal **5 MB**.
+Setiap modul punya satu tugas guided. Anggota mengumpulkannya di **`/dashboard`** sebagai **satu berkas**, maksimal **5 MB**: kode (`.c`, `.cpp`), arsip berisi beberapa berkas (`.zip`, `.rar`), atau dokumen (`.pdf`). Daftar ini tertulis di bawah kotak unggah, dan jendela pilih berkas hanya menampilkan jenis-jenis itu.
 
 - **Rilis:** kolom `rilis` adalah hari modul dan tugas guided dibuka, **Rabu pukul 00.00 WIB sebelum kelasnya**, supaya anggota mempelajarinya dulu. Kelasnya Senin dan Selasa setelah tanggal itu, dan timeline menampilkan tanggal Senin kelas tersebut. Penanda "minggu ini" pindah ke modul berikutnya setiap Rabu 00.00.
 - **Tenggat:** kolom `tenggat` di tabel `modules` (WIB). Kalau kosong, tenggatnya **Senin kelas modul itu, pukul 19.00**, karena tugas guided menjadi syarat absensi kelas tersebut. Setelah tenggat, pengumpulan tetap diterima tapi ditandai **terlambat**. Tanda itu dihitung oleh server, bukan browser.
 - **Instruksi:** kolom `tugas_deskripsi` di tabel `modules`. Kalau kosong, ditampilkan instruksi umum.
 - **Kumpul ulang:** boleh kapan saja selama belum dinilai. Berkas lama diganti, jadi hanya ada satu pengumpulan per modul per anggota. Tugas yang sudah dinilai terkunci.
 - **Alur upload:** browser memeriksa berkas lebih dulu, lalu server menerbitkan *signed upload URL* sekali pakai dan browser mengunggah langsung ke Supabase Storage (bucket privat `tugas`). Setelah itu server mengunduh ulang berkas itu, memeriksanya lagi, dan baru mencatatnya. Berkas yang tidak lolos pemeriksaan langsung dihapus. Dengan alur ini, berkas 5 MB tidak perlu melewati server Next, yang di Vercel dibatasi sekitar 4,5 MB per request.
-- **Pemeriksaan isi** ada di `src/lib/tugas/rules.ts` dan dipakai browser maupun server. Berkas `.c` harus berupa teks. Zip harus berisi tepat satu folder dengan minimal satu `.c`, tanpa jalur aneh (`../`). Berkas sampingan macOS/Windows (`__MACOSX`, `.DS_Store`) diabaikan.
+- **Pemeriksaan isi** ada di `src/lib/tugas/rules.ts` dan dipakai browser maupun server. Jenis berkas ditentukan `FILE_KINDS` di sana, dan kolom `submissions.file_kind` punya *check constraint* yang sama, jadi menambah jenis berarti mengubah keduanya. Kode (`.c`, `.cpp`) harus berupa teks. Zip harus zip sungguhan yang berisi minimal satu berkas, tanpa jalur aneh (`../`); susunan isinya bebas. Rar dan PDF dikenali dari tanda di awal berkasnya. Berkas sampingan macOS/Windows (`__MACOSX`, `.DS_Store`) diabaikan.
 - **Privasi:** tabel `submissions` hanya bisa dibaca pemiliknya dan staf (tentor/admin), dan tidak bisa ditulis siapa pun lewat API. Berkas hanya bisa diunduh lewat tautan bertanda tangan yang berlaku **60 detik**, dibuat setelah pengecekan kepemilikan.
 
 ## Penilaian
@@ -254,8 +254,8 @@ Setiap modul punya satu tugas guided. Anggota mengumpulkannya di **`/dashboard`*
 Tentor menilai tugas guided di **`/penilaian`**.
 
 1. **Admin menugaskan tentor ke modul** di `/admin/modul/<modul>` → *tentor penilai*. Kalau modul itu belum punya penugasan, akun tentor yang nama depannya sama dengan salah satu nama di *tentor PJ* sudah dicentang otomatis. Admin cukup memeriksa, lalu menyimpan. Satu modul boleh punya beberapa tentor.
-2. **Tentor membuka `/penilaian`** dan hanya melihat modul yang ditugaskan kepadanya. Admin melihat semua modul. Per modul ada tiga kelompok: *menunggu nilai*, *sudah dinilai*, dan *belum mengumpulkan*.
-3. **Halaman detail menampilkan kodenya langsung.** Berkas `.c` tampil dengan syntax highlighting. Isi zip dibongkar di server dan setiap berkas teks ditampilkan, dengan batas 64 KB per berkas dan 400 KB total. Berkas asli tetap bisa diunduh.
+2. **Tentor membuka `/penilaian`** dan hanya melihat modul yang ditugaskan kepadanya. Admin melihat semua modul. Per modul ada tiga kelompok: *menunggu nilai*, *sudah dinilai*, dan *belum mengumpulkan*, masing-masing dengan nama, NPM, dan nama berkasnya. Di panel admin, daftar yang sama untuk tugas minggu ini tampil di **ringkasan**, dan angka pengumpulan di `/admin/modul` membuka daftar modul itu.
+3. **Halaman detail menampilkan kodenya langsung.** Berkas `.c` dan `.cpp` tampil dengan syntax highlighting. Isi zip dibongkar di server dan setiap berkas teks ditampilkan, dengan batas 64 KB per berkas dan 400 KB total. Rar dan PDF tidak ditampilkan di halaman, hanya bisa diunduh. Berkas asli selalu bisa diunduh.
 4. **Nilai 0–100 dan komentar** langsung muncul di dashboard anggota, beserta nama penilainya. Tugas yang sudah dinilai terkunci. Kalau anggota perlu mengunggah perbaikan, tekan **buka kembali**: nilainya dihapus dan pengumpulan dibuka lagi.
 
 Pembatasan ini ditegakkan database, bukan hanya tampilan. Tabel `module_tentors` dan fungsi `can_grade()` membuat tentor tidak bisa membaca, apalagi menilai, tugas dari modul yang bukan miliknya, sekalipun ia memanggil API langsung.
