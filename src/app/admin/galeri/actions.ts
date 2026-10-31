@@ -35,6 +35,8 @@ const item = z
 
 function refresh(): void {
   updateTag(TAGS.galeri)
+  revalidatePath('/galeri')
+  revalidatePath('/')
   revalidatePath('/admin/galeri')
 }
 
