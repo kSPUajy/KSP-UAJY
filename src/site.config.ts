@@ -42,7 +42,7 @@ export const siteConfig = {
   },
 
   /** Used for canonical URLs, sitemap, and OpenGraph. Update on first deploy. */
-  url: 'https://ksp-uajy.vercel.app',
+  url: 'https://kspuajy.site',
   locale: 'id-ID',
 
   /** The wordmark as a public file, for structured data and anything outside React. */
