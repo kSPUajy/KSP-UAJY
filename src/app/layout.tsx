@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
-import { IBM_Plex_Sans, JetBrains_Mono, Newsreader, Permanent_Marker, Silkscreen, UnifrakturMaguntia } from 'next/font/google'
+import { JetBrains_Mono, Newsreader, Permanent_Marker, Silkscreen, UnifrakturMaguntia } from 'next/font/google'
+import localFont from 'next/font/local'
 
 import { BackToTop } from '@/components/layout/BackToTop'
 import { Footer } from '@/components/layout/Footer'
@@ -30,11 +31,16 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 })
 
-/** Long-form article bodies only — news and challenge write-ups. */
-const plexSans = IBM_Plex_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
+/**
+ * Long-form article bodies only — news and challenge write-ups. Kept in the
+ * repo (latin, variable weight; SIL OFL beside it): since Google moved Plex
+ * to v23, Turbopack on Vercel fails to build it through next/font/google.
+ */
+const plexSans = localFont({
+  src: [
+    { path: '../assets/fonts/IBMPlexSans-latin.woff2', weight: '100 700', style: 'normal' },
+    { path: '../assets/fonts/IBMPlexSans-latin-italic.woff2', weight: '100 700', style: 'italic' },
+  ],
   variable: '--font-plex',
   display: 'swap',
 })

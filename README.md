@@ -61,7 +61,7 @@ src/
     metadata.ts         metadata per halaman (title, canonical, Open Graph)
     og.tsx              generator kartu Open Graph
   site.config.ts        nama, tagline, logo, URL, navigasi
-  assets/fonts/         TTF untuk gambar OG (lisensi OFL ada di sebelahnya)
+  assets/fonts/         TTF untuk gambar OG, dan IBM Plex Sans (woff2) untuk artikel; lisensi OFL ada di sebelahnya
 scripts/                pemeriksa konten (verify-*), generator seed, helper db
 supabase/
   migrations/           skema database (SQL), diterapkan dengan `npm run db:push`
