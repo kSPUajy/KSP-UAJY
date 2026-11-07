@@ -23,7 +23,7 @@ type Track = {
   accent: AccentName
 }
 
-/** What KSP teaches. C runs now; the rest open later — no dates promised here. */
+/** What KSP teaches. C and Blockchain run now; the rest open later — no dates promised here. */
 const TRACKS: readonly Track[] = [
   {
     id: 'c',
@@ -40,7 +40,7 @@ const TRACKS: readonly Track[] = [
     icon: 'blockchain',
     nama: 'Blockchain',
     deskripsi: 'Teknologi di balik aset kripto: catatan data yang tersambung dan sulit dipalsukan.',
-    status: 'segera',
+    status: 'berjalan',
     accent: 'violet',
   },
   {
@@ -197,7 +197,12 @@ function Cartridge({ track, position, registering }: { track: Track; position: n
       {tape}
     </Link>
   ) : playable ? (
-    <Link href="/modul" aria-label={`${track.nama} — sedang berjalan, lihat jadwal modul`} className={lift}>
+    // C's schedule lives on /modul; any other running class has its own page.
+    <Link
+      href={track.id === 'c' ? '/modul' : pendaftaranHref(track.id)}
+      aria-label={`${track.nama} — sedang berjalan, ${track.id === 'c' ? 'lihat jadwal modul' : 'lihat halaman kelas'}`}
+      className={lift}
+    >
       {body}
       {tape}
     </Link>
@@ -212,8 +217,8 @@ function Cartridge({ track, position, registering }: { track: Track; position: n
 /**
  * Everything KSP teaches, as a shelf of game cartridges. They are not
  * levels — nothing has to be taken in order, and one person can join them
- * all. C is ready to play now and Blockchain opens later this semester;
- * Machine Learning and Java are locked until the even semester (hover to
+ * all. C and Blockchain are ready to play now; Machine Learning and
+ * Java are locked until the even semester (hover to
  * peek at their colours, and watch the padlock refuse). A class whose
  * registration switch is on says so, in colour, and leads to its own
  * registration page.
@@ -228,7 +233,7 @@ export function TracksSection({ index, openIds }: { index: number; openIds: read
           title="Bukan cuma C"
           headingId="kelas-title"
           align="right"
-          description="Semester ini KSP membuka kelas bahasa C, dan Blockchain segera menyusul. Machine Learning dan Java buka di semester genap — ikuti yang paling menarik buatmu, atau semuanya sekaligus."
+          description="Semester ini KSP membuka kelas bahasa C dan Blockchain. Machine Learning dan Java buka di semester genap — ikuti yang paling menarik buatmu, atau semuanya sekaligus."
         />
       </Reveal>
 
