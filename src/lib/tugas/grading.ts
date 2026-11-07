@@ -6,6 +6,7 @@ import { deadlineToMs } from '@/lib/format'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { effectiveDeadline, kindOf } from '@/lib/tugas/rules'
+import type { JenisTugas } from '@/lib/tugas/rules'
 import { readZip } from '@/lib/tugas/unzip'
 import type { ZipEntry } from '@/lib/tugas/unzip'
 import type { ModulWithStatus } from '@/lib/types'
@@ -21,9 +22,11 @@ export type GradableModule = ModulWithStatus & {
   /** This grader is assigned to it (always true for a tentor; for an admin, only their own). */
   pjKamu: boolean
   deadline: string
+  /** Guided counts. */
   masuk: number
   dinilai: number
   terlambat: number
+  unguided: { masuk: number; dinilai: number }
 }
 
 /** Modules this grader may grade: all of them for an admin, their assigned ones for a tentor. */
@@ -32,7 +35,7 @@ export async function getGradableModules(profile: SessionProfile): Promise<Grada
   const [modules, assignments, submissions] = await Promise.all([
     getModules(),
     db.from('module_tentors').select('module_id').eq('profile_id', profile.id),
-    db.from('submissions').select('module_id, nilai, terlambat'),
+    db.from('submissions').select('module_id, jenis, nilai, terlambat'),
   ])
 
   const mine = new Set((assignments.data ?? []).map((row) => row.module_id))
@@ -43,7 +46,8 @@ export async function getGradableModules(profile: SessionProfile): Promise<Grada
   return modules
     .filter((modul) => modul.status !== 'terkunci' && (allowed === null || allowed.has(modul.id)))
     .map((modul) => {
-      const handedIn = rows.filter((row) => row.module_id === modul.id)
+      const handedIn = rows.filter((row) => row.module_id === modul.id && row.jenis === 'guided')
+      const unguided = rows.filter((row) => row.module_id === modul.id && row.jenis === 'unguided')
       return {
         ...modul,
         pjKamu: mine.has(modul.id),
@@ -51,6 +55,7 @@ export async function getGradableModules(profile: SessionProfile): Promise<Grada
         masuk: handedIn.length,
         dinilai: handedIn.filter((row) => row.nilai !== null).length,
         terlambat: handedIn.filter((row) => row.terlambat).length,
+        unguided: { masuk: unguided.length, dinilai: unguided.filter((row) => row.nilai !== null).length },
       }
     })
     .reverse()
@@ -72,15 +77,19 @@ export type RosterRow = {
   } | null
 }
 
-/** Every member against one module: who handed in, who is late, who has been graded. */
-export async function getRoster(moduleId: string): Promise<RosterRow[] | null> {
+/** Every member against one module's task: who handed in, who is late, who has been graded. */
+export async function getRoster(moduleId: string, jenis: JenisTugas = 'guided'): Promise<RosterRow[] | null> {
   const db = await createSupabaseServer()
   const { data: allowed } = await db.rpc('can_grade', { target_module: moduleId })
   if (!allowed) return null
 
   const [members, submissions] = await Promise.all([
     db.from('profiles').select('id, npm, nama').eq('role', 'anggota'),
-    db.from('submissions').select('id, user_id, file_name, file_kind, submitted_at, terlambat, nilai').eq('module_id', moduleId),
+    db
+      .from('submissions')
+      .select('id, user_id, file_name, file_kind, submitted_at, terlambat, nilai')
+      .eq('module_id', moduleId)
+      .eq('jenis', jenis),
   ])
   const byUser = new Map((submissions.data ?? []).map((row) => [row.user_id, row]))
 
@@ -109,11 +118,13 @@ export async function getRoster(moduleId: string): Promise<RosterRow[] | null> {
 export type GradingView = {
   id: string
   moduleId: string
+  jenis: JenisTugas
   student: { npm: string; nama: string }
   fileName: string
   fileSize: number
   submittedAt: string
   terlambat: boolean
+  /** Empty for unguided, which has none. */
   deadline: string
   nilai: number | null
   komentar: string | null
@@ -131,7 +142,7 @@ export async function getSubmissionForGrading(submissionId: string): Promise<Gra
   const db = await createSupabaseServer()
   const { data: row } = await db
     .from('submissions')
-    .select('id, module_id, user_id, storage_path, file_name, file_size, submitted_at, terlambat, nilai, komentar, penilai')
+    .select('id, module_id, jenis, user_id, storage_path, file_name, file_size, submitted_at, terlambat, nilai, komentar, penilai')
     .eq('id', submissionId)
     .maybeSingle()
   if (!row) return null
@@ -158,12 +169,13 @@ export async function getSubmissionForGrading(submissionId: string): Promise<Gra
   return {
     id: row.id,
     moduleId: row.module_id,
+    jenis: row.jenis as JenisTugas,
     student: { npm: student?.npm ?? '?', nama: student?.nama ?? 'akun terhapus' },
     fileName: row.file_name,
     fileSize: row.file_size,
     submittedAt: row.submitted_at,
     terlambat: row.terlambat,
-    deadline: modul ? effectiveDeadline(modul) : '',
+    deadline: modul && row.jenis === 'guided' ? effectiveDeadline(modul) : '',
     nilai: row.nilai,
     komentar: row.komentar,
     penilai: row.penilai,

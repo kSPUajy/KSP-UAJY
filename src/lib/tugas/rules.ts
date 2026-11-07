@@ -33,6 +33,14 @@ export const CONTENT_TYPE: Record<FileKind, string> = {
   pdf: 'application/pdf',
 }
 
+/**
+ * Which task of the module: guided (due at class, can be late) or unguided
+ * (taken while the admin keeps its switch on, never late). Both are graded.
+ */
+export type JenisTugas = 'guided' | 'unguided'
+
+export const isJenis = (value: unknown): value is JenisTugas => value === 'guided' || value === 'unguided'
+
 export function kindOf(fileName: string): FileKind | null {
   const lower = fileName.toLowerCase()
   return FILE_KINDS.find((kind) => lower.endsWith(`.${kind}`)) ?? null

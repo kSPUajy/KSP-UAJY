@@ -388,6 +388,7 @@ export type Database = {
           file_name: string
           file_size: number
           id: string
+          jenis: string
           komentar: string | null
           module_id: string
           nilai: number | null
@@ -404,6 +405,7 @@ export type Database = {
           file_name: string
           file_size: number
           id?: string
+          jenis?: string
           komentar?: string | null
           module_id: string
           nilai?: number | null
@@ -420,6 +422,7 @@ export type Database = {
           file_name?: string
           file_size?: number
           id?: string
+          jenis?: string
           komentar?: string | null
           module_id?: string
           nilai?: number | null

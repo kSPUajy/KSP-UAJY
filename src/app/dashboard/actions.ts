@@ -9,7 +9,8 @@ import { getModules } from '@/lib/data'
 import { deadlineToMs } from '@/lib/format'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { createSupabaseServer } from '@/lib/supabase/server'
-import { MAX_BYTES, WRONG_KIND, checkFile, displayName, effectiveDeadline, isReleased, kindOf } from '@/lib/tugas/rules'
+import { MAX_BYTES, WRONG_KIND, checkFile, displayName, effectiveDeadline, isJenis, isReleased, kindOf } from '@/lib/tugas/rules'
+import type { JenisTugas } from '@/lib/tugas/rules'
 
 const BUCKET = 'tugas'
 
@@ -19,8 +20,11 @@ type Failure = { ok: false; error: string }
  * The member and the module, or the reason they may not submit. Every
  * action starts here: nothing a browser sends is trusted on its own.
  * Handing in is for anggota only; admins, tentors and Kominfo never do.
+ * The unguided task is taken only while its switch is on, read fresh like
+ * `/modul/<id>/tugas-unguided` does, so closing it takes effect at once.
  */
-async function authorise(moduleId: string) {
+async function authorise(moduleId: string, jenis: JenisTugas) {
+  if (!isJenis(jenis)) return { ok: false, error: 'Jenis tugas tidak dikenali.' } as const
   const profile = await getSessionProfile()
   if (!profile) return { ok: false, error: 'Sesi berakhir. Masuk lagi, lalu ulangi.' } as const
   if (profile.mustChangePassword) return { ok: false, error: 'Ganti password dulu sebelum mengumpulkan tugas.' } as const
@@ -30,15 +34,35 @@ async function authorise(moduleId: string) {
   if (!modul) return { ok: false, error: 'Modul tidak ditemukan.' } as const
   if (modul.status === 'terkunci' || !isReleased(modul)) return { ok: false, error: 'Modul ini belum dirilis.' } as const
 
+  if (jenis === 'unguided') {
+    const { data } = await createSupabaseAdmin()
+      .from('modules')
+      .select('tugas_unguided_path, tugas_unguided_terbuka')
+      .eq('id', moduleId)
+      .maybeSingle()
+    if (!data?.tugas_unguided_path || !data.tugas_unguided_terbuka) {
+      return { ok: false, error: 'Pengumpulan tugas unguided sedang ditutup.' } as const
+    }
+  }
+
   return { ok: true, profile, modul } as const
 }
 
-async function existingSubmission(moduleId: string, userId: string) {
+/**
+ * Where a member's files for one task go. Unguided gets a sibling folder, not
+ * a nested one: its paths never pass for guided ones, and `deleteAccount`,
+ * which looks one folder deep, still finds them.
+ */
+const folderOf = (userId: string, moduleId: string, jenis: JenisTugas): string =>
+  `${userId}/${moduleId}${jenis === 'unguided' ? '-unguided' : ''}/`
+
+async function existingSubmission(moduleId: string, userId: string, jenis: JenisTugas) {
   const { data, error } = await createSupabaseAdmin()
     .from('submissions')
     .select('storage_path, nilai')
     .eq('module_id', moduleId)
     .eq('user_id', userId)
+    .eq('jenis', jenis)
     .maybeSingle()
   if (error) throw new Error(`Gagal membaca tugas: ${error.message}`)
   return data
@@ -52,10 +76,11 @@ async function existingSubmission(moduleId: string, userId: string) {
  */
 export async function mulaiUpload(
   moduleId: string,
+  jenis: JenisTugas,
   fileName: string,
   size: number,
 ): Promise<{ ok: true; path: string; token: string } | Failure> {
-  const auth = await authorise(moduleId)
+  const auth = await authorise(moduleId, jenis)
   if (!auth.ok) return auth
 
   const kind = kindOf(fileName)
@@ -63,10 +88,10 @@ export async function mulaiUpload(
   if (!Number.isFinite(size) || size <= 0) return { ok: false, error: 'Berkasnya kosong.' }
   if (size > MAX_BYTES) return { ok: false, error: 'Berkas terlalu besar. Batasnya 5 MB.' }
 
-  const existing = await existingSubmission(moduleId, auth.profile.id)
+  const existing = await existingSubmission(moduleId, auth.profile.id, jenis)
   if (existing?.nilai != null) return { ok: false, error: 'Tugas ini sudah dinilai, jadi tidak bisa diganti lagi.' }
 
-  const path = `${auth.profile.id}/${moduleId}/${randomUUID()}.${kind}`
+  const path = `${folderOf(auth.profile.id, moduleId, jenis)}${randomUUID()}.${kind}`
   const { data, error } = await createSupabaseAdmin().storage.from(BUCKET).createSignedUploadUrl(path)
   if (error || !data) return { ok: false, error: 'Tidak bisa menyiapkan upload. Coba lagi.' }
   return { ok: true, path: data.path, token: data.token }
@@ -80,13 +105,14 @@ export async function mulaiUpload(
  */
 export async function selesaiUpload(
   moduleId: string,
+  jenis: JenisTugas,
   path: string,
   fileName: string,
 ): Promise<{ ok: true; summary: string; terlambat: boolean } | Failure> {
-  const auth = await authorise(moduleId)
+  const auth = await authorise(moduleId, jenis)
   if (!auth.ok) return auth
 
-  const prefix = `${auth.profile.id}/${moduleId}/`
+  const prefix = folderOf(auth.profile.id, moduleId, jenis)
   const kind = kindOf(path)
   if (!path.startsWith(prefix) || path.includes('..') || path.slice(prefix.length).includes('/') || !kind) {
     return { ok: false, error: 'Upload tidak dikenali.' }
@@ -108,17 +134,19 @@ export async function selesaiUpload(
     return verdict
   }
 
-  const existing = await existingSubmission(moduleId, auth.profile.id)
+  const existing = await existingSubmission(moduleId, auth.profile.id, jenis)
   if (existing?.nilai != null) {
     await discard()
     return { ok: false, error: 'Tugas ini sudah dinilai, jadi tidak bisa diganti lagi.' }
   }
 
-  const terlambat = Date.now() > deadlineToMs(effectiveDeadline(auth.modul))
+  // Unguided has no deadline: it closes when the switch goes off.
+  const terlambat = jenis === 'guided' && Date.now() > deadlineToMs(effectiveDeadline(auth.modul))
   const { error: saveError } = await admin.from('submissions').upsert(
     {
       module_id: moduleId,
       user_id: auth.profile.id,
+      jenis,
       storage_path: path,
       file_name: displayName(fileName),
       file_size: bytes.length,
@@ -126,14 +154,14 @@ export async function selesaiUpload(
       submitted_at: new Date().toISOString(),
       terlambat,
     },
-    { onConflict: 'module_id,user_id' },
+    { onConflict: 'module_id,user_id,jenis' },
   )
   if (saveError) {
     await discard()
     return { ok: false, error: 'Tugas gagal dicatat. Coba lagi.' }
   }
 
-  // The earlier file is replaced, not kept: one submission per module.
+  // The earlier file is replaced, not kept: one submission per task.
   if (existing && existing.storage_path !== path) await storage.remove([existing.storage_path])
 
   revalidatePath('/dashboard')

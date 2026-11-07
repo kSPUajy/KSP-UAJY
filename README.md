@@ -196,8 +196,8 @@ Anggota masuk di **`/masuk`** dengan **NPM + password**. Di balik layar, setiap 
 
 | Peran | Bisa |
 | --- | --- |
-| `anggota` | dashboard, modul, mengumpulkan tugas guided |
-| `tentor` | + menilai tugas guided di modul yang ditugaskan kepadanya (`/penilaian`) |
+| `anggota` | dashboard, modul, mengumpulkan tugas guided dan unguided |
+| `tentor` | + menilai tugas guided dan unguided di modul yang ditugaskan kepadanya (`/penilaian`) |
 | `admin` | + panel admin: modul, challenge, berita, pendaftaran, akun; bisa menilai semua modul |
 
 - **Akun tidak bisa dibuat sendiri.** Admin membuatnya di **`/admin/anggota`** (atau lewat `npm run akun`), dan sistem memberi **password sekali pakai**. Saat pertama masuk, anggota wajib menggantinya sebelum bisa membuka halaman lain.
@@ -244,14 +244,15 @@ Setiap modul punya satu tugas guided. Anggota mengumpulkannya di **`/dashboard`*
 - **Rilis:** kolom `rilis` adalah hari modul dan tugas guided dibuka, **Rabu pukul 00.00 WIB sebelum kelasnya**, supaya anggota mempelajarinya dulu. Kelasnya Senin dan Selasa setelah tanggal itu, dan timeline menampilkan tanggal Senin kelas tersebut. Penanda "minggu ini" pindah ke modul berikutnya setiap Rabu 00.00.
 - **Tenggat:** kolom `tenggat` di tabel `modules` (WIB). Kalau kosong, tenggatnya **Senin kelas modul itu, pukul 19.00**, karena tugas guided menjadi syarat absensi kelas tersebut. Setelah tenggat, pengumpulan tetap diterima tapi ditandai **terlambat**. Tanda itu dihitung oleh server, bukan browser.
 - **Instruksi:** kolom `tugas_deskripsi` di tabel `modules`. Kalau kosong, ditampilkan instruksi umum.
-- **Kumpul ulang:** boleh kapan saja selama belum dinilai. Berkas lama diganti, jadi hanya ada satu pengumpulan per modul per anggota. Tugas yang sudah dinilai terkunci.
+- **Kumpul ulang:** boleh kapan saja selama belum dinilai. Berkas lama diganti, jadi hanya ada satu pengumpulan per tugas per anggota. Tugas yang sudah dinilai terkunci.
+- **Tugas unguided** dikumpulkan di tempat yang sama, dengan jenis berkas, batas ukuran, dan penilaian yang sama. Bedanya: pengumpulannya hanya dibuka **selama switch unguided modul itu menyala** (form modul di panel admin), dan tidak punya tenggat atau tanda terlambat. Mematikan switch langsung menutup pengumpulan. Kolom `submissions.jenis` (`guided`/`unguided`) membedakan keduanya.
 - **Alur upload:** browser memeriksa berkas lebih dulu, lalu server menerbitkan *signed upload URL* sekali pakai dan browser mengunggah langsung ke Supabase Storage (bucket privat `tugas`). Setelah itu server mengunduh ulang berkas itu, memeriksanya lagi, dan baru mencatatnya. Berkas yang tidak lolos pemeriksaan langsung dihapus. Dengan alur ini, berkas 5 MB tidak perlu melewati server Next, yang di Vercel dibatasi sekitar 4,5 MB per request.
 - **Pemeriksaan isi** ada di `src/lib/tugas/rules.ts` dan dipakai browser maupun server. Jenis berkas ditentukan `FILE_KINDS` di sana, dan kolom `submissions.file_kind` punya *check constraint* yang sama, jadi menambah jenis berarti mengubah keduanya. Kode (`.c`, `.cpp`) harus berupa teks. Zip harus zip sungguhan yang berisi minimal satu berkas, tanpa jalur aneh (`../`); susunan isinya bebas. Rar dan PDF dikenali dari tanda di awal berkasnya. Berkas sampingan macOS/Windows (`__MACOSX`, `.DS_Store`) diabaikan.
 - **Privasi:** tabel `submissions` hanya bisa dibaca pemiliknya dan staf (tentor/admin), dan tidak bisa ditulis siapa pun lewat API. Berkas hanya bisa diunduh lewat tautan bertanda tangan yang berlaku **60 detik**, dibuat setelah pengecekan kepemilikan.
 
 ## Penilaian
 
-Tentor menilai tugas guided di **`/penilaian`**.
+Tentor menilai tugas guided dan unguided di **`/penilaian`**. Halaman per modul punya pilihan *tugas guided* / *tugas unguided*; angka di panel admin menghitung tugas guided.
 
 1. **Admin menugaskan tentor ke modul** di `/admin/modul/<modul>` → *tentor penilai*. Kalau modul itu belum punya penugasan, akun tentor yang nama depannya sama dengan salah satu nama di *tentor PJ* sudah dicentang otomatis. Admin cukup memeriksa, lalu menyimpan. Satu modul boleh punya beberapa tentor.
 2. **Tentor membuka `/penilaian`** dan hanya melihat modul yang ditugaskan kepadanya. Admin melihat semua modul. Per modul ada tiga kelompok: *menunggu nilai*, *sudah dinilai*, dan *belum mengumpulkan*, masing-masing dengan nama, NPM, dan nama berkasnya. Di panel admin, daftar yang sama untuk tugas minggu ini tampil di **ringkasan**, dan angka pengumpulan di `/admin/modul` membuka daftar modul itu.

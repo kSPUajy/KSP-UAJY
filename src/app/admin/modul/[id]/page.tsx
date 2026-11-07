@@ -28,7 +28,7 @@ export default async function AdminModulEditPage({ params }: { params: Promise<{
     db.from('modules').select('*').eq('id', id).maybeSingle(),
     db.from('profiles').select('id, nama, npm, role').in('role', ['tentor', 'admin']).order('nama'),
     db.from('module_tentors').select('profile_id').eq('module_id', id),
-    db.from('submissions').select('id', { count: 'exact', head: true }).eq('module_id', id),
+    db.from('submissions').select('id', { count: 'exact', head: true }).eq('module_id', id).eq('jenis', 'guided'),
     db.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'anggota'),
   ])
   if (!data) notFound()

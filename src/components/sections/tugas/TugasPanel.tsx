@@ -5,6 +5,8 @@ import { TugasUploader } from '@/components/sections/tugas/TugasUploader'
 import { Badge } from '@/components/ui/Badge'
 import type { AccentName } from '@/lib/accent'
 import { formatBytes, formatTanggalWaktu, namaHari, toWib } from '@/lib/format'
+import type { Submission } from '@/lib/tugas/data'
+import type { JenisTugas } from '@/lib/tugas/rules'
 import { STATE_LABEL } from '@/lib/tugas/status'
 import type { TugasItem, TugasState } from '@/lib/tugas/status'
 
@@ -22,12 +24,16 @@ export function StateBadge({ state }: { state: TugasState }) {
 
 const wibLabel = (wall: string): string => `${namaHari(wall)}, ${formatTanggalWaktu(wall)}`
 
+const LABEL_CLASS = 'font-display text-[10px] tracking-[0.18em] text-accent-fg uppercase'
+
 /**
- * One week's task: what to do, when it is due, what was handed in, the
- * grade once there is one, and the uploader while handing in is still open.
+ * One week's tasks: the guided task (what to do, when it is due), then the
+ * unguided one when the module has it. Each shows what was handed in, the
+ * grade once there is one, and the uploader while handing in is open.
  */
 export function TugasPanel({ item }: { item: TugasItem }) {
-  const { modul, deadline, state, submission } = item
+  const { modul, deadline, state, submission, unguided } = item
+  const unguidedOpen = modul.tugasUnguided?.terbuka === true
 
   if (state === 'terkunci') {
     return (
@@ -44,7 +50,8 @@ export function TugasPanel({ item }: { item: TugasItem }) {
     <div className="flex flex-col gap-5">
       <div>
         <ModulFiles modul={modul} label="berkas" emptyText="" className="mb-3 text-[12px] leading-6" />
-        <p className="max-w-prose text-sm leading-7 text-muted">
+        <p className={LABEL_CLASS}>{'// tugas guided'}</p>
+        <p className="mt-2 max-w-prose text-sm leading-7 text-muted">
           {modul.tugasDeskripsi ||
             'Kerjakan latihan terpandu di modul minggu ini, lalu kumpulkan hasilnya di sini: kodenya langsung, atau beberapa berkas yang dijadikan satu arsip.'}
         </p>
@@ -54,6 +61,41 @@ export function TugasPanel({ item }: { item: TugasItem }) {
         </p>
       </div>
 
+      <HandIn submission={submission} moduleId={modul.id} jenis="guided" open />
+
+      {modul.tugasUnguided || unguided ? (
+        <div className="flex flex-col gap-5 border-t-2 border-line-soft pt-5">
+          <div>
+            <p className={LABEL_CLASS}>{'// tugas unguided'}</p>
+            <p className="mt-2 max-w-prose text-[12px] leading-6 text-dim">
+              {unguidedOpen
+                ? 'Pengumpulan dibuka sampai tentor menutupnya. Tidak ada tenggat dan tanda terlambat.'
+                : unguided
+                  ? 'Pengumpulan sudah ditutup.'
+                  : 'Pengumpulan dibuka bersama berkas tugas unguided, saat tentor membukanya.'}
+            </p>
+          </div>
+          <HandIn submission={unguided} moduleId={modul.id} jenis="unguided" open={unguidedOpen} />
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+/** What was handed in for one task, then its grade, or the uploader while the task is open. */
+function HandIn({
+  submission,
+  moduleId,
+  jenis,
+  open,
+}: {
+  submission: Submission | null
+  moduleId: string
+  jenis: JenisTugas
+  open: boolean
+}) {
+  return (
+    <>
       {submission ? (
         <div className="border-2 border-line-soft bg-code-bg px-4 py-3 text-[12px] leading-6">
           <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -88,9 +130,9 @@ export function TugasPanel({ item }: { item: TugasItem }) {
             </p>
           ) : null}
         </div>
-      ) : (
-        <TugasUploader moduleId={modul.id} replacing={submission !== null} />
-      )}
-    </div>
+      ) : open ? (
+        <TugasUploader moduleId={moduleId} jenis={jenis} replacing={submission !== null} />
+      ) : null}
+    </>
   )
 }

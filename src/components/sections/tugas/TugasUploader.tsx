@@ -5,6 +5,7 @@ import { useId, useRef, useState } from 'react'
 
 import { mulaiUpload, selesaiUpload } from '@/app/dashboard/actions'
 import { CONTENT_TYPE, FILE_KINDS, MAX_BYTES, WRONG_KIND, checkFile, kindOf } from '@/lib/tugas/rules'
+import type { JenisTugas } from '@/lib/tugas/rules'
 import { cn } from '@/lib/utils'
 
 type Phase =
@@ -32,7 +33,7 @@ const ACCEPTED: readonly { kinds: string; untuk: string }[] = [
  * them again before recording anything. The browser's check is a courtesy;
  * the server's is the rule.
  */
-export function TugasUploader({ moduleId, replacing }: { moduleId: string; replacing: boolean }) {
+export function TugasUploader({ moduleId, jenis, replacing }: { moduleId: string; jenis: JenisTugas; replacing: boolean }) {
   const inputId = useId()
   const inputRef = useRef<HTMLInputElement>(null)
   const [phase, setPhase] = useState<Phase>({ name: 'idle' })
@@ -49,7 +50,7 @@ export function TugasUploader({ moduleId, replacing }: { moduleId: string; repla
     if (!verdict.ok) return setPhase({ name: 'error', message: verdict.error })
 
     setPhase({ name: 'working', step: 'menyiapkan upload…' })
-    const start = await mulaiUpload(moduleId, file.name, file.size)
+    const start = await mulaiUpload(moduleId, jenis, file.name, file.size)
     if (!start.ok) return setPhase({ name: 'error', message: start.error })
 
     setPhase({ name: 'working', step: 'mengunggah…' })
@@ -65,7 +66,7 @@ export function TugasUploader({ moduleId, replacing }: { moduleId: string; repla
     if (error) return setPhase({ name: 'error', message: 'Upload terputus. Periksa koneksi, lalu coba lagi.' })
 
     setPhase({ name: 'working', step: 'mencatat…' })
-    const done = await selesaiUpload(moduleId, start.path, file.name)
+    const done = await selesaiUpload(moduleId, jenis, start.path, file.name)
     if (!done.ok) return setPhase({ name: 'error', message: done.error })
 
     setPhase({
@@ -105,7 +106,7 @@ export function TugasUploader({ moduleId, replacing }: { moduleId: string; repla
           <span aria-hidden className="text-accent-fg">
             ↑{' '}
           </span>
-          {replacing ? 'ganti berkas' : 'kumpulkan tugas'}
+          {replacing ? 'ganti berkas' : `kumpulkan tugas ${jenis}`}
         </span>
         <span className="text-[11px] leading-5 text-dim">pilih berkas, atau seret ke sini</span>
       </label>

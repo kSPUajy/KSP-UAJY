@@ -29,8 +29,8 @@ export const metadata: Metadata = pageMetadata({
 
 /** What each non-member account comes here to do. */
 const STAFF_INTRO: Record<Exclude<AppRole, 'anggota'>, string> = {
-  admin: 'Kelola situs dari panel admin, dan nilai tugas guided anggota.',
-  tentor: 'Nilai tugas guided anggota di modul yang kamu pegang.',
+  admin: 'Kelola situs dari panel admin, dan nilai tugas anggota.',
+  tentor: 'Nilai tugas guided dan unguided anggota di modul yang kamu pegang.',
   kominfo: 'Kelola berita dan galeri situs dari panel Kominfo.',
 }
 
@@ -82,7 +82,7 @@ function AccountSection({ profile }: { profile: SessionProfile }) {
           </div>
           {member ? null : (
             <p className="mt-6 max-w-prose border-l-2 border-accent-fg pl-4 text-[12px] leading-6 text-muted">
-              Pengumpulan tugas guided hanya untuk akun anggota, jadi akun {profile.role} tidak punya daftar tugas di sini.
+              Pengumpulan tugas hanya untuk akun anggota, jadi akun {profile.role} tidak punya daftar tugas di sini.
             </p>
           )}
         </div>
@@ -92,7 +92,7 @@ function AccountSection({ profile }: { profile: SessionProfile }) {
 }
 
 /**
- * A member's week: this week's guided task up top, ready to hand in; every
+ * A member's week: this week's tasks up top, ready to hand in; every
  * week below it with its status and grade; the account at the bottom.
  *
  * Handing in is for anggota alone. Admins, tentors and Kominfo get a short
@@ -137,7 +137,7 @@ export default async function DashboardPage() {
         command={`whoami  # ${profile.npm}`}
         eyebrow="dashboard"
         title={`Halo, ${profile.nama.split(' ')[0]}`}
-        description="Tugas guided minggu ini, semua tugasmu, dan nilai dari tentor."
+        description="Tugas minggu ini, semua tugasmu, dan nilai dari tentor."
         facts={[
           { label: 'terkumpul', value: `${handedIn}/${released.length}` },
           { label: 'dinilai', value: grades.length },
@@ -151,7 +151,7 @@ export default async function DashboardPage() {
           <Reveal>
             <SectionHeader
               eyebrow={focus.modul.status === 'berjalan' ? 'minggu ini' : beforeDeadline(focus) ? 'masih dibuka' : 'tugas terakhir'}
-              title="Tugas guided"
+              title="Kumpulkan tugas"
               headingId="tugas-minggu-ini"
             />
           </Reveal>
@@ -181,7 +181,7 @@ export default async function DashboardPage() {
             eyebrow="semua minggu"
             title="Tugasmu"
             headingId="semua-tugas"
-            description="Tugas yang belum dinilai masih bisa diganti kapan saja. Setelah tenggat lewat, pengumpulan tetap diterima tapi ditandai terlambat."
+            description="Tugas yang belum dinilai masih bisa diganti selama pengumpulannya dibuka. Tugas guided yang lewat tenggat tetap diterima, tapi ditandai terlambat."
           />
         </Reveal>
         <div className="mt-10 max-w-4xl">

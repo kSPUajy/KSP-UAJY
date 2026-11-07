@@ -25,7 +25,7 @@ export default async function AdminModulPage() {
   const [modules, sessions, { data: submissions }, { count: members }] = await Promise.all([
     getModules(),
     getSesi(),
-    db.from('submissions').select('module_id, nilai'),
+    db.from('submissions').select('module_id, nilai').eq('jenis', 'guided'),
     db.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'anggota'),
   ])
 

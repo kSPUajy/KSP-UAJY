@@ -34,14 +34,14 @@ export default async function AdminPage() {
     getRegistration(),
     db.from('profiles').select('role, must_change_password'),
     db.from('news_posts').select('id', { count: 'exact', head: true }).eq('published', false),
-    db.from('submissions').select('module_id, nilai'),
+    db.from('submissions').select('module_id, jenis, nilai'),
     db.from('feedback').select('id', { count: 'exact', head: true }).eq('dibaca', false),
   ])
 
   const current = modules.find((modul) => modul.status === 'berjalan')
   const people = members.data ?? []
   const waiting = people.filter((person) => person.must_change_password).length
-  const thisWeek = (submissions.data ?? []).filter((row) => row.module_id === current?.id)
+  const thisWeek = (submissions.data ?? []).filter((row) => row.module_id === current?.id && row.jenis === 'guided')
   const ungraded = (submissions.data ?? []).filter((row) => row.nilai === null).length
 
   // The task to watch: this week's, or between class weeks the last one out.
@@ -61,9 +61,9 @@ export default async function AdminPage() {
       href: '/admin/modul',
       label: 'modul minggu ini',
       value: current ? pad2(current.minggu) : '—',
-      note: current ? `${current.judul} · ${thisWeek.length} tugas masuk` : 'tidak ada modul berjalan',
+      note: current ? `${current.judul} · ${thisWeek.length} tugas guided masuk` : 'tidak ada modul berjalan',
     },
-    { href: '/penilaian', label: 'belum dinilai', value: ungraded, note: 'tugas guided menunggu tentor' },
+    { href: '/penilaian', label: 'belum dinilai', value: ungraded, note: 'tugas guided & unguided menunggu tentor' },
     { href: '/admin/masukan', label: 'masukan baru', value: feedback.count ?? 0, note: 'kritik & saran belum dibaca' },
     { href: '/admin/berita', label: 'draf berita', value: drafts.count ?? 0, note: 'belum diterbitkan' },
     {

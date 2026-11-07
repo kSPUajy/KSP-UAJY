@@ -15,7 +15,7 @@ import { getRoster, getSubmissionForGrading } from '@/lib/tugas/grading'
 
 export const metadata: Metadata = pageMetadata({
   title: 'Nilai tugas',
-  description: 'Menilai satu tugas guided.',
+  description: 'Menilai satu tugas.',
   path: '/penilaian',
   noindex: true,
 })
@@ -26,8 +26,10 @@ export default async function NilaiTugasPage({ params }: { params: Promise<{ mod
   const { moduleId, submissionId } = await params
   await requireProfile(`/penilaian/${moduleId}/${submissionId}`, ['tentor', 'admin'])
 
-  const [view, roster] = await Promise.all([getSubmissionForGrading(submissionId), getRoster(moduleId)])
+  const view = await getSubmissionForGrading(submissionId)
   if (!view || view.moduleId !== moduleId) notFound()
+  const roster = await getRoster(moduleId, view.jenis)
+  const back = view.jenis === 'unguided' ? `/penilaian/${moduleId}?jenis=unguided` : `/penilaian/${moduleId}`
 
   // The next submission still waiting for a grade, in roster order.
   const waiting = (roster ?? []).flatMap((row) =>
@@ -37,7 +39,7 @@ export default async function NilaiTugasPage({ params }: { params: Promise<{ mod
 
   return (
     <>
-      <Link href={`/penilaian/${moduleId}`} className="text-xs text-muted hover:text-accent-fg">
+      <Link href={back} className="text-xs text-muted hover:text-accent-fg">
         <span aria-hidden className="text-accent-fg">
           &lt;-{' '}
         </span>
@@ -50,6 +52,8 @@ export default async function NilaiTugasPage({ params }: { params: Promise<{ mod
           description={
             <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <span>{view.student.npm}</span>
+              <span className="text-dim">·</span>
+              <span>tugas {view.jenis}</span>
               <span className="text-dim">·</span>
               <span>dikumpulkan {formatTanggalWaktu(toWib(view.submittedAt))}</span>
               {view.terlambat ? (

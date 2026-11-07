@@ -312,8 +312,8 @@ export function ModulForm({
           )}
           <p className="text-[11px] leading-5 text-dim">
             Terkunci: berkas tidak bisa diunduh siapa pun kecuali admin dan tentor. Dibuka: semua orang bisa mengunduhnya
-            dari /modul dan dashboard, tanpa perlu masuk. Tugas unguided tidak dikumpulkan. Switch ini langsung tersimpan,
-            tanpa tombol simpan.
+            dari /modul dan dashboard, tanpa perlu masuk, dan anggota bisa mengumpulkan jawabannya di dashboard. Mematikan
+            switch juga menutup pengumpulan. Switch ini langsung tersimpan, tanpa tombol simpan.
           </p>
         </div>
       </fieldset>

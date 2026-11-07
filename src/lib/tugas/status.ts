@@ -1,6 +1,7 @@
 import { deadlineToMs } from '@/lib/format'
 import type { Submission } from '@/lib/tugas/data'
 import { effectiveDeadline, isReleased } from '@/lib/tugas/rules'
+import type { JenisTugas } from '@/lib/tugas/rules'
 import type { ModulWithStatus } from '@/lib/types'
 
 /**
@@ -20,6 +21,8 @@ export type TugasItem = {
   deadline: string
   state: TugasState
   submission: Submission | null
+  /** The unguided task's hand-in. It has no deadline and no state of its own. */
+  unguided: Submission | null
 }
 
 export function tugasState(modul: ModulWithStatus, submission: Submission | null, now = Date.now()): TugasState {
@@ -31,12 +34,13 @@ export function tugasState(modul: ModulWithStatus, submission: Submission | null
 
 export function tugasItems(
   modules: readonly ModulWithStatus[],
-  submissions: ReadonlyMap<string, Submission>,
+  submissions: Record<JenisTugas, ReadonlyMap<string, Submission>>,
   now = Date.now(),
 ): TugasItem[] {
   return modules.map((modul) => {
-    const submission = submissions.get(modul.id) ?? null
-    return { modul, deadline: effectiveDeadline(modul), state: tugasState(modul, submission, now), submission }
+    const submission = submissions.guided.get(modul.id) ?? null
+    const unguided = submissions.unguided.get(modul.id) ?? null
+    return { modul, deadline: effectiveDeadline(modul), state: tugasState(modul, submission, now), submission, unguided }
   })
 }
 
