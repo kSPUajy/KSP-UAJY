@@ -44,9 +44,14 @@ export default async function AdminModulPage() {
         title="Modul"
         description="Urutan dan status mengikuti tanggal rilis. Perubahan langsung tampil di /modul, hero beranda, dan dashboard anggota."
         actions={
-          <ButtonLink href="/admin/modul/baru" size="sm">
-            modul baru
-          </ButtonLink>
+          <>
+            <ButtonLink href="/admin/modul/timeline" size="sm" variant="outline">
+              atur timeline
+            </ButtonLink>
+            <ButtonLink href="/admin/modul/baru" size="sm">
+              modul baru
+            </ButtonLink>
+          </>
         }
       />
 

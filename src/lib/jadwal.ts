@@ -46,6 +46,38 @@ export function withModulStatus(modules: readonly Modul[], now: number): ModulWi
   })
 }
 
+/** Calendar days from one ISO date to another. */
+export const selisihHari = (from: string, to: string): number => Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000)
+
+/** One item of the timeline as an admin reorders it: a module or a session, on the Monday of its week. */
+export type SlotJadwal = { jenis: 'modul' | 'sesi'; id: string; judul: string; senin: string }
+
+/**
+ * Trades an item's week with its neighbour above (-1) or below (+1): the
+ * weeks stay put and the two items swap them. Moving Games up past three
+ * modules one step at a time moves each of those modules a week later.
+ * Two modules never swap, because their order is the order of the material.
+ */
+export function tukarSlot<T extends SlotJadwal>(
+  items: readonly T[],
+  id: string,
+  arah: -1 | 1,
+): { ok: true; geser: [{ item: T; hari: number }, { item: T; hari: number }] } | { ok: false; error: string } {
+  // Same order as getTimeline: by week, a module before a session.
+  const urut = [...items].sort((a, b) => a.senin.localeCompare(b.senin) || (a.jenis === b.jenis ? 0 : a.jenis === 'modul' ? -1 : 1))
+  const index = urut.findIndex((item) => item.id === id)
+  const item = urut[index]
+  const tetangga = urut[index + arah]
+  if (!item) return { ok: false, error: 'Item ini tidak ada di timeline.' }
+  if (!tetangga) return { ok: false, error: `${item.judul} sudah paling ${arah < 0 ? 'atas' : 'bawah'}.` }
+  if (item.jenis === 'modul' && tetangga.jenis === 'modul') {
+    return { ok: false, error: `${item.judul} dan ${tetangga.judul} sama-sama modul; urutan modul mengikuti nomor minggunya.` }
+  }
+  const hari = selisihHari(item.senin, tetangga.senin)
+  if (hari === 0) return { ok: false, error: `${item.judul} dan ${tetangga.judul} ada di minggu yang sama. Ubah tanggalnya lewat formnya.` }
+  return { ok: true, geser: [{ item, hari }, { item: tetangga, hari: -hari }] }
+}
+
 /**
  * A session (Games, Review Materi) is this week's from its Monday for a
  * week, or until the next module opens during it.

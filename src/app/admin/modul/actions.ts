@@ -8,6 +8,8 @@ import { z } from 'zod'
 
 import { commaList, failed, fieldErrors, formValues, requireAdminAction, succeeded } from '@/lib/admin/guard'
 import type { AdminFormState } from '@/lib/admin/guard'
+import { addDays, deadlineToMs, mondayOf } from '@/lib/format'
+import { classMonday, selisihHari, tukarSlot } from '@/lib/jadwal'
 import { createSupabaseAdmin } from '@/lib/supabase/admin'
 import { TAGS } from '@/lib/supabase/public'
 
@@ -95,6 +97,43 @@ function refresh(): void {
   revalidatePath('/dashboard')
 }
 
+/** `2026-11-02T18:00:00` + 7 -> `2026-11-09T18:00:00`: moved by whole days, time of day kept. */
+const geserTanggal = (value: string, hari: number): string => addDays(value.slice(0, 10), hari) + value.slice(10)
+
+type JadwalModul = { id: string; minggu: number; rilis: string; tenggat: string | null }
+
+/**
+ * What follows a module whose dates changed: its challenge moves with its
+ * class week, and every guided task already handed in is marked late or on
+ * time again against the new deadline. Returns an error message, or null.
+ */
+async function ikutJadwal(modul: JadwalModul, hari: number): Promise<string | null> {
+  const admin = createSupabaseAdmin()
+  if (hari !== 0) {
+    const { data: challenges, error } = await admin.from('challenges').select('id, tanggal_rilis, deadline').eq('minggu', modul.minggu)
+    if (error) return error.message
+    for (const row of challenges) {
+      const { error: moveError } = await admin
+        .from('challenges')
+        .update({ tanggal_rilis: geserTanggal(row.tanggal_rilis, hari), deadline: geserTanggal(row.deadline, hari) })
+        .eq('id', row.id)
+      if (moveError) return moveError.message
+    }
+    updateTag(TAGS.challenge)
+  }
+
+  const deadline = deadlineToMs(modul.tenggat?.slice(0, 16) ?? `${classMonday(modul.rilis)}T19:00`)
+  const { data: rows, error } = await admin.from('submissions').select('id, submitted_at').eq('module_id', modul.id).eq('jenis', 'guided')
+  if (error) return error.message
+  for (const terlambat of [true, false]) {
+    const ids = rows.filter((row) => Date.parse(row.submitted_at) > deadline === terlambat).map((row) => row.id)
+    if (ids.length === 0) continue
+    const { error: markError } = await admin.from('submissions').update({ terlambat }).in('id', ids)
+    if (markError) return markError.message
+  }
+  return null
+}
+
 export async function simpanModul(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
   const auth = await requireAdminAction()
   if (!auth.ok) return auth.state
@@ -107,7 +146,11 @@ export async function simpanModul(_previous: AdminFormState, formData: FormData)
 
   const { data: before } = creating
     ? { data: null }
-    : await auth.db.from('modules').select('berkas_url, tugas_guided_url, tugas_unguided_path').eq('id', id).maybeSingle()
+    : await auth.db
+        .from('modules')
+        .select('rilis, tenggat, berkas_url, tugas_guided_url, tugas_unguided_path')
+        .eq('id', id)
+        .maybeSingle()
 
   const { error } = creating
     ? await auth.db.from('modules').insert({ id, ...fields })
@@ -133,9 +176,61 @@ export async function simpanModul(_previous: AdminFormState, formData: FormData)
   }
 
   if (before) await buangBerkasLama(objectsOf(before))
+  const hari = before ? selisihHari(classMonday(before.rilis), classMonday(fields.rilis)) : 0
+  const ikutError =
+    before && (hari !== 0 || (before.tenggat?.slice(0, 16) ?? null) !== fields.tenggat)
+      ? await ikutJadwal({ id, minggu: fields.minggu, rilis: fields.rilis, tenggat: fields.tenggat }, hari)
+      : null
   refresh()
+  if (ikutError) return failed(`Modul tersimpan, tapi challenge atau status terlambat gagal diperbarui: ${ikutError}`)
   if (creating) redirect('/admin/modul')
   return succeeded('Modul tersimpan.')
+}
+
+/**
+ * Moves an item of the timeline one step up or down by trading weeks with
+ * its neighbour (see `tukarSlot`). Each keeps its weekday: a session its
+ * start day, a module its release day before class. A module takes its
+ * challenge and guided-task deadline along.
+ */
+export async function tukarJadwal(id: string, arah: 'naik' | 'turun'): Promise<{ ok: true; pesan: string } | { ok: false; error: string }> {
+  const auth = await requireAdminAction()
+  if (!auth.ok) return { ok: false, error: auth.state?.message ?? 'Tidak diizinkan.' }
+  const [modules, sessions] = await Promise.all([
+    auth.db.from('modules').select('id, minggu, judul, rilis, tenggat'),
+    auth.db.from('sesi').select('id, judul, rilis'),
+  ])
+  if (modules.error || sessions.error) return { ok: false, error: 'Gagal membaca jadwal.' }
+
+  const plan = tukarSlot(
+    [
+      ...modules.data.map((row) => ({ ...row, jenis: 'modul' as const, senin: classMonday(row.rilis) })),
+      ...sessions.data.map((row) => ({ ...row, jenis: 'sesi' as const, senin: mondayOf(row.rilis), minggu: 0, tenggat: null })),
+    ],
+    id,
+    arah === 'naik' ? -1 : 1,
+  )
+  if (!plan.ok) return plan
+
+  // shortcut: two items move in separate writes, not one transaction; a failure halfway is reported so the admin can redo that step.
+  for (const { item, hari } of plan.geser) {
+    const rilis = addDays(item.rilis, hari)
+    let error: string | null
+    if (item.jenis === 'sesi') {
+      error = (await auth.db.from('sesi').update({ rilis }).eq('id', item.id)).error?.message ?? null
+    } else {
+      const moved = { id: item.id, minggu: item.minggu, rilis, tenggat: item.tenggat ? geserTanggal(item.tenggat, hari) : null }
+      error = (await auth.db.from('modules').update({ rilis, tenggat: moved.tenggat }).eq('id', item.id)).error?.message ?? (await ikutJadwal(moved, hari))
+    }
+    if (error) {
+      refresh()
+      return { ok: false, error: `${item.judul} gagal dipindah: ${error}` }
+    }
+  }
+
+  refresh()
+  const [naik, turun] = arah === 'naik' ? plan.geser : [plan.geser[1], plan.geser[0]]
+  return { ok: true, pesan: `${naik.item.judul} sekarang di atas ${turun.item.judul}.` }
 }
 
 /**
